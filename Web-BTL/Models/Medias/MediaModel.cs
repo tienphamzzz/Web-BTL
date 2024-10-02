@@ -29,6 +29,9 @@ namespace Web_BTL.Models.Medias
         public string? MediaImagePath { get; set; } // ảnh sơ bộ của phim
         public TimeSpan? MediaDuration { get; set; } // thời lượng
         public bool? MediaState { get; set; } // tình trạng đã xem hay chưa, true là đã xem, false là chưa xem
+        public bool? Basic {  get; set; }
+        public bool? Premium {  get; set; }
+        public bool? Vip { get; set; }
         public virtual ICollection<WatchListModel> WatchLists { get; set; } // kết nối đến bảng phụ
         public virtual ICollection<ReviewModel> Reviews { get; set; } // kết nối tới bảng Reviews
         public virtual ICollection<ActorModel> Actors { get; set; } // kết nối đến bảng phụ

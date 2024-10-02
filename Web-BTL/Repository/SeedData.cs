@@ -155,6 +155,9 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "supergirl",
                         MediaDuration = new TimeSpan(2, 0, 0),
+                        Basic = true,
+                        Premium = true,
+                        Vip = true,
                         MediaState = true,
                     },
                     new MediaModel
@@ -168,6 +171,9 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "transformer",
                         MediaDuration = new TimeSpan(2, 0, 0),
+                        Basic = true,
+                        Premium = true,
+                        Vip = false,
                         MediaState = true,
                     },
                     new MediaModel
@@ -181,6 +187,9 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "demonslayer",
                         MediaDuration = new TimeSpan(2, 0, 0),
+                        Basic = true,
+                        Premium = false,
+                        Vip = false,
                         MediaState = true,
                     }
                     );
