@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Web_BTL.Models.ListMedia.Favorite;
+using Web_BTL.Models.ListMedia.History;
+using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.Medias;
 using Web_BTL.Models.User.Admin;
 using Web_BTL.Models.User.Customer;
@@ -95,7 +97,10 @@ namespace Web_BTL.Repository
                         UserImagePath = "doanh1",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
-                        _ServicePackage = ServicePackage.Bacis,
+                        FavoriteListId = 1,
+                        HistoryListId = 1,
+                        WatchListId = 1,
+                        _ServicePackage = ServicePackage.Bacis
                     },
                     new CustomerModel
                     {
@@ -108,6 +113,25 @@ namespace Web_BTL.Repository
                         UserImagePath = "doanh2",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
+                        FavoriteListId = 2,
+                        HistoryListId = 2,
+                        WatchListId = 2,
+                        _ServicePackage = ServicePackage.Bacis
+                    },
+                    new CustomerModel
+                    {
+                        UserId = 3,
+                        UserName = "Mai Xuan Doanh",
+                        UserLogin = "maixuandoanhno3",
+                        LoginPassword = "12345678@Aa",
+                        UserEmail = "oncamviai@gmail.com",
+                        UserCreateDate = new DateTime(2024, 8, 12),
+                        UserImagePath = "doanh3",
+                        UserState = true,
+                        UserDuration = new TimeSpan(0, 0, 0),
+                        FavoriteListId = 3,
+                        HistoryListId = 3,
+                        WatchListId = 3,
                         _ServicePackage = ServicePackage.Bacis
                     }
                     );
@@ -166,11 +190,48 @@ namespace Web_BTL.Repository
             {
                 _context.FavoriteLists.AddRange(
                     
-                    new FavoriteListModel { },
-                    new FavoriteListModel { },
-                    new FavoriteListModel { }
+                    new FavoriteListModel { FavoriteListId = 1, UserId = 1},
+                    new FavoriteListModel { FavoriteListId = 2, UserId = 2},
+                    new FavoriteListModel { FavoriteListId = 3, UserId = 3}
                     );
+                _context.SaveChanges();
+            }
+            if (!_context.HistoryLists.Any())
+            {
+                _context.HistoryLists.AddRange(
+                    new HistoryListModel { HistoryListId = 1, UserId = 1},
+                    new HistoryListModel { HistoryListId = 2, UserId = 2},
+                    new HistoryListModel { HistoryListId = 3, UserId = 3}
+                    );
+                _context.SaveChanges();
+            }
+            if (!_context.WatchLists.Any())
+            {
+                _context.WatchLists.AddRange(
+                    new WatchListModel { WatchListId = 1, UserId = 1 },
+                    new WatchListModel { WatchListId = 2, UserId = 2 },
+                    new WatchListModel { WatchListId = 3, UserId = 3 }
+                    );
+                _context.SaveChanges();
+            }
+            if (!_context.Reviews.Any())
+            {
+
+            }
+            if (!_context.Actors.Any())
+            {
+
+            }
+            if (!_context.Genres.Any())
+            {
+                _context.Genres.AddRange(
+                    new GenreModel { GenreId = 1, Type = "Movie"},
+                    new GenreModel { GenreId = 2, Type = "Cartoon"},
+                    new GenreModel { GenreId = 3, Type = "Series"}
+                    );
+                _context.SaveChanges();
             }
         }
     }
 }
+  

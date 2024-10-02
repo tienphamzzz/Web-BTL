@@ -2,6 +2,7 @@
 using Web_BTL.Models;
 using Web_BTL.Models.Actors;
 using Web_BTL.Models.ListMedia.Favorite;
+using Web_BTL.Models.ListMedia.History;
 using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.Medias;
 using Web_BTL.Models.User.Admin;
@@ -30,16 +31,13 @@ namespace Web_BTL.Repository
         public DbSet<FavoriteListModel> FavoriteLists;
         
         // Bảng History List
+        public DbSet<HistoryListModel> HistoryLists;
 
         // Bảng Watch List và bảng phụ
         public DbSet<WatchListModel> WatchLists;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MediaModel>().
-                HasMany(m => m.Genres).
-                WithMany(g => g.Medias).
-                UsingEntity(j => j.ToTable("Media_Genre"));
             modelBuilder.Entity<MediaModel>().
                 HasMany(m => m.Actors).
                 WithMany(a => a.Medias).
@@ -52,7 +50,6 @@ namespace Web_BTL.Repository
                 HasMany(m => m.WatchLists).
                 WithMany(w => w.Medias).
                 UsingEntity(j => j.ToTable("Media_Watch"));
-
         }
     }
 }
