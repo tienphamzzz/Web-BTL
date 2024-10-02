@@ -1,9 +1,9 @@
 ﻿namespace Web_BTL.Models.User.Customer
 {
-    public enum ServicePackage
+    public enum ServicePackage : byte
     {
-        Bacis, // gói thường -> miễn phí
-        Premium, // gói tầm trung mất phí
-        Vip // gói cao cấp mất phí
+        Bacis = 0, // gói thường -> miễn phí
+        Premium = 1, // gói tầm trung mất phí
+        Vip = 2// gói cao cấp mất phí
     }
 }

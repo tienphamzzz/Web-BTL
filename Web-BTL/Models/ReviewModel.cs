@@ -1,10 +1,14 @@
-﻿using Web_BTL.Models.Medias;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using Web_BTL.Models.Medias;
 using Web_BTL.Models.User;
 
 namespace Web_BTL.Models
 {
     public class ReviewModel
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReviewId { get; set; } // khoá chính
         public string? ReviewContent { get; set; } // nội dung
         public double? ReviewRating { get; set; } // sao đánh giá

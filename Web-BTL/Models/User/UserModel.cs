@@ -1,9 +1,14 @@
-﻿namespace Web_BTL.Models.User
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
+namespace Web_BTL.Models.User
 {
     public abstract class UserModel
     {
-        public int UserId { get; set; } // lấy số điện thoại làm ID
-        public string? UserName { get; set; } // có thể lấy số điện thoại làm mặc định
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int UserId { get; set; } 
+        public string? UserName { get; set; } 
         public string? UserLogin { get; set; } // tên tài khoản dùng để login
         public string? LoginPassword { get; set; } // mật khẩu của Login
         public string? UserEmail { get; set; } // địa chỉ email

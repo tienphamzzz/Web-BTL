@@ -1,19 +1,21 @@
-﻿using Web_BTL.Models.Medias;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using Web_BTL.Models.User;
+using Web_BTL.Models.Medias;
 
 namespace Web_BTL.Models.ListMedia.History
 {
     public class HistoryListModel
     {
-        public HistoryListModel()
+        public HistoryListModel() 
         {
             Medias = new HashSet<MediaModel>();
         }
-        public int HistoryListId { get; set; }
-        public virtual int? UserId { get; set; }
-        public virtual UserModel? User { get; set; }
-        public DateTime? WatchDate { get; set; }
-        public virtual ICollection<MediaModel> Medias { get; set; }
-
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int HistoryListId {  get; set; } 
+        public int? UserId { get; set; }
+        public UserModel? User { get; set; }
+        public ICollection<MediaModel> Medias { get; set; }
     }
 }
