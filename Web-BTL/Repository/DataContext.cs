@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Web_BTL.Models;
 using Web_BTL.Models.Actors;
-using Web_BTL.Models.ListMedia.Favorite;
-using Web_BTL.Models.ListMedia.History;
 using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.Medias;
 using Web_BTL.Models.User.Admin;
@@ -14,27 +12,21 @@ namespace Web_BTL.Repository
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options) { }
         // Bảng phim và thể loại
-        public DbSet<MediaModel> Medias;
-        public DbSet<GenreModel> Genres;
+        public DbSet<MediaModel> Medias { get; set; }
+        public DbSet<GenreModel> Genres { get; set; }
 
         // Bảng review
-        public DbSet<ReviewModel> Reviews;
+        public DbSet<ReviewModel> Reviews { get; set; }
 
         // Bảng Admin và Customer
-        public DbSet<AdminModel> Admins;
-        public DbSet<CustomerModel> Customers;
+        public DbSet<AdminModel> Admins { get; set; }
+        public DbSet<CustomerModel> Customers { get; set; }
 
         // Bảng Actor
-        public DbSet<ActorModel> Actors;
-        
-        // Bảng Favorite List
-        public DbSet<FavoriteListModel> FavoriteLists;
-        
-        // Bảng History List
-        public DbSet<HistoryListModel> HistoryLists;
+        public DbSet<ActorModel> Actors { get; set; }
 
         // Bảng Watch List và bảng phụ
-        public DbSet<WatchListModel> WatchLists;
+        public DbSet<WatchListModel> WatchLists { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -43,13 +35,19 @@ namespace Web_BTL.Repository
                 WithMany(a => a.Medias).
                 UsingEntity(j => j.ToTable("Media_Actor"));
             modelBuilder.Entity<MediaModel>().
-                HasMany(m => m.FavoriteLists).
-                WithMany(f => f.Medias).
-                UsingEntity(j => j.ToTable("Media_Favourite"));
+                HasMany(m => m.Genres).
+                WithMany(g => g.Medias).
+                UsingEntity(j => j.ToTable("Media_Genre"));
             modelBuilder.Entity<MediaModel>().
                 HasMany(m => m.WatchLists).
                 WithMany(w => w.Medias).
-                UsingEntity(j => j.ToTable("Media_Watch"));
+                UsingEntity(j => j.ToTable("Media_WatchList"));
+            modelBuilder.Entity<AdminModel>().
+                Property(a => a.Role).
+                HasConversion<string>();  // Ánh xạ enum thành chuỗi
+            modelBuilder.Entity<CustomerModel>().
+                Property(c => c._ServicePackage).
+                HasConversion<string>();  // Ánh xạ enum thành chuỗi
         }
     }
 }

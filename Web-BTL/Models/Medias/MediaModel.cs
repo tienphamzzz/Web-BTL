@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Web_BTL.Models.Actors;
-using Web_BTL.Models.ListMedia.Favorite;
 using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.User;
 
@@ -11,11 +10,10 @@ namespace Web_BTL.Models.Medias
     {
         public MediaModel()
         {
-            WatchLists = new HashSet<WatchListModel>();
-            Reviews = new HashSet<ReviewModel>();
             Actors = new HashSet<ActorModel>();
             Genres = new HashSet<GenreModel>();
-            FavoriteLists = new HashSet<FavoriteListModel>();
+            WatchLists = new HashSet<WatchListModel>();
+            Reviews = new HashSet<ReviewModel>();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -29,14 +27,14 @@ namespace Web_BTL.Models.Medias
         public string? MediaImagePath { get; set; } // ảnh sơ bộ của phim
         public TimeSpan? MediaDuration { get; set; } // thời lượng
         public bool? MediaState { get; set; } // tình trạng đã xem hay chưa, true là đã xem, false là chưa xem
+        public bool? Favortive { get; set; } // bộ phim có được user yêu thích không
+        public bool? Watched { get; set; } // bộ phim đã xem chưa
         public bool? Basic {  get; set; }
         public bool? Premium {  get; set; }
         public bool? Vip { get; set; }
-        public virtual ICollection<WatchListModel> WatchLists { get; set; } // kết nối đến bảng phụ
-        public virtual ICollection<ReviewModel> Reviews { get; set; } // kết nối tới bảng Reviews
+        public virtual ICollection<WatchListModel> WatchLists { get; set; }
         public virtual ICollection<ActorModel> Actors { get; set; } // kết nối đến bảng phụ
-        public virtual ICollection<FavoriteListModel> FavoriteLists { get; set; }
         public virtual ICollection<GenreModel> Genres { get; set; }
-        
+        public virtual ICollection<ReviewModel> Reviews { get; set; }
     }
 }

@@ -5,9 +5,6 @@ namespace Web_BTL.Models.User
 {
     public abstract class UserModel
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int UserId { get; set; } 
         public string? UserName { get; set; } 
         public string? UserLogin { get; set; } // tên tài khoản dùng để login
         public string? LoginPassword { get; set; } // mật khẩu của Login

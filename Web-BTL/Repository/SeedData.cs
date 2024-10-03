@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Web_BTL.Models.ListMedia.Favorite;
-using Web_BTL.Models.ListMedia.History;
+using Web_BTL.Models;
 using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.Medias;
 using Web_BTL.Models.User.Admin;
@@ -22,13 +21,12 @@ namespace Web_BTL.Repository
             if (!_context.Admins.Any()) // seed data table Admin
             /*
             UserId, UserName, UserLogin, LoginPassword, UserEmail,
-            UserCreateDate, UserImagePath, UserState, UserDuration, _Rule
+            UserCreateDate, UserImagePath, UserState, UserDuration, _Role
              */
             {
                 _context.Admins.AddRange(
                     new AdminModel 
                     {
-                        UserId = 1,
                         UserName = "Mai Xuan Doanh", 
                         UserLogin = "maixuandoanh", 
                         LoginPassword = "12345678@Aa", 
@@ -36,11 +34,11 @@ namespace Web_BTL.Repository
                         UserCreateDate = new DateTime(2024, 8, 12), 
                         UserImagePath = "doanh", 
                         UserState = true, 
-                        UserDuration = new TimeSpan(0, 0, 0), 
-                        Role = Role.SuperAdmin},
+                        UserDuration = new TimeSpan(0, 0, 0),   
+                        Role = Role.SuperAdmin
+                    },
                     new AdminModel
                     {
-                        UserId = 2,
                         UserName = "Tien Pham", 
                         UserLogin = "tienpham",
                         LoginPassword = "12345678@Aa",
@@ -53,7 +51,6 @@ namespace Web_BTL.Repository
                     },
                     new AdminModel
                     {
-                        UserId = 3,
                         UserName = "Kien Ngoc",
                         UserLogin = "kienngoc",
                         LoginPassword = "12345678@Aa",
@@ -66,17 +63,25 @@ namespace Web_BTL.Repository
                     },
                     new AdminModel
                     {
-                        UserId = 4,
                         UserName = "Dinh Cong Vinh",
                         UserLogin = "dinhcongvinh",
                         LoginPassword = "12345678@Aa",
-                        UserEmail = "vinhdinhcong@gmail.com",
+                        UserEmail = "dinhcongvinh09092004@gmail.com",
                         UserCreateDate = new DateTime(2024, 8, 12),
                         UserImagePath = "vinh",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         Role = Role.ServicePackage_Management
                     }
+                    );
+                _context.SaveChanges();
+            }
+            if (!_context.WatchLists.Any())
+            {
+                _context.WatchLists.AddRange(
+                    new WatchListModel { CustomerId = 1 },
+                    new WatchListModel { CustomerId = 2 },
+                    new WatchListModel { CustomerId = 3 }
                     );
                 _context.SaveChanges();
             }
@@ -88,7 +93,6 @@ namespace Web_BTL.Repository
             {
                 _context.Customers.AddRange(
                     new CustomerModel {
-                        UserId = 1,
                         UserName = "Mai Xuan Doanh",
                         UserLogin = "maixuandoanhno1",
                         LoginPassword = "12345678@Aa",
@@ -97,14 +101,11 @@ namespace Web_BTL.Repository
                         UserImagePath = "doanh1",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
-                        FavoriteListId = 1,
-                        HistoryListId = 1,
                         WatchListId = 1,
                         _ServicePackage = ServicePackage.Bacis
                     },
                     new CustomerModel
                     {
-                        UserId = 2,
                         UserName = "Mai Xuan Doanh",
                         UserLogin = "maixuandoanhno2",
                         LoginPassword = "12345678@Aa",
@@ -113,14 +114,11 @@ namespace Web_BTL.Repository
                         UserImagePath = "doanh2",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
-                        FavoriteListId = 2,
-                        HistoryListId = 2,
                         WatchListId = 2,
                         _ServicePackage = ServicePackage.Bacis
                     },
                     new CustomerModel
                     {
-                        UserId = 3,
                         UserName = "Mai Xuan Doanh",
                         UserLogin = "maixuandoanhno3",
                         LoginPassword = "12345678@Aa",
@@ -129,8 +127,6 @@ namespace Web_BTL.Repository
                         UserImagePath = "doanh3",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
-                        FavoriteListId = 3,
-                        HistoryListId = 3,
                         WatchListId = 3,
                         _ServicePackage = ServicePackage.Bacis
                     }
@@ -144,10 +140,9 @@ namespace Web_BTL.Repository
             */
             {
                 _context.Medias.AddRange(
-                    new MediaModel 
-                    { 
-                        MediaId = 1,
-                        MediaName = "Supergirl", 
+                    new MediaModel
+                    {
+                        MediaName = "Supergirl",
                         MediaUrl = "supergirl",
                         MediaDescription = "The film is very good",
                         MediaQuality = "HD",
@@ -155,14 +150,15 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "supergirl",
                         MediaDuration = new TimeSpan(2, 0, 0),
+                        Favortive = false,
+                        Watched = false,
                         Basic = true,
                         Premium = true,
                         Vip = true,
-                        MediaState = true,
+                        MediaState = true
                     },
                     new MediaModel
                     {
-                        MediaId = 2,
                         MediaName = "Transformer",
                         MediaUrl = "transformer",
                         MediaDescription = "The film is the best",
@@ -171,14 +167,15 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "transformer",
                         MediaDuration = new TimeSpan(2, 0, 0),
+                        Favortive = false,
+                        Watched = false,
                         Basic = true,
                         Premium = true,
                         Vip = false,
-                        MediaState = true,
+                        MediaState = true
                     },
                     new MediaModel
                     {
-                        MediaId = 3,
                         MediaName = "Demon Slayer",
                         MediaUrl = "demonslayer",
                         MediaDescription = "The cartoon is very good",
@@ -187,57 +184,54 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "demonslayer",
                         MediaDuration = new TimeSpan(2, 0, 0),
+                        Favortive = false,
+                        Watched = false,
                         Basic = true,
                         Premium = false,
                         Vip = false,
-                        MediaState = true,
+                        MediaState = true
                     }
-                    );
-                _context.SaveChanges();
-            }
-            if (!_context.FavoriteLists.Any())
-            {
-                _context.FavoriteLists.AddRange(
-                    
-                    new FavoriteListModel { FavoriteListId = 1, UserId = 1},
-                    new FavoriteListModel { FavoriteListId = 2, UserId = 2},
-                    new FavoriteListModel { FavoriteListId = 3, UserId = 3}
-                    );
-                _context.SaveChanges();
-            }
-            if (!_context.HistoryLists.Any())
-            {
-                _context.HistoryLists.AddRange(
-                    new HistoryListModel { HistoryListId = 1, UserId = 1},
-                    new HistoryListModel { HistoryListId = 2, UserId = 2},
-                    new HistoryListModel { HistoryListId = 3, UserId = 3}
-                    );
-                _context.SaveChanges();
-            }
-            if (!_context.WatchLists.Any())
-            {
-                _context.WatchLists.AddRange(
-                    new WatchListModel { WatchListId = 1, UserId = 1 },
-                    new WatchListModel { WatchListId = 2, UserId = 2 },
-                    new WatchListModel { WatchListId = 3, UserId = 3 }
                     );
                 _context.SaveChanges();
             }
             if (!_context.Reviews.Any())
             {
-
-            }
-            if (!_context.Actors.Any())
-            {
-
+                _context.Reviews.AddRange(
+                    new ReviewModel { ReviewContent = "Very very good", ReviewRating = 5.0, ReviewCreateDate = new DateTime(2024, 9, 12), CustomerId = 1, MediaId = 1 },
+                    new ReviewModel { ReviewContent = "Very good", ReviewRating = 5.0, ReviewCreateDate = new DateTime(2024, 9, 12), CustomerId = 1, MediaId = 2 },
+                    new ReviewModel { ReviewContent = "Very very very good", ReviewRating = 5.0, ReviewCreateDate = new DateTime(2024, 9, 12), CustomerId = 1, MediaId = 3 }
+                    );
+                _context.SaveChanges();
             }
             if (!_context.Genres.Any())
             {
                 _context.Genres.AddRange(
-                    new GenreModel { GenreId = 1, Type = "Movie"},
-                    new GenreModel { GenreId = 2, Type = "Cartoon"},
-                    new GenreModel { GenreId = 3, Type = "Series"}
+                    new GenreModel { Type = "Movie"},
+                    new GenreModel { Type = "Cartoon"},
+                    new GenreModel { Type = "Series"}
                     );
+                _context.SaveChanges();
+            }
+            
+            // media 
+            var media1 = _context.Medias.FirstOrDefault(m => m.MediaId == 1);
+            var media2 = _context.Medias.FirstOrDefault(m => m.MediaId == 2);
+            var media3 = _context.Medias.FirstOrDefault(m => m.MediaId == 3);
+            // watch list
+            var wlist1 = _context.WatchLists.FirstOrDefault(w => w.WatchListId == 1);
+            var wlist2 = _context.WatchLists.FirstOrDefault(w => w.WatchListId == 2);
+            var wlist3 = _context.WatchLists.FirstOrDefault(w => w.WatchListId == 3);
+            
+            if (media1 != null && media2 != null && media3 != null)
+            {
+                if (wlist1 != null && wlist2 != null && wlist3 != null)
+                {
+                    media1.WatchLists.Add(wlist1);
+                    media1.WatchLists.Add(wlist2);
+                    media2.WatchLists.Add(wlist2);
+                    media2.WatchLists.Add(wlist3);
+                    media3.WatchLists.Add(wlist3);
+                }
                 _context.SaveChanges();
             }
         }
