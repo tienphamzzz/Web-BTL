@@ -212,7 +212,7 @@ namespace Web_BTL.Repository
                     );
                 _context.SaveChanges();
             }
-            
+            /* chèn các giá trị cho bang phụ khi chèn xong thì xoá đi
             // media 
             var media1 = _context.Medias.FirstOrDefault(m => m.MediaId == 1);
             var media2 = _context.Medias.FirstOrDefault(m => m.MediaId == 2);
@@ -221,7 +221,10 @@ namespace Web_BTL.Repository
             var wlist1 = _context.WatchLists.FirstOrDefault(w => w.WatchListId == 1);
             var wlist2 = _context.WatchLists.FirstOrDefault(w => w.WatchListId == 2);
             var wlist3 = _context.WatchLists.FirstOrDefault(w => w.WatchListId == 3);
-            
+            // genre
+            var genre1 = _context.Genres.FirstOrDefault(g => g.GenreId == 1);
+            var genre2 = _context.Genres.FirstOrDefault(g => g.GenreId == 2);
+            var genre3 = _context.Genres.FirstOrDefault(g => g.GenreId == 3);
             if (media1 != null && media2 != null && media3 != null)
             {
                 if (wlist1 != null && wlist2 != null && wlist3 != null)
@@ -233,7 +236,18 @@ namespace Web_BTL.Repository
                     media3.WatchLists.Add(wlist3);
                 }
                 _context.SaveChanges();
+                if (genre1 != null && genre2 != null && genre3 != null)
+                {
+                    media1.Genres.Add(genre1);
+                    media1.Genres.Add(genre3);
+                    media2.Genres.Add(genre1);
+                    media2.Genres.Add(genre3);
+                    media3.Genres.Add(genre2);
+                    media3.Genres.Add(genre3);
+                }
+                _context.SaveChanges();
             }
+            */
         }
     }
 }
