@@ -12,7 +12,6 @@ namespace Web_BTL.Models.Medias
         {
             Actors = new HashSet<ActorModel>();
             Genres = new HashSet<GenreModel>();
-            WatchLists = new HashSet<WatchListModel>();
             Reviews = new HashSet<ReviewModel>();
         }
         [Key]
@@ -27,12 +26,13 @@ namespace Web_BTL.Models.Medias
         public string? MediaImagePath { get; set; } // ảnh sơ bộ của phim
         public TimeSpan? MediaDuration { get; set; } // thời lượng
         public bool? MediaState { get; set; } // tình trạng đã xem hay chưa, true là đã xem, false là chưa xem
-        public bool? Favortive { get; set; } // bộ phim có được user yêu thích không
-        public bool? Watched { get; set; } // bộ phim đã xem chưa
+        public bool? Watched { get; set; }
+        public bool? Favorite { get; set; }
         public bool? Basic {  get; set; }
         public bool? Premium {  get; set; }
         public bool? Vip { get; set; }
-        public virtual ICollection<WatchListModel> WatchLists { get; set; }
+        public virtual int WatchListId { get; set; }
+        public virtual WatchListModel WatchList { get; set; }
         public virtual ICollection<ActorModel> Actors { get; set; } // kết nối đến bảng phụ
         public virtual ICollection<GenreModel> Genres { get; set; }
         public virtual ICollection<ReviewModel> Reviews { get; set; }
