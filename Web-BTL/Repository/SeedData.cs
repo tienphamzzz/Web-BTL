@@ -150,12 +150,13 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "supergirl",
                         MediaDuration = new TimeSpan(2, 0, 0),
-                        Favortive = false,
+                        Favorite = false,
                         Watched = false,
                         Basic = true,
                         Premium = true,
                         Vip = true,
-                        MediaState = true
+                        MediaState = true,
+                        WatchListId = 1
                     },
                     new MediaModel
                     {
@@ -167,12 +168,13 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "transformer",
                         MediaDuration = new TimeSpan(2, 0, 0),
-                        Favortive = false,
+                        Favorite = false,
                         Watched = false,
                         Basic = true,
                         Premium = true,
                         Vip = false,
-                        MediaState = true
+                        MediaState = true,
+                        WatchListId = 1
                     },
                     new MediaModel
                     {
@@ -184,12 +186,103 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "demonslayer",
                         MediaDuration = new TimeSpan(2, 0, 0),
-                        Favortive = false,
+                        Favorite = false,
                         Watched = false,
                         Basic = true,
                         Premium = false,
                         Vip = false,
-                        MediaState = true
+                        MediaState = true,
+                        WatchListId = 1
+                    },
+                    new MediaModel
+                    {
+                        MediaName = "Supergirl",
+                        MediaUrl = "supergirl",
+                        MediaDescription = "The film is very good",
+                        MediaQuality = "HD",
+                        ReleaseDate = new DateTime(2024, 9, 12),
+                        MediaAgeRating = 16,
+                        MediaImagePath = "supergirl",
+                        MediaDuration = new TimeSpan(2, 0, 0),
+                        Favorite = false,
+                        Watched = false,
+                        Basic = true,
+                        Premium = true,
+                        Vip = true,
+                        MediaState = true,
+                        WatchListId = 2
+                    },
+                    new MediaModel
+                    {
+                        MediaName = "Transformer",
+                        MediaUrl = "transformer",
+                        MediaDescription = "The film is the best",
+                        MediaQuality = "HD",
+                        ReleaseDate = new DateTime(2024, 9, 12),
+                        MediaAgeRating = 16,
+                        MediaImagePath = "transformer",
+                        MediaDuration = new TimeSpan(2, 0, 0),
+                        Favorite = false,
+                        Watched = false,
+                        Basic = true,
+                        Premium = true,
+                        Vip = false,
+                        MediaState = true,
+                        WatchListId = 2
+                    },
+                    new MediaModel
+                    {
+                        MediaName = "Demon Slayer",
+                        MediaUrl = "demonslayer",
+                        MediaDescription = "The cartoon is very good",
+                        MediaQuality = "HD",
+                        ReleaseDate = new DateTime(2024, 9, 12),
+                        MediaAgeRating = 16,
+                        MediaImagePath = "demonslayer",
+                        MediaDuration = new TimeSpan(2, 0, 0),
+                        Favorite = false,
+                        Watched = false,
+                        Basic = true,
+                        Premium = false,
+                        Vip = false,
+                        MediaState = true,
+                        WatchListId = 2
+                    },
+                    new MediaModel
+                    {
+                        MediaName = "Supergirl",
+                        MediaUrl = "supergirl",
+                        MediaDescription = "The film is very good",
+                        MediaQuality = "HD",
+                        ReleaseDate = new DateTime(2024, 9, 12),
+                        MediaAgeRating = 16,
+                        MediaImagePath = "supergirl",
+                        MediaDuration = new TimeSpan(2, 0, 0),
+                        Favorite = false,
+                        Watched = false,
+                        Basic = true,
+                        Premium = true,
+                        Vip = true,
+                        MediaState = true,
+                        WatchListId = 3
+                    },
+                    new MediaModel
+                    {
+                        MediaName = "Transformer",
+                        MediaUrl = "transformer",
+                        MediaDescription = "The film is the best",
+                        MediaQuality = "HD",
+                        ReleaseDate = new DateTime(2024, 9, 12),
+                        MediaAgeRating = 16,
+                        MediaImagePath = "transformer",
+                        MediaDuration = new TimeSpan(2, 0, 0),
+                        Favorite = false,
+                        Watched = false,
+                        Basic = true,
+                        Premium = true,
+                        Vip = false,
+                        MediaState = true,
+                        WatchListId = 3
                     }
                     );
                 _context.SaveChanges();
@@ -212,42 +305,29 @@ namespace Web_BTL.Repository
                     );
                 _context.SaveChanges();
             }
-            /* chèn các giá trị cho bang phụ khi chèn xong thì xoá đi
+            //chèn các giá trị cho bang phụ khi chèn xong thì xoá đi
             // media 
             var media1 = _context.Medias.FirstOrDefault(m => m.MediaId == 1);
             var media2 = _context.Medias.FirstOrDefault(m => m.MediaId == 2);
             var media3 = _context.Medias.FirstOrDefault(m => m.MediaId == 3);
-            // watch list
-            var wlist1 = _context.WatchLists.FirstOrDefault(w => w.WatchListId == 1);
-            var wlist2 = _context.WatchLists.FirstOrDefault(w => w.WatchListId == 2);
-            var wlist3 = _context.WatchLists.FirstOrDefault(w => w.WatchListId == 3);
             // genre
             var genre1 = _context.Genres.FirstOrDefault(g => g.GenreId == 1);
             var genre2 = _context.Genres.FirstOrDefault(g => g.GenreId == 2);
             var genre3 = _context.Genres.FirstOrDefault(g => g.GenreId == 3);
-            if (media1 != null && media2 != null && media3 != null)
-            {
-                if (wlist1 != null && wlist2 != null && wlist3 != null)
-                {
-                    media1.WatchLists.Add(wlist1);
-                    media1.WatchLists.Add(wlist2);
-                    media2.WatchLists.Add(wlist2);
-                    media2.WatchLists.Add(wlist3);
-                    media3.WatchLists.Add(wlist3);
-                }
-                _context.SaveChanges();
-                if (genre1 != null && genre2 != null && genre3 != null)
-                {
-                    media1.Genres.Add(genre1);
-                    media1.Genres.Add(genre3);
-                    media2.Genres.Add(genre1);
-                    media2.Genres.Add(genre3);
-                    media3.Genres.Add(genre2);
-                    media3.Genres.Add(genre3);
-                }
-                _context.SaveChanges();
-            }
-            */
+            //if (media1 != null && media2 != null && media3 != null)
+            //{
+            //    if (genre1 != null && genre2 != null && genre3 != null)
+            //    {
+            //        media1.Genres.Add(genre1);
+            //        media1.Genres.Add(genre3);
+            //        media2.Genres.Add(genre1);
+            //        media2.Genres.Add(genre3);
+            //        media3.Genres.Add(genre2);
+            //        media3.Genres.Add(genre3);
+            //    }
+            //    _context.SaveChanges();
+            //} 
+            
         }
     }
 }

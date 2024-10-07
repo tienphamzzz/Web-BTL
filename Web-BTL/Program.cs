@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Web_BTL.Repository;
+using Web_BTL.Services.EmailServices;
 
 var builder = WebApplication.CreateBuilder(args);
 // connection Database
@@ -10,6 +11,15 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(1);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSetting"));
+builder.Services.AddTransient<SendEmail>();
 
 var app = builder.Build();
 
@@ -23,7 +33,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();

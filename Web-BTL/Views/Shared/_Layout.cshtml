@@ -16,57 +16,16 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-tS3S5qG0BlhnQROyJXvNjeEM4UpMXHrQfTGmbQ1gKmelCxlSEBUaxhRBj/EFTzpbP4RVSrpEikbmdJobCvhE3g==" crossorigin="anonymous" />
     <!-- BOX ICONS -->
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
-    <!-- APP CSS -->
-    <link href="~/css/grid.css" rel="stylesheet">
-    <link href="~/css/app.css" rel="stylesheet">
+    <!--BOX ICONS-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    @RenderSection("styles", required: true) <!--Sử dụng Section để có thể sử dụng mỗi file css cho 1 file view mà không xung đột css-->
 </head>
 
 <body>
-
-    <!-- NAV -->
-    <div class="nav-wrapper">
-        <partial name="Layouts/TopNav" />
-    </div>
-    <!-- END NAV -->
-    <!-- HERO SECTION -->
-    <div class="hero-section">
-        <!-- HERO SLIDE -->
-        <partial name="Layouts/Slides/HeroSlide" />
-        <!-- END HERO SLIDE -->
-        <!-- TOP MOVIES SLIDE -->
-        <partial name="Layouts/Slides/TopMoviesSlide" />
-        <!-- END TOP MOVIES SLIDE -->
-    </div>
-    <!-- END HERO SECTION -->
-    <!-- LATEST MOVIES SECTION -->
-    <partial name="Layouts/Latest/LatestMovies" />
-    <!-- END LATEST MOVIES SECTION -->
-    <!-- LATEST SERIES SECTION -->
-    <partial name="Layouts/Latest/LatestSeries" />
-    <!-- END LATEST SERIES SECTION -->
-    <!-- LATEST CARTOONS SECTION -->
-    <partial name="Layouts/Latest/LatestCartoons" />
-    <!-- END LATEST CARTOONS SECTION -->
-    <!-- SPECIAL MOVIE SECTION -->
-    <partial name="Layouts/SpecialMovie" />
-    <!-- END SPECIAL MOVIE SECTION -->
-    <!-- PRICING SECTION -->
-    <partial name="Layouts/FlixPricing/FlixPricing" />
-    <!-- END PRICING SECTION -->
-    <!-- FOOTER SECTION -->
-    <partial name="Layouts/Footer" /> 
-    <!-- END FOOTER SECTION -->
-    <!-- COPYRIGHT SECTION -->
+    
     @RenderBody()
-    <!-- END COPYRIGHT SECTION -->
-    <!-- SCRIPT -->
-    <!-- JQUERY -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <!-- OWL CAROUSEL -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-bPs7Ae6pVvhOSiIcyUClR7/q2OAsRiovw4vAkX+zJbw3ShAeeqezq50RIIcIURq7Oa20rW2n2q+fyXBNcU9lrw==" crossorigin="anonymous"></script>
-    <!-- APP SCRIPT -->
-    <script src="~/js/app.js"></script>
-
+    
+    @RenderSection("Scripts", required: false)
 </body>
 
 </html>

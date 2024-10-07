@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web_BTL.Migrations
 {
-    public partial class firstDataBase : Migration
+    public partial class First : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,6 +58,48 @@ namespace Web_BTL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WatchLists",
+                columns: table => new
+                {
+                    WatchListId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CustomerId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WatchLists", x => x.WatchListId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Customers",
+                columns: table => new
+                {
+                    CustomerId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    _ServicePackage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    HistoryListId = table.Column<int>(type: "int", nullable: true),
+                    FavoriteListId = table.Column<int>(type: "int", nullable: true),
+                    WatchListId = table.Column<int>(type: "int", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserLogin = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LoginPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserCreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    UserImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserState = table.Column<bool>(type: "bit", nullable: true),
+                    UserDuration = table.Column<TimeSpan>(type: "time", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
+                    table.ForeignKey(
+                        name: "FK_Customers_WatchLists_WatchListId",
+                        column: x => x.WatchListId,
+                        principalTable: "WatchLists",
+                        principalColumn: "WatchListId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Medias",
                 columns: table => new
                 {
@@ -72,28 +114,22 @@ namespace Web_BTL.Migrations
                     MediaImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MediaDuration = table.Column<TimeSpan>(type: "time", nullable: true),
                     MediaState = table.Column<bool>(type: "bit", nullable: true),
-                    Favortive = table.Column<bool>(type: "bit", nullable: true),
                     Watched = table.Column<bool>(type: "bit", nullable: true),
+                    Favorite = table.Column<bool>(type: "bit", nullable: true),
                     Basic = table.Column<bool>(type: "bit", nullable: true),
                     Premium = table.Column<bool>(type: "bit", nullable: true),
-                    Vip = table.Column<bool>(type: "bit", nullable: true)
+                    Vip = table.Column<bool>(type: "bit", nullable: true),
+                    WatchListId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Medias", x => x.MediaId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WatchLists",
-                columns: table => new
-                {
-                    WatchListId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WatchLists", x => x.WatchListId);
+                    table.ForeignKey(
+                        name: "FK_Medias_WatchLists_WatchListId",
+                        column: x => x.WatchListId,
+                        principalTable: "WatchLists",
+                        principalColumn: "WatchListId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -145,59 +181,6 @@ namespace Web_BTL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    _ServicePackage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HistoryListId = table.Column<int>(type: "int", nullable: true),
-                    FavoriteListId = table.Column<int>(type: "int", nullable: true),
-                    WatchListId = table.Column<int>(type: "int", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserLogin = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LoginPassword = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserCreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserState = table.Column<bool>(type: "bit", nullable: true),
-                    UserDuration = table.Column<TimeSpan>(type: "time", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
-                    table.ForeignKey(
-                        name: "FK_Customers_WatchLists_WatchListId",
-                        column: x => x.WatchListId,
-                        principalTable: "WatchLists",
-                        principalColumn: "WatchListId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Media_WatchList",
-                columns: table => new
-                {
-                    MediasMediaId = table.Column<int>(type: "int", nullable: false),
-                    WatchListsWatchListId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Media_WatchList", x => new { x.MediasMediaId, x.WatchListsWatchListId });
-                    table.ForeignKey(
-                        name: "FK_Media_WatchList_Medias_MediasMediaId",
-                        column: x => x.MediasMediaId,
-                        principalTable: "Medias",
-                        principalColumn: "MediaId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Media_WatchList_WatchLists_WatchListsWatchListId",
-                        column: x => x.WatchListsWatchListId,
-                        principalTable: "WatchLists",
-                        principalColumn: "WatchListId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Reviews",
                 columns: table => new
                 {
@@ -244,9 +227,9 @@ namespace Web_BTL.Migrations
                 column: "MediasMediaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Media_WatchList_WatchListsWatchListId",
-                table: "Media_WatchList",
-                column: "WatchListsWatchListId");
+                name: "IX_Medias_WatchListId",
+                table: "Medias",
+                column: "WatchListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reviews_MediasMediaId",
@@ -269,9 +252,6 @@ namespace Web_BTL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Media_Genre");
-
-            migrationBuilder.DropTable(
-                name: "Media_WatchList");
 
             migrationBuilder.DropTable(
                 name: "Reviews");

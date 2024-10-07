@@ -12,8 +12,8 @@ using Web_BTL.Repository;
 namespace Web_BTL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241003084802_firstDataBase")]
-    partial class firstDataBase
+    [Migration("20241004084117_First")]
+    partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -52,21 +52,6 @@ namespace Web_BTL.Migrations
                     b.HasIndex("MediasMediaId");
 
                     b.ToTable("Media_Genre", (string)null);
-                });
-
-            modelBuilder.Entity("MediaModelWatchListModel", b =>
-                {
-                    b.Property<int>("MediasMediaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WatchListsWatchListId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MediasMediaId", "WatchListsWatchListId");
-
-                    b.HasIndex("WatchListsWatchListId");
-
-                    b.ToTable("Media_WatchList", (string)null);
                 });
 
             modelBuilder.Entity("Web_BTL.Models.Actors.ActorModel", b =>
@@ -131,7 +116,7 @@ namespace Web_BTL.Migrations
                     b.Property<bool?>("Basic")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("Favortive")
+                    b.Property<bool?>("Favorite")
                         .HasColumnType("bit");
 
                     b.Property<int?>("MediaAgeRating")
@@ -167,10 +152,15 @@ namespace Web_BTL.Migrations
                     b.Property<bool?>("Vip")
                         .HasColumnType("bit");
 
+                    b.Property<int>("WatchListId")
+                        .HasColumnType("int");
+
                     b.Property<bool?>("Watched")
                         .HasColumnType("bit");
 
                     b.HasKey("MediaId");
+
+                    b.HasIndex("WatchListId");
 
                     b.ToTable("Medias");
                 });
@@ -337,19 +327,15 @@ namespace Web_BTL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MediaModelWatchListModel", b =>
+            modelBuilder.Entity("Web_BTL.Models.Medias.MediaModel", b =>
                 {
-                    b.HasOne("Web_BTL.Models.Medias.MediaModel", null)
-                        .WithMany()
-                        .HasForeignKey("MediasMediaId")
+                    b.HasOne("Web_BTL.Models.ListMedia.Watch.WatchListModel", "WatchList")
+                        .WithMany("Medias")
+                        .HasForeignKey("WatchListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Web_BTL.Models.ListMedia.Watch.WatchListModel", null)
-                        .WithMany()
-                        .HasForeignKey("WatchListsWatchListId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("WatchList");
                 });
 
             modelBuilder.Entity("Web_BTL.Models.ReviewModel", b =>
@@ -378,6 +364,8 @@ namespace Web_BTL.Migrations
 
             modelBuilder.Entity("Web_BTL.Models.ListMedia.Watch.WatchListModel", b =>
                 {
+                    b.Navigation("Medias");
+
                     b.Navigation("User");
                 });
 
