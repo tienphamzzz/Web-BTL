@@ -2,8 +2,6 @@
 {
     public class CheckAction
     {
-        public static bool SignIn;
-        public static bool SignUp;
-        public static bool RPassword;
+        public static int checkAccount {  get; set; }
     }
 }

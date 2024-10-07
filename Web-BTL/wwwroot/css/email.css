@@ -1,4 +1,5 @@
-﻿* {
+﻿
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -156,6 +157,14 @@ button {
         text-decoration: underline;
         color: blue;
     }
+
+
+/*
+
+
+
+*/
+
 
 .otp-container {
     text-align: center;

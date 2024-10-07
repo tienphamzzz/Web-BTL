@@ -1,13 +1,14 @@
-﻿using MimeKit;
+﻿using Microsoft.Extensions.Options;
+using MimeKit;
 
 namespace Web_BTL.Services.EmailServices
 {
     public class SendEmail
     {
         private readonly EmailSetting _email;
-        public SendEmail(EmailSetting email)
+        public SendEmail(IOptions<EmailSetting> email)
         {
-            _email = email;
+            _email = email.Value;
         }
         public bool SendOTPEmail(string _to, string otpCode)
         {
