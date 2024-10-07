@@ -161,7 +161,7 @@ button {
 
 /*
 
-
+OTP
 
 */
 
@@ -199,3 +199,28 @@ button {
         .otp-resend a:hover {
             text-decoration: underline;
         }
+
+
+/*
+
+Toast container
+
+*/
+.toast {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #f44336;
+    color: white;
+    padding: 16px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    transition: opacity 0.5s ease, top 0.5s ease;
+}
+
+    /* Ẩn toast */
+    .toast.hide {
+        opacity: 0;
+        top: 0;
+    }
