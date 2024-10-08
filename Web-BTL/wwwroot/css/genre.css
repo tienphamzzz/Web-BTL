@@ -1,0 +1,106 @@
+﻿body {
+    background-color: #181616;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #181616;
+    padding: 10px 20px;
+}
+
+    .header header-label {
+        background-color: #ff3355;
+        padding: 10px 20px;
+    }
+
+.menu {
+    margin-right: 50px;
+}
+
+    .menu a {
+        color: white;
+        margin-right: 20px;
+        text-decoration: none;
+    }
+
+.content {
+    padding: 20px;
+}
+
+.movie-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Tạo 6 cột với chiều rộng bằng nhau */
+    gap: 20px; /* Khoảng cách giữa các phần tử */
+    margin-bottom: 20px; /* Khoảng cách giữa các hàng */
+}
+
+.movie {
+    position: relative;
+    width: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+    .movie img {
+        width: 100%;
+        display: block;
+        overflow : clip;
+        overflow-clip-margin : content-box;
+    }
+
+.movie-content {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    padding: 5px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 1), transparent);
+}
+
+.movie-title {
+    font-size: 1.5rem;
+    position: relative;
+    font-weight: 700;
+}
+
+.movie-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+    .movie-info h3 {
+        font-size: 16px;
+        margin: 0;
+        margin-bottom: 10px;
+    }
+
+    .movie-info .rating {
+        background-color: yellow;
+        color: black;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+.view-count {
+    font-size: 12px;
+    color: #999;
+}
+
+.btn-more {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #ff3355;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+

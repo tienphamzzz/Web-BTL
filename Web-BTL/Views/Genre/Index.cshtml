@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Movies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles{
+    <link href="~/css/genre.css"  rel="stylesheet" />
+    <link href="~/css/grid.css" rel="stylesheet">
+    <link href="~/css/app.css" rel="stylesheet">
+}
+@model IEnumerable<Web_BTL.Models.Medias.MediaModel>
+<!-- NAV -->
+<partial name="Layouts/TopNav" />
+<!-- END NAV -->
+
+<div class="body">
+    <div class="header">
+        <div class="header-label">
+            <h1>MỚI CẬP NHẬT</h1>
+        </div>
+        <div class="menu">
+            <a href="#">Tất cả</a>
+            <a href="#">Mùa Thu - 2024</a>
+            <a href="#">Anime bộ</a>
+            <a href="#">Anime lẻ</a>
+            <a href="#">HH Trung Quốc</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="movie-container">
+
+            @foreach (var item in Model)
+            {
+                <div class="movie">
+                    <img src="@item.MediaImagePath" alt="@item.MediaName">
+                    <div class="movie-content">
+                        <div class="movie-title">@item.MediaName</div>
+                        <div class="movie-info">
+                            <span class="rating">@item.MediaAgeRating</span>
+                            <p class="view-count">Lượt xem: 635,813</p>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div>
+            <a href="#" class="btn-more">Xem Thêm...</a>
+        </div>
+</div>
