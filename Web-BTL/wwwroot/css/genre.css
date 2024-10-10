@@ -1,21 +1,22 @@
-﻿html {
+﻿.html {
     font-size: 16px;
 }
 
-t-body {
-    width  : 100%;
+.t-body-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
     background-color: #424040;
     color: white;
-    margin: 0;
-    padding: 0;
-    margin-left: 20px;
+}
+
+.t-body {
+    width: 80%;
+    background-color: #181616;
 }
 
 .t-header-and-movie-section {
-    width : 80%;
-    align-items : center;
     margin-top: 80px;
-    background-color: #181616;
 }
 
 .t-header-section {

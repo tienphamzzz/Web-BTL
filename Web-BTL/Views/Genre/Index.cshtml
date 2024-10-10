@@ -12,22 +12,23 @@
 <partial name="Layouts/TopNav" />
 <!-- END NAV -->
 
-<div class="t-body">
-    <div class="t-header-and-movie-section">
-        <div class="t-header-section">
-            <div class="t-header-label">
-                MỚI CẬP NHẬT
+<div class="t-body-wrapper">
+    <div class="t-body">
+        <div class="t-header-and-movie-section">
+            <div class="t-header-section">
+                <div class="t-header-label">
+                    MỚI CẬP NHẬT
+                </div>
+                <div class="t-menu">
+                    <a href="#">Tất cả</a>
+                    <a href="#">Hành động</a>
+                    <a href="#">Viễn tưởng</a>
+                    <a href="#">Phim bộ</a>
+                    <a href="#">Phim lẻ</a>
+                </div>
             </div>
-            <div class="t-menu">
-                <a href="#">Tất cả</a>
-                <a href="#">Hành động</a>
-                <a href="#">Viễn tưởng</a>
-                <a href="#">Phim bộ</a>
-                <a href="#">Phim lẻ</a>
-            </div>
-        </div>
 
-        <div class="t-movie-section">
+            <div class="t-movie-section">
                 @foreach (var item in Model)
                 {
                     <div class="t-movie">
@@ -56,11 +57,12 @@
 
                     </div>
                 }
-         </div>
+            </div>
 
-            
-         <div>
+
+            <div>
                 <a href="#" class="t-btn-more">Xem Thêm...</a>
+            </div>
         </div>
     </div>
 </div>
