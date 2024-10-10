@@ -11,12 +11,12 @@
 }
 
 .t-body {
-    width: 80%;
+    width: 90%;
     background-color: #181616;
 }
 
 .t-header-and-movie-section {
-    margin-top: 80px;
+    margin-top: 40px;
 }
 
 .t-header-section {
@@ -47,16 +47,15 @@
 
 .t-movie-section {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Tạo 6 cột với chiều rộng bằng nhau */
-    gap: 20px; /* Khoảng cách giữa các phần tử */
-    margin-bottom: 20px; /* Khoảng cách giữa các hàng */
+    grid-template-columns: auto auto auto auto;
+    column-gap: 30px;
+    padding: 10px;
 }
 
 .t-movie {
     position: relative;
-    width: 300px;
-    border-radius: 8px;
     overflow: hidden;
+    margin-bottom: 20px;
 }
 
     .t-movie img {
@@ -87,18 +86,12 @@
     flex-wrap: wrap;
 }
 
-    .t-movie-info h3 {
-        font-size: 16px;
-        margin: 0;
-        margin-bottom: 10px;
-    }
+.t-movie-info div{
+    margin-right: 10px;
+}
 
-    .t-movie-info .rating {
-        background-color: yellow;
-        color: black;
-        padding: 2px 8px;
-        border-radius: 4px;
-        font-size: 12px;
+    .t-movie-info div i {
+        color: #1F83ED;
     }
 
 .t-btn-more {
