@@ -20,7 +20,7 @@
 }
 
 .t-header-section {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     font-weight: bold;
     display: flex;
     justify-content: space-between;
@@ -61,8 +61,14 @@
     .t-movie img {
         width: 100%;
         display: block;
-        overflow : clip;
-        overflow-clip-margin : content-box;
+        overflow: clip;
+        overflow-clip-margin: content-box;
+        transition: transform 0.5s ease;
+    }
+
+    .t-movie:hover img {
+        transform: scale(1.1);
+        transition: transform 0.5s;
     }
 
 .t-movie-content {
@@ -86,23 +92,65 @@
     flex-wrap: wrap;
 }
 
-.t-movie-info div{
-    margin-right: 10px;
-}
-
-    .t-movie-info div i {
-        color: #1F83ED;
+    .t-movie-info div {
+        margin-right: 10px;
     }
 
+        .t-movie-info div i {
+            color: #1F83ED;
+        }
+
 .t-btn-more {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     display: block;
     text-align: center;
-    padding: 10px;
-    margin-top: 20px;
+    margin: 10px 10px;
     background-color: #161E21;
     color: white;
     text-decoration: none;
     border-radius: 5px;
 }
 
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding-left: 0;
+    list-style: none;
+    border-radius: 0.25rem;
+}
+
+.page-item {
+    margin: 0 5px;
+}
+
+    .page-item .page-link {
+        position: relative;
+        display: block;
+        padding: 0.5rem 0.75rem;
+        margin-left: -1px;
+        line-height: 1.25;
+        color: #007bff;
+        background-color: #fff;
+        border: 1px solid #dee2e6;
+        text-decoration: none;
+    }
+
+        .page-item .page-link:hover {
+            color: #0056b3;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+
+    .page-item.active .page-link {
+        z-index: 1;
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+
+    .page-item.disabled .page-link {
+        color: #6c757d;
+        pointer-events: none;
+        background-color: #fff;
+        border-color: #dee2e6;
+    }
