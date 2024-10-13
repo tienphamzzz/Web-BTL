@@ -27,18 +27,12 @@ namespace Web_BTL.Controllers
                 Secure = true, // chỉ truyền qua https
                 HttpOnly = true, // chỉ có thể lấy dữ liệu bên server
             };
-            Response.Cookies.Append(nameCookie, valueCookie, options);
+            Response.Cookies.Append(nameCookie, valueCookie, options); // tạo 1 cookie với name = nameCookie và value = valueCookie
         }
-        private void deleteCookie(string nameCookie)
-        {
-            Response.Cookies.Delete(nameCookie);
-        }
-        private string valueCookie(string nameCookie)
-        {
-            return Request.Cookies[nameCookie];
-        }
+        private void deleteCookie(string nameCookie) { Response.Cookies.Delete(nameCookie); } // xoá cookie với name = nameCookie
+        private string valueCookie(string nameCookie) { return Request.Cookies[nameCookie]; } // lấy giá trị cookie có name = nameCookie
         [HttpGet]
-        public IActionResult SignIn()
+        public IActionResult SignIn() // Get Sign In khi người dùng trỏ đến linh Sign In
         {
             Console.WriteLine("Day la get SignIn");
             return View();
@@ -158,14 +152,15 @@ namespace Web_BTL.Controllers
                 Console.WriteLine("Ban da nhap dung ma OTP");
                 if (Request.Cookies[emailSignIn] != null)
                 {
+                    HttpContext.Session.SetString("LogIn Session", valueCookie(emailSignIn));
                     deleteCookie(emailSignIn);
-                    return RedirectToAction(nameof(Index), "Home");
+                    return RedirectToAction(nameof(UserInformation));
                 }
                 if(Request.Cookies[emailSignUp] != null)
                 {
                     CustomerModel customer = new CustomerModel
                     {
-                        UserName = "",
+                        UserName = valueCookie("LogInName"),
                         UserLogin = valueCookie("LogInName"),
                         UserEmail = valueCookie(emailSignUp),
                         LoginPassword = valueCookie("Password"),
@@ -203,6 +198,14 @@ namespace Web_BTL.Controllers
             Console.WriteLine("Ban da nhap sai otp");
             return View();
         }
+        
+        public async Task<IActionResult> UserInformation()
+        {
+            string email = HttpContext.Session.GetString("LogIn Session");
+            var cus = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == email);
+            return View("UserInformation", cus);
+        }
+        
         public IActionResult Index()
         {
             return View();
