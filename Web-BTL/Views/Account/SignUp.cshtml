@@ -1,0 +1,89 @@
+﻿@using Web_BTL.Models.User.Customer
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/email.css">
+}
+@model CustomerModel
+<div class="container" id="signup">
+    <h1 class="form-title">Register</h1>
+    <form method="post" asp-controller="Account" asp-action="SignUp" id="rForm">
+        @*@if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger">
+                @foreach(var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <p>@error.ErrorMessage</p>
+                }
+            </div>
+        }*@
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div id="toast" class="toast">
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <span id="toastMessage">@error.ErrorMessage</span>
+                }
+                
+            </div>
+        }
+        
+
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input asp-for="UserLogin" placeholder="User Name" required>
+            <label for="name">User Name</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-user"></i>
+            <input asp-for="UserEmail" placeholder="Email" required>
+            <label for="rEmail">Email</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="text" id="password" asp-for="LoginPassword" placeholder="Password" />
+            <label for="password">Password</label>
+        </div>
+        <div class="input-group">
+            <i class="fas fa-lock"></i>
+            <input type="text" id="rpassword" placeholder="Re-fill Password" />
+            <label for="re-fill password">Re-fill Password</label>
+        </div>
+        <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
+        <div class="messageDiv" style="display:none; color: red;"></div>
+        <button class="btn" type="submit">Sign Up</button>
+    </form>
+    <p class="or">
+        ----------or--------
+    </p>
+    <div class="icons">
+        <i class="fab fa-google"></i>
+        <i class="fab fa-facebook"></i>
+    </div>
+    <div class="links">
+        <p>Already Have Account ?</p>
+        <a id="signInButton" asp-controller="Account" asp-action="SignIn">Sign In</a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('rForm').addEventListener('submit', function (e) {
+            var password = document.getElementById('password').value;
+            var rpassword = document.getElementById('rpassword').value;
+            var messageDiv = document.querySelector('.messageDiv');
+
+            if (password !== rpassword) {
+                messageDiv.innerText = 'Mật khẩu không khớp!';
+                messageDiv.style.display = 'block';
+
+                e.preventDefault();
+            } else {
+                messageDiv.style.display = 'none';
+
+            }
+        });
+        
+    </script>
+}
