@@ -1,7 +1,7 @@
 ﻿@using Web_BTL.Models.User.Customer
 @model CustomerModel
 
-<div class="container user-info-container">
+<form class="container user-info-container" asp-controller="Account" asp-action="UserInformation" method="post"> 
     <h1 class="user-info-header">User Information</h1>
     <div class="row align-items-center justify-content-center">
         <!-- User Avatar -->
@@ -18,7 +18,7 @@
                 <p>
                     <span class="user-info-label">Full Name:</span>
                     <span id="fullName">@Model.UserName</span>
-                    <input type="text" id="fullNameInput" class="form-control edit-input" placeholder="Enter new full name" style="display: none;">
+                    <input asp-for="@Model.UserEmail" id="fullNameInput" class="form-control edit-input" placeholder="Enter new full name" style="display: none;">
                     <button class="btn btn-sm btn-outline-light mt-2" onclick="editFullName()">Edit Full Name</button>
                 </p>
                 <p>
@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-</div>
+</form>
 
 @section Scripts{
     <script>

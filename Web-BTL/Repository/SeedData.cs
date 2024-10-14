@@ -27,14 +27,14 @@ namespace Web_BTL.Repository
                 _context.Admins.AddRange(
                     new AdminModel 
                     {
-                        UserName = "Mai Xuan Doanh", 
-                        UserLogin = "maixuandoanh", 
-                        LoginPassword = "12345678@Aa", 
+                        UserName = "Mai Xuan Doanh",
+                        UserLogin = "maixuandoanh",
+                        LoginPassword = "12345678@Aa",
                         UserEmail = "doanhxmai@gmail.com", 
-                        UserCreateDate = new DateTime(2024, 8, 12), 
-                        UserImagePath = "doanh", 
-                        UserState = true, 
-                        UserDuration = new TimeSpan(0, 0, 0),   
+                        UserCreateDate = new DateTime(2024, 8, 12),
+                        UserImagePath = "doanh",
+                        UserState = true,
+                        UserDuration = new TimeSpan(0, 0, 0),
                         Role = Role.SuperAdmin
                     },
                     new AdminModel
@@ -150,13 +150,7 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "supergirl",
                         MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = true,
-                        MediaState = true,
-                        WatchListId = 1
+                        package = 1
                     },
                     new MediaModel
                     {
@@ -168,13 +162,7 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "transformer",
                         MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 1
+                        package = 2
                     },
                     new MediaModel
                     {
@@ -186,103 +174,7 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "demonslayer",
                         MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = false,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 1
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Supergirl",
-                        MediaUrl = "supergirl",
-                        MediaDescription = "The film is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "supergirl",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = true,
-                        MediaState = true,
-                        WatchListId = 2
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Transformer",
-                        MediaUrl = "transformer",
-                        MediaDescription = "The film is the best",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "transformer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 2
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Demon Slayer",
-                        MediaUrl = "demonslayer",
-                        MediaDescription = "The cartoon is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "demonslayer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = false,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 2
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Supergirl",
-                        MediaUrl = "supergirl",
-                        MediaDescription = "The film is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "supergirl",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = true,
-                        MediaState = true,
-                        WatchListId = 3
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Transformer",
-                        MediaUrl = "transformer",
-                        MediaDescription = "The film is the best",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "transformer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 3
+                        package = 0
                     }
                     );
                 _context.SaveChanges();
@@ -306,7 +198,7 @@ namespace Web_BTL.Repository
                 _context.SaveChanges();
             }
             //chèn các giá trị cho bang phụ khi chèn xong thì xoá đi
-            // media 
+            // media
             var media1 = _context.Medias.FirstOrDefault(m => m.MediaId == 1);
             var media2 = _context.Medias.FirstOrDefault(m => m.MediaId == 2);
             var media3 = _context.Medias.FirstOrDefault(m => m.MediaId == 3);
@@ -314,20 +206,68 @@ namespace Web_BTL.Repository
             var genre1 = _context.Genres.FirstOrDefault(g => g.GenreId == 1);
             var genre2 = _context.Genres.FirstOrDefault(g => g.GenreId == 2);
             var genre3 = _context.Genres.FirstOrDefault(g => g.GenreId == 3);
-            //if (media1 != null && media2 != null && media3 != null)
-            //{
-            //    if (genre1 != null && genre2 != null && genre3 != null)
-            //    {
-            //        media1.Genres.Add(genre1);
-            //        media1.Genres.Add(genre3);
-            //        media2.Genres.Add(genre1);
-            //        media2.Genres.Add(genre3);
-            //        media3.Genres.Add(genre2);
-            //        media3.Genres.Add(genre3);
-            //    }
-            //    _context.SaveChanges();
-            //} 
-            
+            if (media1 != null && media2 != null && media3 != null)
+            {
+                if (genre1 != null && genre2 != null && genre3 != null)
+                {
+                    media1.Genres.Add(genre1);
+                    media1.Genres.Add(genre3);
+                    media2.Genres.Add(genre1);
+                    media2.Genres.Add(genre3);
+                    media3.Genres.Add(genre2);
+                    media3.Genres.Add(genre3);
+                }
+                _context.SaveChanges();
+            }
+            if (!_context.ListMedia.Any())
+            {
+                var watchList1 = _context.WatchLists.FirstOrDefault(w => w.CustomerId == 1);
+                var watchList2 = _context.WatchLists.FirstOrDefault(w => w.CustomerId == 2);
+                var watchList3 = _context.WatchLists.FirstOrDefault(w => w.CustomerId == 3);
+                _context.ListMedia.AddRange(
+                    new ListMediaModel 
+                    { 
+                        WatchListId = watchList1.WatchListId,
+                        MediaId = media1.MediaId,
+                        IsWatched = false,
+                        Favorite = false,
+                        AddDate = DateTime.Now
+                    },
+                    new ListMediaModel
+                    {
+                        WatchListId = watchList2.WatchListId,
+                        MediaId = media2.MediaId,
+                        IsWatched = false,
+                        Favorite = false,
+                        AddDate = DateTime.Now
+                    },
+                    new ListMediaModel
+                    {
+                        WatchListId = watchList3.WatchListId,
+                        MediaId = media3.MediaId,
+                        IsWatched = false,
+                        Favorite = false,
+                        AddDate = DateTime.Now
+                    },
+                    new ListMediaModel
+                    {
+                        WatchListId = watchList2.WatchListId,
+                        MediaId = media3.MediaId,
+                        IsWatched = false,
+                        Favorite = false,
+                        AddDate = DateTime.Now
+                    },
+                    new ListMediaModel
+                    {
+                        WatchListId = watchList2.WatchListId,
+                        MediaId = media1.MediaId,
+                        IsWatched = false,
+                        Favorite = false,
+                        AddDate = DateTime.Now
+                    }
+                    );
+                _context.SaveChanges();
+            }
         }
     }
 }

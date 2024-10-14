@@ -198,8 +198,8 @@ namespace Web_BTL.Controllers
             Console.WriteLine("Ban da nhap sai otp");
             return View();
         }
-        
-        public async Task<IActionResult> UserInformation()
+        [HttpPost]        
+        public async Task<IActionResult> UserInformation([Bind("UserName, LoginPassword")]CustomerModel customer)
         {
             string email = HttpContext.Session.GetString("LogIn Session");
             var cus = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == email);
