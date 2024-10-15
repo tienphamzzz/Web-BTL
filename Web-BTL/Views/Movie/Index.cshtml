@@ -1,0 +1,226 @@
+﻿@using Web_BTL.Models.Medias
+@model MediaModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@Model.MediaName</title>
+    <link rel="stylesheet" href="css/main.css">
+    @section Styles {
+        <link rel="stylesheet" href="css/main.css">
+        
+    }
+</head>
+<body>
+    <partial name="Layouts/TopNav" />
+    <div class="container-fluid">
+      <div class="row">
+        <main role="main" class="main">
+          
+          <div class="cast-container" style="background-image: url('../../wwwroot/images/Black Panther-banner.png')">
+            <div class="cast-wrap d-flex">
+              <div class="movie-poster">
+                <img src="@Model.MediaImagePath" alt="">
+
+                            <a  asp-action="Watching" asp-controller="Movie" asp-route-movieId="@Model.MediaId" class="btn btn-primary btn-lg btn-block"><i class="fa fa-television" aria-hidden="true"></i> Xem phim</a>
+
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target="#trailerMovie">
+                  Trailer
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade bd-example-modal-lg" id="trailerMovie" tabindex="-1" role="dialog" aria-labelledby="trailerMovieLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="trailerMovieLabel">Trailer @Model.MediaName</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <iframe width="860" height="515" src="@Model.MediaUrl" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- /.movie-poster -->
+              <div class="cast-info">
+                <div class="cast-name">
+                                <h3>@Model.MediaName</h3>
+                </div>
+                <div class="cast-job">
+                                <a href="#">@Model.MediaName</a>
+                </div>
+                <div class="movie-social">
+                  <a href="#"><i class="fa fa-heart" aria-hidden="true"></i> Lưu phim</a>
+                  <a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i> Chia sẻ</a>
+                </div>
+                <div class="movie-rate">
+                  <div class="movie-rate__point">
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <p><span>8.1</span> /10<br>
+                      <span class="rv">56 Đánh giá</span>
+                    </p>
+                  </div>
+                  <div class="movie-rate__rate-star">
+                    <p>Đánh giá phim: </p>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                    <i class="fa fa-star" aria-hidden="true"></i>                    
+                    <i class="fa fa-star-o" aria-hidden="true"></i>                    
+                  </div>
+                </div>
+                <div class="cast-bio movie-nav-tabs">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item">
+                          <a class="nav-link active" id="overview-tab" data-toggle="tab" href="#overview" role="tab" aria-controls="overview" aria-selected="true">Tổng quát</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review" aria-selected="false">Đánh giá</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" id="cast-tab" data-toggle="tab" href="#cast" role="tab" aria-controls="cast" aria-selected="false">Diễn viên</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                      <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
+                        <p>Justice League (tựa tiếng Việt: Liên minh Công lý) là bộ phim siêu anh hùng của hãng Warner Bros., dựa theo các nhân vật nổi tiếng cùng tên của hãng truyện tranh DC Comics. Phim được Zack Snyder đạo diễn, và là phim thứ ba của ông sau Người đàn ông thép và Batman đại chiến Superman: Ánh sáng công lý. Đây được coi là phim thứ tư có mối liên kết nằm trong việc thiết lập cho vũ trụ phim của DC với tên gọi DC Extended Universe. Theo như thông báo trước đó từ Warner Bros. Pictures, phim Justice League sẽ được chia ra làm hai phần tính từ đợt công chiếu lần đầu vào năm 2017 và phần cuối vào năm 2019[4]. Tuy nhiên vào ngày 21/6/2016 thì Warner Bros. lại xác nhận lại với cánh báo chí rằng đây là bộ phim duy nhất và phần tiếp theo của nó sẽ có một tên khác chứ không nhất thiết là bộ phim sẽ được chia ra làm hai phần.</p>
+                        <p>Bộ phim được bấm máy vào ngày 11 tháng 4 năm 2016 và được trình chiếu vào tháng 11 năm 2017.</p>
+                      </div>
+                      <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+                        <p>Liên Minh Công Lý, tên tiếng Anh “Justice League”, là bộ phim mà sự tồn tại của nó giống như một cuốn sách giáo khoa vậy. Bạn có thể nghĩ việc đặt tất cả những siêu hành hùng nổi tiếng bậc nhất của DC vào một bộ phim là lựa chọn cực kỳ tuyệt vời khiến khán giả phải sướng mê cả người. Nhưng thực tế cũng giống như một cuốn sách giáo khoa với đầy thông tin của những bậc vĩ nhân, mỗi người vài trang giấy mà đứa học sinh nào nhìn vào cũng thấy choáng ngợp,… và ngu đi từng phút một.</p>
+                        <iframe width="660" height="415" src="https://www.youtube.com/embed/r9-DM9uBtVI" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+                        <p>Bối cảnh của Liên Minh Công Lý tiếp nối sự kiện diễn ra trong Batman vs Superman: Dawn of Justice (BvS), một bộ phim mà chỉ nội cái tên đã đủ khiến cho fan của DC nhào vô mà không cần biết hay dở. Chúng ta có Người Dơi choảng nhau với Siêu Nhân, tạo ra bình minh công lý. Cái bình minh công lý đó thật ra là Liên Minh Công Lý, tức là bộ phim mà mình đánh giá trong bài viết này. Nội dung phim cũng đơn giản thôi, do Siêu Nhân đã chết trong phần trước nên giờ đây Người Dơi phải đi gom các siêu anh hùng lại để bảo vệ Trái Đất khỏi những thế lực độc ác ngoài hành tinh.</p>
+                        <img class="img-fluid" src="images/news/4179076_l10.webp" alt="">
+                        <p>Vấn đề lớn nhất của Liên Minh Công Lý có thể tạm hiểu là “hiệu ứng sách giáo khoa”, mang tiếng là cho học sinh nhưng bản chất là công cụ trợ giúp thầy cô giảng dạy thôi. Không biết bạn thế nào, nhưng hồi nhỏ mình đi học thì một số thầy cô thường có sở thích yêu cầu học sinh chuẩn bị bài ở nhà trước khi đến lớp. Phim này cũng y vậy, bạn cần phải có khiến thức về những siêu anh hùng của DC nếu không muốn rơi vào tình trạng xem mà không “hiểu”. Hiểu ở đây là hiểu vì sao những nhân vật này lại được người ta yêu thích đến như vậy trong khi những gì thể hiện trên màn ảnh lại vô cùng nhạt nhoà.</p>
+                      </div>
+                      <div class="tab-pane fade" id="cast" role="tabpanel" aria-labelledby="cast-tab">
+                          <div class="row">
+                              <div class="col-md-3">
+                                <div class="card">
+                                  <a href="cast-detail.html"><img class="card-img-top" src="images/cast/icast-5.jpg" alt="Card image cap"></a>
+                                  <div class="card-block">
+                                    <h4 class="card-title text-center"><a href="#">Gal Gadot</a></h4>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- / item 5 -->
+            
+                              <div class="col-md-3">
+                                <div class="card">
+                                  <a href="cast-detail.html"><img class="card-img-top" src="images/cast/icast-6.jpg" alt="Card image cap"></a>
+                                  <div class="card-block">
+                                    <h4 class="card-title text-center"><a href="#">Ezra Miller</a></h4>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- / item 6 -->
+            
+                              <div class="col-md-3">
+                                <div class="card">
+                                  <a href="cast-detail.html"><img class="card-img-top" src="images/cast/icast-7.jpg" alt="Card image cap"></a>
+                                  <div class="card-block">
+                                    <h4 class="card-title text-center"><a href="#">Ben Affleck</a></h4>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- / item 7 -->
+            
+                              <div class="col-md-3">
+                                <div class="card">
+                                  <a href="cast-detail.html"><img class="card-img-top" src="images/cast/icast-8.jpg" alt="Card image cap"></a>
+                                  <div class="card-block">
+                                    <h4 class="card-title text-center"><a href="#">Tom Cavanagh</a></h4>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- / item 6 -->
+                            </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="container-fluid pading-md">
+
+              <section class="wrap post-news">
+
+                <div class="wrap-heading">
+                    <h2 class="wrap-heading__title"><a href="list-movies.html">Tin tức liên quan</a></h2>
+                </div>
+                <!-- /.wrap-heading -->
+
+                <div class="row">
+                    <div class="col-md-4">
+                      <article class="card">
+                        <a href="news_post.html">
+                          <img class="card-img-top" src="images/news/news-5.jpg" alt="Bạn biết gì về bộ tộc nữ chiến binh Amazon đang làm mưa làm gió trên các rạp phim toàn thế giới?">
+                        </a>
+                        <div class="card-block">
+                          <h4 class="card-title"><a href="#">Bạn biết gì về bộ tộc nữ chiến binh Amazon đang làm mưa làm gió trên các rạp phim toàn thế giới?</a></h4>
+                          <p class="card-text">Wonder Woman là một nhân vật hư cấu của vũ trụ điện ảnh DC. Với hình hài từ đất được nhào nặn bởi nữ hoàng Hippolyta cùng với sự sống được nữ thần Tình yêu Aphrodite...</p>
+                        </div>
+                        <div class="card-footer">
+                          <small class="text-muted">02/11/2017</small>
+                        </div>
+                      </article>
+                    </div>
+                    <!-- item -->
+  
+                    <div class="col-md-4">
+                      <article class="card">
+                        <a href="news_post.html">
+                          <img class="card-img-top" src="images/news/news-6.jpg" alt="Card image cap">
+                        </a>
+                        <div class="card-block">
+                          <h4 class="card-title"><a href="#">Warner Bros. tiết lộ thêm thông tin thú vị về hai bom tấn "Wonder Woman" và "Aquaman"</a></h4>
+                          <p class="card-text">Giống như "Justice League" trên phim ảnh, các ngôi sao của DC đã tụ hội lại với nhau tại ComicCon thứ 4 vừa qua để quảng cáo cho bộ phim sắp ra mắt của Warner Bros...</p>
+                        </div>
+                        <div class="card-footer">
+                          <small class="text-muted">02/11/2017</small>
+                        </div>
+                      </article>
+                    </div>
+                    <!-- item -->
+  
+                    <div class="col-md-4">
+                      <article class="card">
+                        <img class="card-img-top" src="images/news/news-7.jpg" alt="Quên hết hiềm khích đi, hôm nay là ngày sung sướng nhất của fan Marvel và DC">
+                        <div class="card-block">
+                          <h4 class="card-title"><a href="#">Quên hết hiềm khích đi, hôm nay là ngày sung sướng nhất của fan Marvel và DC</a></h4>
+                          <p class="card-text">Như thường lệ, lễ hội truyện tranh San Diego Comic-Con là dịp để các hãng giới thiệu các dự án tiếp theo. Comic-Con đã khiến người hâm mộ chết ngất trong sung sướng...</p>
+                        </div>
+                        <div class="card-footer">
+                          <small class="text-muted">02/11/2017</small>
+                        </div>
+                      </article>
+                    </div>
+                    <!-- item -->
+
+                  </div>
+                  <!-- /.row -->
+              </section>
+              <!-- /section.wrap -->
+
+          </div>
+        </main>
+      </div>
+    </div>
+
+    
+  </body>
+</html>
