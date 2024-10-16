@@ -28,6 +28,7 @@ namespace Web_BTL.Repository
         // Bảng Watch List và bảng phụ
         public DbSet<WatchListModel> WatchLists { get; set; }
 
+     
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MediaModel>().
