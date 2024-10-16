@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Web_BTL.Repository;
+using Web_BTL.Services.Cookie;
 using Web_BTL.Services.EmailServices;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,9 +20,10 @@ builder.Services.AddSession(options => {
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSetting"));
-builder.Services.AddTransient<SendEmail>();
+builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSetting")); // c?u hình kh?i t?o cho Email phía máy ch?
+builder.Services.AddTransient<SendEmail>(); // s? d?ng d?ch v? g?i tin nh?n
 
+builder.Services.AddScoped<CookieService>(); // thêm service Cookie
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -206,19 +206,19 @@ namespace Web_BTL.Repository
             var genre1 = _context.Genres.FirstOrDefault(g => g.GenreId == 1);
             var genre2 = _context.Genres.FirstOrDefault(g => g.GenreId == 2);
             var genre3 = _context.Genres.FirstOrDefault(g => g.GenreId == 3);
-            if (media1 != null && media2 != null && media3 != null)
-            {
-                if (genre1 != null && genre2 != null && genre3 != null)
-                {
-                    media1.Genres.Add(genre1);
-                    media1.Genres.Add(genre3);
-                    media2.Genres.Add(genre1);
-                    media2.Genres.Add(genre3);
-                    media3.Genres.Add(genre2);
-                    media3.Genres.Add(genre3);
-                }
-                _context.SaveChanges();
-            }
+            //if (media1 != null && media2 != null && media3 != null)
+            //{
+            //    if (genre1 != null && genre2 != null && genre3 != null)
+            //    {
+            //        media1.Genres.Add(genre1);
+            //        media1.Genres.Add(genre3);
+            //        media2.Genres.Add(genre1);
+            //        media2.Genres.Add(genre3);
+            //        media3.Genres.Add(genre2);
+            //        media3.Genres.Add(genre3);
+            //    }
+            //    _context.SaveChanges();
+            //}
             if (!_context.ListMedia.Any())
             {
                 var watchList1 = _context.WatchLists.FirstOrDefault(w => w.CustomerId == 1);

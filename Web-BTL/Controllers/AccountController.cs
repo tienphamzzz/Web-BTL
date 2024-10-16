@@ -5,6 +5,7 @@ using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.User.Customer;
 using Web_BTL.Repository;
 using Web_BTL.Services.CheckAction;
+using Web_BTL.Services.Cookie;
 using Web_BTL.Services.EmailServices;
 
 namespace Web_BTL.Controllers
@@ -13,24 +14,15 @@ namespace Web_BTL.Controllers
     {
         private readonly DataContext _dataContext;
         private readonly SendEmail _sendEmail;
+        private readonly CookieService _cookieService;
         private readonly string emailSignIn = "SignIn", emailSignUp = "SignUp", emailRecoverPassword = "RPass", OTP = "OTP";
-        public AccountController(DataContext dataContext, SendEmail sendEmail)
+        public AccountController(DataContext dataContext, SendEmail sendEmail, CookieService cookieService)
         {
             _dataContext = dataContext;
             _sendEmail = sendEmail;
+            _cookieService = cookieService;
         }
-        private void Cookie(string nameCookie, string valueCookie, int timeLimit = 360)
-        {
-            CookieOptions options = new CookieOptions // khởi tạo cookie
-            {
-                Expires = DateTime.Now.AddMinutes(timeLimit), // đặt time limit
-                Secure = true, // chỉ truyền qua https
-                HttpOnly = true, // chỉ có thể lấy dữ liệu bên server
-            };
-            Response.Cookies.Append(nameCookie, valueCookie, options); // tạo 1 cookie với name = nameCookie và value = valueCookie
-        }
-        private void deleteCookie(string nameCookie) { Response.Cookies.Delete(nameCookie); } // xoá cookie với name = nameCookie
-        private string valueCookie(string nameCookie) { return Request.Cookies[nameCookie]; } // lấy giá trị cookie có name = nameCookie
+        
         [HttpGet]
         public IActionResult SignIn() // Get Sign In khi người dùng trỏ đến linh Sign In
         {
@@ -54,8 +46,9 @@ namespace Web_BTL.Controllers
                     {
                         Console.WriteLine("Da dang nhap bang tai khoan Customer");
                         EmailAddress.email = customer.UserEmail;
-                        
-                        Cookie(emailSignIn, customer.UserEmail, 60);
+
+                        //Cookie(emailSignIn, customer.UserEmail, 60);
+                        _cookieService.SetCookie(emailSignIn, customer.UserEmail, 60, Response);
                         return RedirectToAction(nameof(SendOtp));
                     }
                     else
@@ -66,7 +59,8 @@ namespace Web_BTL.Controllers
                 }
                 Console.WriteLine("Da dang nhap bang tai khoan Admin");
                 EmailAddress.email = admin.UserEmail;
-                Cookie(emailSignIn, admin.UserEmail, 60); // gán giá trị cho cookie có tên là Email
+                
+                _cookieService.SetCookie(emailSignIn, admin.UserEmail, 60, Response);
                 return RedirectToAction(nameof(SendOtp));
             }
             return View(model);
@@ -89,9 +83,11 @@ namespace Web_BTL.Controllers
                     ModelState.AddModelError(string.Empty, "Email hoặc tên đăng nhập đã tồn tại");
                     return View(model);
                 }
-                Cookie(emailSignUp, model.UserEmail, 60);
-                Cookie("Password", model.LoginPassword, 60);
-                Cookie("LogInName", model.UserLogin, 60);
+
+                _cookieService.SetCookie(emailSignUp, model.UserEmail, 60, Response);
+                
+                _cookieService.SetCookie("Password", model.LoginPassword, 60, Response);
+                _cookieService.SetCookie("LogInName", model.UserLogin, 60, Response);
                 return RedirectToAction(nameof(SendOtp));
             }
             return View(model);
@@ -113,8 +109,8 @@ namespace Web_BTL.Controllers
                 var customer = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserName == model.LogInName || c.UserEmail == model.LogInName);
                 if (customer != null)
                 {
-                    Cookie(emailRecoverPassword, model.LogInName, 60);
-                    Cookie("RecoverPassword", model.Password, 60);
+                    _cookieService.SetCookie(emailRecoverPassword, model.LogInName, 60, Response);
+                    _cookieService.SetCookie("RecoverPassword", model.Password, 60, Response);
                     return RedirectToAction(nameof(SendOtp));
                 }
                 else return View(model);
@@ -127,17 +123,17 @@ namespace Web_BTL.Controllers
             Console.WriteLine("Day la get SendOtp");
             string otpCode = _sendEmail.GenerateOTP();
             string _to = "";
-            if (valueCookie(emailSignIn) != null)
-                _to = valueCookie(emailSignIn);
-            else if (valueCookie(emailSignUp) != null)
-                _to = valueCookie(emailSignUp);
-            else if(valueCookie(emailRecoverPassword) != null)
-                _to = valueCookie(emailRecoverPassword);
+            if (_cookieService.GetCookie(emailSignIn, Request) != null)
+                _to = _cookieService.GetCookie(emailSignIn, Request);
+            else if (_cookieService.GetCookie(emailSignUp, Request) != null)
+                _to = _cookieService.GetCookie(emailSignUp, Request);
+            else if(_cookieService.GetCookie(emailRecoverPassword, Request) != null)
+                _to = _cookieService.GetCookie(emailRecoverPassword, Request);
             if (_to != "")
             {
                 _sendEmail.SendOTPEmail(_to, otpCode);
                 //HttpContext.Session.SetString("otpCode", otpCode); // sử dụng session toàn cục
-                Cookie(OTP, otpCode, 1); 
+                _cookieService.SetCookie(OTP, otpCode, 1, Response); 
                 return View();
             }
             return RedirectToAction(nameof(SignIn));
@@ -152,18 +148,19 @@ namespace Web_BTL.Controllers
                 Console.WriteLine("Ban da nhap dung ma OTP");
                 if (Request.Cookies[emailSignIn] != null)
                 {
-                    HttpContext.Session.SetString("LogIn Session", valueCookie(emailSignIn));
-                    deleteCookie(emailSignIn);
+                    HttpContext.Session.SetString("LogIn Session", _cookieService.GetCookie(emailSignIn, Request));
+                    //deleteCookie(emailSignIn);
+                    _cookieService.DeleteCookie(emailSignIn, Response);
                     return RedirectToAction(nameof(UserInformation));
                 }
                 if(Request.Cookies[emailSignUp] != null)
                 {
                     CustomerModel customer = new CustomerModel
                     {
-                        UserName = valueCookie("LogInName"),
-                        UserLogin = valueCookie("LogInName"),
-                        UserEmail = valueCookie(emailSignUp),
-                        LoginPassword = valueCookie("Password"),
+                        UserName = _cookieService.GetCookie("LogInName", Request),
+                        UserLogin = _cookieService.GetCookie("LogInName", Request),
+                        UserEmail = _cookieService.GetCookie(emailSignUp, Request),
+                        LoginPassword = _cookieService.GetCookie("Password", Request),
                         UserState = true,
                         _ServicePackage = ServicePackage.Bacis,
                         UserCreateDate = DateTime.Now
@@ -178,20 +175,20 @@ namespace Web_BTL.Controllers
                     await _dataContext.SaveChangesAsync();
                     customer.WatchListId = watchList.WatchListId;
                     await _dataContext.SaveChangesAsync();
-                    deleteCookie(emailSignUp);
+                    _cookieService.DeleteCookie(emailSignUp, Response);
                     return RedirectToAction(nameof(SignIn));
                 }
                 if (Request.Cookies[emailRecoverPassword] != null)
                 {
-                    string userName = valueCookie(emailRecoverPassword);
+                    string userName = _cookieService.GetCookie(emailRecoverPassword, Request);
                     var customer = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserName == userName || c.UserEmail == userName);
                     if(customer != null)
                     {
-                        customer.LoginPassword = valueCookie("RecoverPassword");
+                        customer.LoginPassword = _cookieService.GetCookie("RecoverPassword", Request);
                     }
                     await _dataContext.SaveChangesAsync();
-                    deleteCookie("RecoverPassword");
-                    deleteCookie(emailRecoverPassword);
+                    _cookieService.DeleteCookie("RecoverPassword", Response);
+                    _cookieService.DeleteCookie(emailRecoverPassword, Response);
                     return RedirectToAction(nameof(SignIn));
                 }
             }
