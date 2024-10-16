@@ -76,244 +76,244 @@ namespace Web_BTL.Repository
                     );
                 _context.SaveChanges();
             }
-            if (!_context.WatchLists.Any())
-            {
-                _context.WatchLists.AddRange(
-                    new WatchListModel { CustomerId = 1 },
-                    new WatchListModel { CustomerId = 2 },
-                    new WatchListModel { CustomerId = 3 }
-                    );
-                _context.SaveChanges();
-            }
-            if (!_context.Customers.Any())
-            /*
-            UserId, UserName, UserLogin, LoginPassword, UserEmail,
-            UserCreateDate, UserImagePath, UserState, UserDuration, ServicePackage
-            */
-            {
-                _context.Customers.AddRange(
-                    new CustomerModel {
-                        UserName = "Mai Xuan Doanh",
-                        UserLogin = "maixuandoanhno1",
-                        LoginPassword = "12345678@Aa",
-                        UserEmail = "viaicamon28@gmail.com",
-                        UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "doanh1",
-                        UserState = true,
-                        UserDuration = new TimeSpan(0, 0, 0),
-                        WatchListId = 1,
-                        _ServicePackage = ServicePackage.Bacis
-                    },
-                    new CustomerModel
-                    {
-                        UserName = "Mai Xuan Doanh",
-                        UserLogin = "maixuandoanhno2",
-                        LoginPassword = "12345678@Aa",
-                        UserEmail = "viaicamon2004@gmail.com",
-                        UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "doanh2",
-                        UserState = true,
-                        UserDuration = new TimeSpan(0, 0, 0),
-                        WatchListId = 2,
-                        _ServicePackage = ServicePackage.Bacis
-                    },
-                    new CustomerModel
-                    {
-                        UserName = "Mai Xuan Doanh",
-                        UserLogin = "maixuandoanhno3",
-                        LoginPassword = "12345678@Aa",
-                        UserEmail = "oncamviai@gmail.com",
-                        UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "doanh3",
-                        UserState = true,
-                        UserDuration = new TimeSpan(0, 0, 0),
-                        WatchListId = 3,
-                        _ServicePackage = ServicePackage.Bacis
-                    }
-                    );
-                _context.SaveChanges();
-            }
-            if (!_context.Medias.Any())
-            /*
-            MediaName, MediaGenre, MediaUrl, MediaDescription, MediaQuality, 
-            ReleaseDate, MediaAgeRating, MediaImagePath, MediaDuration, MediaState
-            */
-            {
-                _context.Medias.AddRange(
-                    new MediaModel
-                    {
-                        MediaName = "Supergirl",
-                        MediaUrl = "supergirl",
-                        MediaDescription = "The film is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "supergirl",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = true,
-                        MediaState = true,
-                        WatchListId = 1
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Transformer",
-                        MediaUrl = "transformer",
-                        MediaDescription = "The film is the best",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "transformer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 1
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Demon Slayer",
-                        MediaUrl = "demonslayer",
-                        MediaDescription = "The cartoon is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "demonslayer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = false,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 1
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Supergirl",
-                        MediaUrl = "supergirl",
-                        MediaDescription = "The film is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "supergirl",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = true,
-                        MediaState = true,
-                        WatchListId = 2
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Transformer",
-                        MediaUrl = "transformer",
-                        MediaDescription = "The film is the best",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "transformer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 2
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Demon Slayer",
-                        MediaUrl = "demonslayer",
-                        MediaDescription = "The cartoon is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "demonslayer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = false,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 2
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Supergirl",
-                        MediaUrl = "supergirl",
-                        MediaDescription = "The film is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "supergirl",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = true,
-                        MediaState = true,
-                        WatchListId = 3
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Transformer",
-                        MediaUrl = "transformer",
-                        MediaDescription = "The film is the best",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "transformer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        Favorite = false,
-                        Watched = false,
-                        Basic = true,
-                        Premium = true,
-                        Vip = false,
-                        MediaState = true,
-                        WatchListId = 3
-                    }
-                    );
-                _context.SaveChanges();
-            }
-            if (!_context.Reviews.Any())
-            {
-                _context.Reviews.AddRange(
-                    new ReviewModel { ReviewContent = "Very very good", ReviewRating = 5.0, ReviewCreateDate = new DateTime(2024, 9, 12), CustomerId = 1, MediaId = 1 },
-                    new ReviewModel { ReviewContent = "Very good", ReviewRating = 5.0, ReviewCreateDate = new DateTime(2024, 9, 12), CustomerId = 1, MediaId = 2 },
-                    new ReviewModel { ReviewContent = "Very very very good", ReviewRating = 5.0, ReviewCreateDate = new DateTime(2024, 9, 12), CustomerId = 1, MediaId = 3 }
-                    );
-                _context.SaveChanges();
-            }
-            if (!_context.Genres.Any())
-            {
-                _context.Genres.AddRange(
-                    new GenreModel { Type = "Movie"},
-                    new GenreModel { Type = "Cartoon"},
-                    new GenreModel { Type = "Series"}
-                    );
-                _context.SaveChanges();
-            }
-            //chèn các giá trị cho bang phụ khi chèn xong thì xoá đi
-            // media 
-            var media1 = _context.Medias.FirstOrDefault(m => m.MediaId == 1);
-            var media2 = _context.Medias.FirstOrDefault(m => m.MediaId == 2);
-            var media3 = _context.Medias.FirstOrDefault(m => m.MediaId == 3);
-            // genre
-            var genre1 = _context.Genres.FirstOrDefault(g => g.GenreId == 1);
-            var genre2 = _context.Genres.FirstOrDefault(g => g.GenreId == 2);
-            var genre3 = _context.Genres.FirstOrDefault(g => g.GenreId == 3);
+            //if (!_context.WatchLists.Any())
+            //{
+            //    _context.WatchLists.AddRange(
+            //        new WatchListModel { CustomerId = 1 },
+            //        new WatchListModel { CustomerId = 2 },
+            //        new WatchListModel { CustomerId = 3 }
+            //        );
+            //    _context.SaveChanges();
+            //}
+            //if (!_context.Customers.Any())
+            ///*
+            //UserId, UserName, UserLogin, LoginPassword, UserEmail,
+            //UserCreateDate, UserImagePath, UserState, UserDuration, ServicePackage
+            //*/
+            //{
+            //    _context.Customers.AddRange(
+            //        new CustomerModel {
+            //            UserName = "Mai Xuan Doanh",
+            //            UserLogin = "maixuandoanhno1",
+            //            LoginPassword = "12345678@Aa",
+            //            UserEmail = "viaicamon28@gmail.com",
+            //            UserCreateDate = new DateTime(2024, 8, 12),
+            //            UserImagePath = "doanh1",
+            //            UserState = true,
+            //            UserDuration = new TimeSpan(0, 0, 0),
+            //            WatchListId = 1,
+            //            _ServicePackage = ServicePackage.Bacis
+            //        },
+            //        new CustomerModel
+            //        {
+            //            UserName = "Mai Xuan Doanh",
+            //            UserLogin = "maixuandoanhno2",
+            //            LoginPassword = "12345678@Aa",
+            //            UserEmail = "viaicamon2004@gmail.com",
+            //            UserCreateDate = new DateTime(2024, 8, 12),
+            //            UserImagePath = "doanh2",
+            //            UserState = true,
+            //            UserDuration = new TimeSpan(0, 0, 0),
+            //            WatchListId = 2,
+            //            _ServicePackage = ServicePackage.Bacis
+            //        },
+            //        new CustomerModel
+            //        {
+            //            UserName = "Mai Xuan Doanh",
+            //            UserLogin = "maixuandoanhno3",
+            //            LoginPassword = "12345678@Aa",
+            //            UserEmail = "oncamviai@gmail.com",
+            //            UserCreateDate = new DateTime(2024, 8, 12),
+            //            UserImagePath = "doanh3",
+            //            UserState = true,
+            //            UserDuration = new TimeSpan(0, 0, 0),
+            //            WatchListId = 3,
+            //            _ServicePackage = ServicePackage.Bacis
+            //        }
+            //        );
+            //    _context.SaveChanges();
+            //}
+            //if (!_context.Medias.Any())
+            ///*
+            //MediaName, MediaGenre, MediaUrl, MediaDescription, MediaQuality, 
+            //ReleaseDate, MediaAgeRating, MediaImagePath, MediaDuration, MediaState
+            //*/
+            //{
+            //    _context.Medias.AddRange(
+            //        new MediaModel
+            //        {
+            //            MediaName = "Supergirl",
+            //            MediaUrl = "supergirl",
+            //            MediaDescription = "The film is very good",
+            //            MediaQuality = "HD",
+            //            ReleaseDate = new DateTime(2024, 9, 12),
+            //            MediaAgeRating = 16,
+            //            MediaImagePath = "supergirl",
+            //            MediaDuration = new TimeSpan(2, 0, 0),
+            //            Favorite = false,
+            //            Watched = false,
+            //            Basic = true,
+            //            Premium = true,
+            //            Vip = true,
+            //            MediaState = true,
+            //            WatchListId = 1
+            //        },
+            //        new MediaModel
+            //        {
+            //            MediaName = "Transformer",
+            //            MediaUrl = "transformer",
+            //            MediaDescription = "The film is the best",
+            //            MediaQuality = "HD",
+            //            ReleaseDate = new DateTime(2024, 9, 12),
+            //            MediaAgeRating = 16,
+            //            MediaImagePath = "transformer",
+            //            MediaDuration = new TimeSpan(2, 0, 0),
+            //            Favorite = false,
+            //            Watched = false,
+            //            Basic = true,
+            //            Premium = true,
+            //            Vip = false,
+            //            MediaState = true,
+            //            WatchListId = 1
+            //        },
+            //        new MediaModel
+            //        {
+            //            MediaName = "Demon Slayer",
+            //            MediaUrl = "demonslayer",
+            //            MediaDescription = "The cartoon is very good",
+            //            MediaQuality = "HD",
+            //            ReleaseDate = new DateTime(2024, 9, 12),
+            //            MediaAgeRating = 16,
+            //            MediaImagePath = "demonslayer",
+            //            MediaDuration = new TimeSpan(2, 0, 0),
+            //            Favorite = false,
+            //            Watched = false,
+            //            Basic = true,
+            //            Premium = false,
+            //            Vip = false,
+            //            MediaState = true,
+            //            WatchListId = 1
+            //        },
+            //        new MediaModel
+            //        {
+            //            MediaName = "Supergirl",
+            //            MediaUrl = "supergirl",
+            //            MediaDescription = "The film is very good",
+            //            MediaQuality = "HD",
+            //            ReleaseDate = new DateTime(2024, 9, 12),
+            //            MediaAgeRating = 16,
+            //            MediaImagePath = "supergirl",
+            //            MediaDuration = new TimeSpan(2, 0, 0),
+            //            Favorite = false,
+            //            Watched = false,
+            //            Basic = true,
+            //            Premium = true,
+            //            Vip = true,
+            //            MediaState = true,
+            //            WatchListId = 2
+            //        },
+            //        new MediaModel
+            //        {
+            //            MediaName = "Transformer",
+            //            MediaUrl = "transformer",
+            //            MediaDescription = "The film is the best",
+            //            MediaQuality = "HD",
+            //            ReleaseDate = new DateTime(2024, 9, 12),
+            //            MediaAgeRating = 16,
+            //            MediaImagePath = "transformer",
+            //            MediaDuration = new TimeSpan(2, 0, 0),
+            //            Favorite = false,
+            //            Watched = false,
+            //            Basic = true,
+            //            Premium = true,
+            //            Vip = false,
+            //            MediaState = true,
+            //            WatchListId = 2
+            //        },
+            //        new MediaModel
+            //        {
+            //            MediaName = "Demon Slayer",
+            //            MediaUrl = "demonslayer",
+            //            MediaDescription = "The cartoon is very good",
+            //            MediaQuality = "HD",
+            //            ReleaseDate = new DateTime(2024, 9, 12),
+            //            MediaAgeRating = 16,
+            //            MediaImagePath = "demonslayer",
+            //            MediaDuration = new TimeSpan(2, 0, 0),
+            //            Favorite = false,
+            //            Watched = false,
+            //            Basic = true,
+            //            Premium = false,
+            //            Vip = false,
+            //            MediaState = true,
+            //            WatchListId = 2
+            //        },
+            //        new MediaModel
+            //        {
+            //            MediaName = "Supergirl",
+            //            MediaUrl = "supergirl",
+            //            MediaDescription = "The film is very good",
+            //            MediaQuality = "HD",
+            //            ReleaseDate = new DateTime(2024, 9, 12),
+            //            MediaAgeRating = 16,
+            //            MediaImagePath = "supergirl",
+            //            MediaDuration = new TimeSpan(2, 0, 0),
+            //            Favorite = false,
+            //            Watched = false,
+            //            Basic = true,
+            //            Premium = true,
+            //            Vip = true,
+            //            MediaState = true,
+            //            WatchListId = 3
+            //        },
+            //        new MediaModel
+            //        {
+            //            MediaName = "Transformer",
+            //            MediaUrl = "transformer",
+            //            MediaDescription = "The film is the best",
+            //            MediaQuality = "HD",
+            //            ReleaseDate = new DateTime(2024, 9, 12),
+            //            MediaAgeRating = 16,
+            //            MediaImagePath = "transformer",
+            //            MediaDuration = new TimeSpan(2, 0, 0),
+            //            Favorite = false,
+            //            Watched = false,
+            //            Basic = true,
+            //            Premium = true,
+            //            Vip = false,
+            //            MediaState = true,
+            //            WatchListId = 3
+            //        }
+            //        );
+            //    _context.SaveChanges();
+            //}
+            //if (!_context.Reviews.Any())
+            //{
+            //    _context.Reviews.AddRange(
+            //        new ReviewModel { ReviewContent = "Very very good", ReviewRating = 5.0, ReviewCreateDate = new DateTime(2024, 9, 12), CustomerId = 1, MediaId = 1 },
+            //        new ReviewModel { ReviewContent = "Very good", ReviewRating = 5.0, ReviewCreateDate = new DateTime(2024, 9, 12), CustomerId = 1, MediaId = 2 },
+            //        new ReviewModel { ReviewContent = "Very very very good", ReviewRating = 5.0, ReviewCreateDate = new DateTime(2024, 9, 12), CustomerId = 1, MediaId = 3 }
+            //        );
+            //    _context.SaveChanges();
+            //}
+            //if (!_context.Genres.Any())
+            //{
+            //    _context.Genres.AddRange(
+            //        new GenreModel { Type = "Movie"},
+            //        new GenreModel { Type = "Cartoon"},
+            //        new GenreModel { Type = "Series"}
+            //        );
+            //    _context.SaveChanges();
+            //}
+            ////chèn các giá trị cho bang phụ khi chèn xong thì xoá đi
+            //// media 
+            //var media1 = _context.Medias.FirstOrDefault(m => m.MediaId == 1);
+            //var media2 = _context.Medias.FirstOrDefault(m => m.MediaId == 2);
+            //var media3 = _context.Medias.FirstOrDefault(m => m.MediaId == 3);
+            //// genre
+            //var genre1 = _context.Genres.FirstOrDefault(g => g.GenreId == 1);
+            //var genre2 = _context.Genres.FirstOrDefault(g => g.GenreId == 2);
+            //var genre3 = _context.Genres.FirstOrDefault(g => g.GenreId == 3);
             //if (media1 != null && media2 != null && media3 != null)
             //{
             //    if (genre1 != null && genre2 != null && genre3 != null)
@@ -326,8 +326,8 @@ namespace Web_BTL.Repository
             //        media3.Genres.Add(genre3);
             //    }
             //    _context.SaveChanges();
-            //} 
-            
+            //}
+
         }
     }
 }
