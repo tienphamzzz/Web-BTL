@@ -1,21 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Web_BTL.Models;
+using Web_BTL.Repository;
 
 namespace Web_BTL.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DataContext db;
+        public HomeController(DataContext context)
         {
-            _logger = logger;
+            db = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(db.Medias.ToList());
         }
 
         public IActionResult Privacy()
