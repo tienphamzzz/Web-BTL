@@ -1,71 +1,78 @@
 ﻿@using Web_BTL.Models.User.Customer
 @model CustomerModel
 
-<form method="post" asp-controller="User" asp-action="UserInformation" class="container user-info-container">
+
+<div class="container user-info-container">
     <h1 class="user-info-header">User Information</h1>
     <div class="row align-items-center justify-content-center">
         <!-- User Avatar -->
         <div class="col-md-4 text-center d-flex justify-content-center">
-            <div class="user-avatar">
-                <img id="avatarImg" src="https://via.placeholder.com/150" alt="User Avatar">
-                <input type="file" id="avatarInput" accept="image/*" onchange="changeAvatar()">
+            <div class="user-avatar" id="image">
+                <img id="avatarImg" src="@Url.Content("~/images/users/" + Model.UserImagePath)" alt="User Avatar">
+                <a class="btn btn-outline-primary" data-action="SaveImage">edit</a>
             </div>
         </div>
 
         <!-- User Details -->
         <div class="col-md-6">
             <div class="user-details">
-                <p>
+                <div id="name">
                     <span class="user-info-label">Full Name:</span>
                     <span id="fullName">@Model.UserName</span>
-                    <input asp-for="UserName" id="fullNameInput" class="form-control edit-input" placeholder="Enter new full name" style="display: none;">
-                    <a class="btn btn-sm btn-outline-light mt-2" onclick="editFullName()">Edit</a>
-                </p>
-                <p>
+                    <a class="btn btn-outline-primary" data-action="EditName">edit</a>
+                </div>
+                <div>
                     <span class="user-info-label">Username:</span> @Model.UserLogin
-                </p>
-                <p>
+                    
+                </div>
+                <div>
                     <span class="user-info-label">Email:</span> @Model.UserEmail
-                </p>
-                <p>
+                </div>
+                <div>
                     <span class="user-info-label">Account Created:</span> @Model.UserCreateDate
-                </p>
+                </div>
+                <!-- Mật khẩu -->
+                <div id="password">
+                    @if (ViewData.ModelState.IsValid)
+                    {
+                        <a style="font: 10px" data-action="EditPassword">Change Password</a>
+                    }else{
+                        @Html.Partial("EditPassword")
+                    }
+                </div>
             </div>
         </div>
     </div>
-</form>
+</div>
 
-@section Scripts{
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script>
-        // Function to change avatar when a new file is selected
-        function changeAvatar() {
-            const fileInput = document.getElementById('avatarInput');
-            const avatarImg = document.getElementById('avatarImg');
-            const file = fileInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    avatarImg.src = e.target.result; // Update the avatar image
+        $("a").click(function (e) {
+            e.preventDefault();
+            var id = $(this).attr("id");
+            var action = $(this).data("action");
+            var url = "/User/";
+            var tmp = "div#";
+            if (action === "SaveImage") {
+                url += "Image";
+                tmp += "image"
+            } else if (action === "EditName") {
+                url += "Name";
+                tmp += "name";
+            } else if (action === "EditPassword") {
+                url += "rPassword";
+                tmp += "password";
+            }
+            $.ajax({
+                url: url,
+                success: function (response) {
+                    $(tmp).html(response);
                 }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // Function to toggle full name input field and save new full name
-        function editFullName() {
-            const fullName = document.getElementById('fullName');
-            const fullNameInput = document.getElementById('fullNameInput');
-
-            if (fullNameInput.style.display === "none") {
-                // Show input field to edit
-                fullNameInput.style.display = "block";
-                fullNameInput.value = fullName.textContent;
-            } else {
-                // Save the new full name and hide input field
-                fullName.textContent = fullNameInput.value;
-                fullNameInput.style.display = "none";
-            }
-        }
+            });
+        });
         
     </script>
+    
+    @**@
 }

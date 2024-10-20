@@ -1,0 +1,8 @@
+﻿@using Web_BTL.Models.User.Customer
+@model CustomerModel
+
+<form asp-action="SaveImage" enctype="multipart/form-data" method="post">
+    <img src="@Url.Content("~/images/users/" + Model.UserImagePath)" alt="default"/>
+    <input type="file" name="image" placeholder="Add Image" required/>
+    <button type="submit" class="btn btn-outline-primary">Save</button>
+</form>

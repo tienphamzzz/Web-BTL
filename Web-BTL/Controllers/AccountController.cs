@@ -4,7 +4,6 @@ using Web_BTL.Models;
 using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.User.Customer;
 using Web_BTL.Repository;
-using Web_BTL.Services.CheckAction;
 using Web_BTL.Services.Cookie;
 using Web_BTL.Services.EmailServices;
 
@@ -45,11 +44,12 @@ namespace Web_BTL.Controllers
                     if (customer != null)
                     {
                         Console.WriteLine("Da dang nhap bang tai khoan Customer");
-                        EmailAddress.email = customer.UserEmail;
 
                         //Cookie(emailSignIn, customer.UserEmail, 60);
-                        _cookieService.SetCookie(emailSignIn, customer.UserEmail, 60, Response);
-                        return RedirectToAction(nameof(SendOtp));
+                        //_cookieService.SetCookie(emailSignIn, customer.UserEmail, 60, Response);
+                        HttpContext.Session.SetString("LogIn Session", customer.UserEmail);
+                        return RedirectToAction(nameof(Index), "Home");
+                        //return RedirectToAction(nameof(SendOtp));
                     }
                     else
                     {
@@ -58,8 +58,6 @@ namespace Web_BTL.Controllers
                     }
                 }
                 Console.WriteLine("Da dang nhap bang tai khoan Admin");
-                EmailAddress.email = admin.UserEmail;
-                
                 _cookieService.SetCookie(emailSignIn, admin.UserEmail, 60, Response);
                 return RedirectToAction(nameof(SendOtp));
             }
@@ -92,7 +90,6 @@ namespace Web_BTL.Controllers
             }
             return View(model);
         }
-
         [HttpGet]
         public IActionResult RecoverPassword()
         {
@@ -123,9 +120,9 @@ namespace Web_BTL.Controllers
             Console.WriteLine("Day la get SendOtp");
             string otpCode = _sendEmail.GenerateOTP();
             string _to = "";
-            if (_cookieService.GetCookie(emailSignIn, Request) != null)
-                _to = _cookieService.GetCookie(emailSignIn, Request);
-            else if (_cookieService.GetCookie(emailSignUp, Request) != null)
+            //if (_cookieService.GetCookie(emailSignIn, Request) != null)
+            //    _to = _cookieService.GetCookie(emailSignIn, Request);
+            if (_cookieService.GetCookie(emailSignUp, Request) != null)
                 _to = _cookieService.GetCookie(emailSignUp, Request);
             else if(_cookieService.GetCookie(emailRecoverPassword, Request) != null)
                 _to = _cookieService.GetCookie(emailRecoverPassword, Request);
@@ -146,13 +143,13 @@ namespace Web_BTL.Controllers
             if(Otp == Request.Cookies["OTP"])
             {
                 Console.WriteLine("Ban da nhap dung ma OTP");
-                if (Request.Cookies[emailSignIn] != null)
-                {
-                    HttpContext.Session.SetString("LogIn Session", _cookieService.GetCookie(emailSignIn, Request));
-                    //deleteCookie(emailSignIn);
-                    _cookieService.DeleteCookie(emailSignIn, Response);
-                    return RedirectToAction(nameof(UserInformation));
-                }
+                //if (Request.Cookies[emailSignIn] != null)
+                //{
+                //    HttpContext.Session.SetString("LogIn Session", _cookieService.GetCookie(emailSignIn, Request));
+                //    //deleteCookie(emailSignIn);
+                //    _cookieService.DeleteCookie(emailSignIn, Response);
+                //    return RedirectToAction(nameof(Index), "Home");
+                //}
                 if(Request.Cookies[emailSignUp] != null)
                 {
                     CustomerModel customer = new CustomerModel
@@ -161,6 +158,7 @@ namespace Web_BTL.Controllers
                         UserLogin = _cookieService.GetCookie("LogInName", Request),
                         UserEmail = _cookieService.GetCookie(emailSignUp, Request),
                         LoginPassword = _cookieService.GetCookie("Password", Request),
+                        UserImagePath = "default.png",
                         UserState = true,
                         _ServicePackage = ServicePackage.Bacis,
                         UserCreateDate = DateTime.Now
@@ -183,9 +181,7 @@ namespace Web_BTL.Controllers
                     string userName = _cookieService.GetCookie(emailRecoverPassword, Request);
                     var customer = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserName == userName || c.UserEmail == userName);
                     if(customer != null)
-                    {
                         customer.LoginPassword = _cookieService.GetCookie("RecoverPassword", Request);
-                    }
                     await _dataContext.SaveChangesAsync();
                     _cookieService.DeleteCookie("RecoverPassword", Response);
                     _cookieService.DeleteCookie(emailRecoverPassword, Response);
