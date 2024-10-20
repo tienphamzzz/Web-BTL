@@ -48,6 +48,7 @@ namespace Web_BTL.Controllers
                         //Cookie(emailSignIn, customer.UserEmail, 60);
                         //_cookieService.SetCookie(emailSignIn, customer.UserEmail, 60, Response);
                         HttpContext.Session.SetString("LogIn Session", customer.UserEmail);
+                        HttpContext.Session.SetString("User", "Customer");
                         return RedirectToAction(nameof(Index), "Home");
                         //return RedirectToAction(nameof(SendOtp));
                     }
@@ -58,8 +59,9 @@ namespace Web_BTL.Controllers
                     }
                 }
                 Console.WriteLine("Da dang nhap bang tai khoan Admin");
-                _cookieService.SetCookie(emailSignIn, admin.UserEmail, 60, Response);
-                return RedirectToAction(nameof(SendOtp));
+                HttpContext.Session.SetString("LogIn Session", admin.UserEmail);
+                HttpContext.Session.SetString("User", "Admin");
+                return RedirectToAction(nameof(Index), "Home");
             }
             return View(model);
         }
