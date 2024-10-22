@@ -22,14 +22,17 @@
 </head>
 
 <body>
+
+    <!-- NAV -->
+    <partial name="Layouts/TopNav" />
+    <!-- END NAV -->
     
     @RenderBody()
     
+    <!-- FOOTER SECTION -->
+    <partial name="Layouts/Footer" />
     <!-- END FOOTER SECTION -->
-    <!-- COPYRIGHT SECTION -->
     
-    
-  
     @RenderSection("Scripts", required: false)
 </body>
 
