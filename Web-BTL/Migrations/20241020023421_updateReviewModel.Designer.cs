@@ -12,8 +12,8 @@ using Web_BTL.Repository;
 namespace Web_BTL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241004084117_First")]
-    partial class First
+    [Migration("20241020023421_updateReviewModel")]
+    partial class updateReviewModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -73,6 +73,34 @@ namespace Web_BTL.Migrations
                     b.ToTable("Actors");
                 });
 
+            modelBuilder.Entity("Web_BTL.Models.ListMedia.Watch.ListMediaModel", b =>
+                {
+                    b.Property<int?>("WatchListId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MediaId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("AddDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Favorite")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool?>("IsWatched")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("WatchListId", "MediaId");
+
+                    b.HasIndex("MediaId");
+
+                    b.ToTable("ListMedia");
+                });
+
             modelBuilder.Entity("Web_BTL.Models.ListMedia.Watch.WatchListModel", b =>
                 {
                     b.Property<int>("WatchListId")
@@ -113,12 +141,6 @@ namespace Web_BTL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MediaId"), 1L, 1);
 
-                    b.Property<bool?>("Basic")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("Favorite")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("MediaAgeRating")
                         .HasColumnType("int");
 
@@ -137,30 +159,16 @@ namespace Web_BTL.Migrations
                     b.Property<string>("MediaQuality")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("MediaState")
-                        .HasColumnType("bit");
-
                     b.Property<string>("MediaUrl")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool?>("Premium")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("Vip")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("WatchListId")
+                    b.Property<int?>("package")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("Watched")
-                        .HasColumnType("bit");
-
                     b.HasKey("MediaId");
-
-                    b.HasIndex("WatchListId");
 
                     b.ToTable("Medias");
                 });
@@ -173,13 +181,10 @@ namespace Web_BTL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"), 1L, 1);
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<int>("MediaId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MediasMediaId")
                         .HasColumnType("int");
 
                     b.Property<string>("ReviewContent")
@@ -191,14 +196,11 @@ namespace Web_BTL.Migrations
                     b.Property<double?>("ReviewRating")
                         .HasColumnType("float");
 
-                    b.Property<int?>("UserModelCustomerId")
-                        .HasColumnType("int");
-
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("MediasMediaId");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("UserModelCustomerId");
+                    b.HasIndex("MediaId");
 
                     b.ToTable("Reviews");
                 });
@@ -212,6 +214,7 @@ namespace Web_BTL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"), 1L, 1);
 
                     b.Property<string>("LoginPassword")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
@@ -225,12 +228,14 @@ namespace Web_BTL.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("UserEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserLogin")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -259,6 +264,7 @@ namespace Web_BTL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LoginPassword")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UserCreateDate")
@@ -268,12 +274,14 @@ namespace Web_BTL.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("UserEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserLogin")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -327,26 +335,38 @@ namespace Web_BTL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Web_BTL.Models.Medias.MediaModel", b =>
+            modelBuilder.Entity("Web_BTL.Models.ListMedia.Watch.ListMediaModel", b =>
                 {
-                    b.HasOne("Web_BTL.Models.ListMedia.Watch.WatchListModel", "WatchList")
+                    b.HasOne("Web_BTL.Models.Medias.MediaModel", "media")
+                        .WithMany("WatchLists")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Web_BTL.Models.ListMedia.Watch.WatchListModel", "watchList")
                         .WithMany("Medias")
                         .HasForeignKey("WatchListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("WatchList");
+                    b.Navigation("media");
+
+                    b.Navigation("watchList");
                 });
 
             modelBuilder.Entity("Web_BTL.Models.ReviewModel", b =>
                 {
-                    b.HasOne("Web_BTL.Models.Medias.MediaModel", "Medias")
-                        .WithMany("Reviews")
-                        .HasForeignKey("MediasMediaId");
-
                     b.HasOne("Web_BTL.Models.User.Customer.CustomerModel", "UserModel")
                         .WithMany("Reviews")
-                        .HasForeignKey("UserModelCustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Web_BTL.Models.Medias.MediaModel", "Medias")
+                        .WithMany("Reviews")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Medias");
 
@@ -372,6 +392,8 @@ namespace Web_BTL.Migrations
             modelBuilder.Entity("Web_BTL.Models.Medias.MediaModel", b =>
                 {
                     b.Navigation("Reviews");
+
+                    b.Navigation("WatchLists");
                 });
 
             modelBuilder.Entity("Web_BTL.Models.User.Customer.CustomerModel", b =>

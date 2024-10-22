@@ -17,6 +17,7 @@ namespace Web_BTL.Repository
                 và những migrate nào chưa được áp dụng thì sẽ tự động dịch và áp dụng
             ==> giúp đồng bộ hoá dữ liệu
              */
+          
             _context.Database.Migrate();
             if (!_context.Admins.Any()) // seed data table Admin
             /*
