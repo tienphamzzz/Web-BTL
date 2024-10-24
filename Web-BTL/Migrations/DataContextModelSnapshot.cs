@@ -204,6 +204,7 @@ namespace Web_BTL.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"), 1L, 1);
 
                     b.Property<string>("LoginPassword")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
@@ -217,12 +218,14 @@ namespace Web_BTL.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("UserEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserLogin")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
@@ -251,6 +254,7 @@ namespace Web_BTL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("LoginPassword")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UserCreateDate")
@@ -260,12 +264,14 @@ namespace Web_BTL.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("UserEmail")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserImagePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserLogin")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserName")
