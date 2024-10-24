@@ -10,13 +10,13 @@ namespace Web_BTL.Models.ListMedia.Watch
     {
         public WatchListModel()
         {
-            Medias = new HashSet<MediaModel>();
+            Medias = new HashSet<ListMediaModel>();
         }
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int WatchListId { get; set; } // khoá chính
         public virtual int? CustomerId { get; set; } // khoá ngoại
         public virtual CustomerModel? User { get; set; }
-        public virtual ICollection<MediaModel> Medias { get; set; } // kết nối tới bảng phụ
+        public virtual ICollection<ListMediaModel> Medias { get; set; } // kết nối tới bảng phụ
     }
 }

@@ -1,9 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@*
 @section Styles {
     <link rel="stylesheet" href="~/css/email.css">
 }
+*@
 <div class="container">
     <form method="post" asp-controller="Account" asp-action="SendOTP" enctype="multipart/form-data" onsubmit="combineOTP()">
         <div class="otp-container">

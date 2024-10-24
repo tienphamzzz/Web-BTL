@@ -1,0 +1,90 @@
+﻿.user-info-container {
+    padding: 40px;
+    background-color: var(--box-bg);
+    color: var(--text-color);
+    margin-top: var(--nav-height);
+}
+
+.user-info-header {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--main-color);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.user-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+    .user-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .user-avatar input[type="file"] {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+.user-details {
+    font-size: 1.2rem;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align all items to the start (left side) */
+}
+
+    .user-details p {
+        margin: 10px 0;
+        width: 100%; /* Ensure each p tag takes full width */
+    }
+
+
+.user-info-label {
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.edit-input {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* Responsive styles */
+@media (max-width: 576px) {
+    .user-avatar {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .user-details {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center align in mobile view */
+    }
+
+        .user-details p {
+            width: 100%; /* Ensure full width for each p tag */
+            display: flex;
+            justify-content: center; /* Center the content inside each p tag */
+        }
+
+    .user-info-label {
+        margin-right: 10px;
+        font-weight: 700;
+        text-align: left; /* Label should align left */
+    }
+}
