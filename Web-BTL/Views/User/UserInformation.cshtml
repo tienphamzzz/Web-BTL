@@ -51,21 +51,31 @@
                 @if(Model is AdminModel){
                     var ad = (AdminModel)Model;
                     <span class="user-info-label">Quyền: </span>@ad.Role
+                    <a class="btn btn-primary" id="listMedia" asp-controller="Admin" asp-action="Index">Danh Sách Phim</a>
                 }
             </div>
         </div>
+        <div>
+            <a class="btn btn-outline-primary" id="LogOut" asp-action="LogOut" >Đăng xuất</a>
+        </div>
     </div>
 </div>
-
+<div id="list"></div>
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script>
         $("a").click(function (e) {
-            e.preventDefault();
+            
             var id = $(this).attr("id");
             var action = $(this).data("action");
             var url = "/User/";
             var tmp = "div#";
+            if (id === "listMedia") { 
+                return;
+            }else if (id == "LogOut"){
+                return;
+            }
+            e.preventDefault();
             if (action === "SaveImage") {
                 url += "Image";
                 tmp += "image"
@@ -83,8 +93,10 @@
                 }
             });
         });
-        
+        document.addEventListener("DOMContentLoaded", function () {
+            var img = document.getElementById("imfload");
+            img.src = img.src.split("?")[0] + "?v=" + new Date().getTime();
+        });
     </script>
-    
     @**@
 }

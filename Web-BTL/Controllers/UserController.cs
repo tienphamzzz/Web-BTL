@@ -147,6 +147,15 @@ namespace Web_BTL.Controllers
             else if (nPassword != cPassword)
                 ModelState.AddModelError("ErrorPassword", "Mật khẩu điền lại không đúng");
         }
+        public IActionResult LogOut()
+        {
+            string email = HttpContext.Session.GetString("LogIn Session");
+            if (email != null)
+            {
+                HttpContext.Session.Remove("LogIn Session");
+            }
+            return RedirectToAction(nameof(SignIn), "Account");
+        }
         public IActionResult Index()
         {
             return View();

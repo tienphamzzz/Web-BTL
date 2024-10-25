@@ -102,7 +102,7 @@ namespace Web_BTL.Repository
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         WatchListId = 1,
-                        _ServicePackage = ServicePackage.Bacis
+                        _ServicePackage = ServicePackage.Basic
                     },
                     new CustomerModel
                     {
@@ -115,7 +115,7 @@ namespace Web_BTL.Repository
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         WatchListId = 2,
-                        _ServicePackage = ServicePackage.Bacis
+                        _ServicePackage = ServicePackage.Basic
                     },
                     new CustomerModel
                     {
@@ -128,7 +128,7 @@ namespace Web_BTL.Repository
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         WatchListId = 3,
-                        _ServicePackage = ServicePackage.Bacis
+                        _ServicePackage = ServicePackage.Basic
                     }
                     );
                 _context.SaveChanges();
@@ -150,7 +150,7 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "supergirl",
                         MediaDuration = new TimeSpan(2, 0, 0),
-                        package = 1
+                        package = ServicePackage.Premium
                     },
                     new MediaModel
                     {
@@ -162,7 +162,7 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "transformer",
                         MediaDuration = new TimeSpan(2, 0, 0),
-                        package = 2
+                        package = ServicePackage.Vip
                     },
                     new MediaModel
                     {
@@ -174,7 +174,6 @@ namespace Web_BTL.Repository
                         MediaAgeRating = 16,
                         MediaImagePath = "demonslayer",
                         MediaDuration = new TimeSpan(2, 0, 0),
-                        package = 0
                     }
                     );
                 _context.SaveChanges();
@@ -203,9 +202,9 @@ namespace Web_BTL.Repository
             var media2 = _context.Medias.FirstOrDefault(m => m.MediaId == 2);
             var media3 = _context.Medias.FirstOrDefault(m => m.MediaId == 3);
             // genre
-            var genre1 = _context.Genres.FirstOrDefault(g => g.GenreId == 1);
-            var genre2 = _context.Genres.FirstOrDefault(g => g.GenreId == 2);
-            var genre3 = _context.Genres.FirstOrDefault(g => g.GenreId == 3);
+            //var genre1 = _context.Genres.FirstOrDefault(g => g.GenreId == 1);
+            //var genre2 = _context.Genres.FirstOrDefault(g => g.GenreId == 2);
+            //var genre3 = _context.Genres.FirstOrDefault(g => g.GenreId == 3);
             //if (media1 != null && media2 != null && media3 != null)
             //{
             //    if (genre1 != null && genre2 != null && genre3 != null)

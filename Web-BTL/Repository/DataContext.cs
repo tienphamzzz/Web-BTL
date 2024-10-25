@@ -41,6 +41,10 @@ namespace Web_BTL.Repository
                 HasMany(m => m.Genres).
                 WithMany(g => g.Medias).
                 UsingEntity(j => j.ToTable("Media_Genre"));
+            // cấu hình cho các enum sang chuỗi
+            modelBuilder.Entity<MediaModel>().
+                Property(m => m.package).
+                HasConversion<string>(); // ánh xạ thành chuỗi
             modelBuilder.Entity<AdminModel>().
                 Property(a => a.Role).
                 HasConversion<string>();  // Ánh xạ enum thành chuỗi

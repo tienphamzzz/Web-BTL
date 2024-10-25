@@ -163,8 +163,9 @@ namespace Web_BTL.Migrations
                     b.Property<DateTime?>("ReleaseDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("package")
-                        .HasColumnType("int");
+                    b.Property<string>("package")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MediaId");
 
@@ -260,12 +261,6 @@ namespace Web_BTL.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"), 1L, 1);
-
-                    b.Property<int?>("FavoriteListId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("HistoryListId")
-                        .HasColumnType("int");
 
                     b.Property<string>("LoginPassword")
                         .IsRequired()

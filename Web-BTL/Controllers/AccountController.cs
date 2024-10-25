@@ -21,7 +21,6 @@ namespace Web_BTL.Controllers
             _sendEmail = sendEmail;
             _cookieService = cookieService;
         }
-        
         [HttpGet]
         public IActionResult SignIn() // Get Sign In khi người dùng trỏ đến linh Sign In
         {
@@ -44,13 +43,8 @@ namespace Web_BTL.Controllers
                     if (customer != null)
                     {
                         Console.WriteLine("Da dang nhap bang tai khoan Customer");
-
-                        //Cookie(emailSignIn, customer.UserEmail, 60);
-                        //_cookieService.SetCookie(emailSignIn, customer.UserEmail, 60, Response);
                         HttpContext.Session.SetString("LogIn Session", customer.UserEmail);
-                        HttpContext.Session.SetString("User", "Customer");
                         return RedirectToAction(nameof(Index), "Home");
-                        //return RedirectToAction(nameof(SendOtp));
                     }
                     else
                     {
@@ -85,7 +79,6 @@ namespace Web_BTL.Controllers
                 }
 
                 _cookieService.SetCookie(emailSignUp, model.UserEmail, 60, Response);
-                
                 _cookieService.SetCookie("Password", model.LoginPassword, 60, Response);
                 _cookieService.SetCookie("LogInName", model.UserLogin, 60, Response);
                 return RedirectToAction(nameof(SendOtp));
@@ -154,7 +147,7 @@ namespace Web_BTL.Controllers
                 //}
                 if(Request.Cookies[emailSignUp] != null)
                 {
-                    CustomerModel customer = new CustomerModel
+                    var customer = new CustomerModel
                     {
                         UserName = _cookieService.GetCookie("LogInName", Request),
                         UserLogin = _cookieService.GetCookie("LogInName", Request),
@@ -162,12 +155,11 @@ namespace Web_BTL.Controllers
                         LoginPassword = _cookieService.GetCookie("Password", Request),
                         UserImagePath = "default.png",
                         UserState = true,
-                        _ServicePackage = ServicePackage.Bacis,
+                        _ServicePackage = ServicePackage.Basic,
                         UserCreateDate = DateTime.Now
                     };
                     _dataContext.Customers.Add(customer); // thêm customer mới vào database
-                    await _dataContext.SaveChangesAsync();
-                    WatchListModel watchList = new WatchListModel
+                    var watchList = new WatchListModel
                     {
                         CustomerId = customer.CustomerId
                     };
@@ -193,13 +185,13 @@ namespace Web_BTL.Controllers
             Console.WriteLine("Ban da nhap sai otp");
             return View();
         }
-        [HttpPost]        
-        public async Task<IActionResult> UserInformation([Bind("UserName, LoginPassword")]CustomerModel customer)
-        {
-            string email = HttpContext.Session.GetString("LogIn Session");
-            var cus = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == email);
-            return View("UserInformation", cus);
-        }
+        //[HttpPost]        
+        //public async Task<IActionResult> UserInformation([Bind("UserName, LoginPassword")]CustomerModel customer)
+        //{
+        //    string email = HttpContext.Session.GetString("LogIn Session");
+        //    var cus = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == email);
+        //    return View("UserInformation", cus);
+        //}
         
         public IActionResult Index()
         {
