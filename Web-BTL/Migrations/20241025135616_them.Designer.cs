@@ -12,13 +12,8 @@ using Web_BTL.Repository;
 namespace Web_BTL.Migrations
 {
     [DbContext(typeof(DataContext))]
-<<<<<<<< HEAD:Web-BTL/Migrations/20241024032941_them.Designer.cs
-    [Migration("20241024032941_them")]
+    [Migration("20241025135616_them")]
     partial class them
-========
-    [Migration("20241014144238_FirstData")]
-    partial class FirstData
->>>>>>>> MXD:Web-BTL/Migrations/20241014144238_FirstData.Designer.cs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

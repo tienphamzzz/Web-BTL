@@ -14,6 +14,16 @@
             <a href="#" class="logo">
                 <i class='bx bx-movie-play bx-tada main-color'></i>Fl<span class="main-color">i</span>x
             </a>
+
+
+
+            <form method="get" asp-action="AllMedias">
+                <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Search by movie name" />
+                <button type="submit">Search</button>
+            </form>
+
+
+
             <ul class="nav-menu" id="nav-menu">
                 <li><a asp-controller="Home" asp-action="Index">Home</a></li>
                 <li><a href="#">Genre</a></li>

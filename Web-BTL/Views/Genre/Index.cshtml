@@ -17,7 +17,7 @@
                 <div class="t-header-label">
                     MỚI CẬP NHẬT
                 </div>
-                <div class="t-menu">
+                 @* <div class="t-menu">
                     <a href="@Url.Action("AllMedias","Genre")">Tất cả</a>
                     @foreach (var genre in ViewBag.Genre)
                         {
@@ -25,20 +25,34 @@
                             @genre.Type
                         </a>
                         }
+                </div>  *@
+
+                <div class="container">
+                    <h2>Danh sách thể loại</h2>
+                    
+                    @await Component.InvokeAsync("Genre")
+
+                    <div id="media-section">
+                        <partial name="Layouts/_MediaPartial"  />
+                    </div>
                 </div>
+
+
+
+
             </div>
 
-            <div id="t-movie-section-wrapper">
+            @* <div id="t-movie-section-wrapper">
                 <partial name="Layouts/_MediaPartial" />
 
-            </div>
+            </div> *@
 
             <div>
                 <a href="#" class="t-btn-more">Xem Thêm...</a>
             </div>
         </div>
 
-         <div class="t-header-and-movie-section">
+         @* <div class="t-header-and-movie-section">
             <div class="t-header-section">
                 <div class="t-header-label">
                     PHIM BỘ ZZZ
@@ -80,11 +94,11 @@
             <div>
                 <a href="#" class="t-btn-more">Xem Thêm...</a>
             </div>
-        </div>
+        </div> *@
     </div>
 </div>
 
-@section Scripts{
+@* @section Scripts{
     <script>
         function filterMovies(genreId) {
             $.ajax({
@@ -96,5 +110,48 @@
                 }
             });
         }
+    </script>
+} *@
+
+
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+
+
+
+        $(document).ready(function () {
+            const dropdown = $("#genreDropdown");
+
+            // Sự kiện khi nhấn vào nút "Thể loại" để hiện/ẩn dropdown
+            $("#genreButton").click(function () {
+                dropdown.toggle(); // Chuyển đổi hiển thị/ẩn của danh sách genres
+            });
+
+            // Gắn sự kiện click vào các nút bên trong .genre-item
+            $(document).on("click", ".genre-item button", function () {
+                var genreId = $(this).closest('.genre-item').data("id");
+                console.log("Genre ID: " + genreId); // Kiểm tra giá trị genreId
+
+                $.ajax({
+                    url: '@Url.Action("FilteredMedias", "Genre")',
+                    type: 'GET',
+                    data: { genreId: genreId },
+                    success: function (response) {
+                        console.log("AJAX Success"); // Kiểm tra khi AJAX thành công
+                        $("#media-section").html(response); // Cập nhật phần tử với ID media-section với kết quả nhận được
+                        dropdown.hide(); // Ẩn dropdown sau khi lọc phim
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error: " + error); // Kiểm tra nếu có lỗi
+                        console.log("Status: " + status);
+                        console.log("Response: " + xhr.responseText); // In ra nội dung lỗi từ server nếu có
+                    }
+                });
+            });
+        });
+
     </script>
 }

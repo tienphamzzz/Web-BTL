@@ -5,11 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Web_BTL.Migrations
 {
-<<<<<<<< HEAD:Web-BTL/Migrations/20241024032941_them.cs
     public partial class them : Migration
-========
-    public partial class FirstData : Migration
->>>>>>>> MXD:Web-BTL/Migrations/20241014144238_FirstData.cs
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -62,51 +58,6 @@ namespace Web_BTL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-<<<<<<<< HEAD:Web-BTL/Migrations/20241024032941_them.cs
-                name: "WatchLists",
-                columns: table => new
-                {
-                    WatchListId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WatchLists", x => x.WatchListId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    _ServicePackage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    HistoryListId = table.Column<int>(type: "int", nullable: true),
-                    FavoriteListId = table.Column<int>(type: "int", nullable: true),
-                    WatchListId = table.Column<int>(type: "int", nullable: true),
-                    UserName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserLogin = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LoginPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserCreateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserState = table.Column<bool>(type: "bit", nullable: true),
-                    UserDuration = table.Column<TimeSpan>(type: "time", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.CustomerId);
-                    table.ForeignKey(
-                        name: "FK_Customers_WatchLists_WatchListId",
-                        column: x => x.WatchListId,
-                        principalTable: "WatchLists",
-                        principalColumn: "WatchListId");
-                });
-
-            migrationBuilder.CreateTable(
-========
->>>>>>>> MXD:Web-BTL/Migrations/20241014144238_FirstData.cs
                 name: "Medias",
                 columns: table => new
                 {
@@ -296,16 +247,7 @@ namespace Web_BTL.Migrations
                 column: "MediasMediaId");
 
             migrationBuilder.CreateIndex(
-<<<<<<<< HEAD:Web-BTL/Migrations/20241024032941_them.cs
-                name: "IX_Medias_WatchListId",
-                table: "Medias",
-                column: "WatchListId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Reviews_CustomerId",
-========
-                name: "IX_Reviews_MediasMediaId",
->>>>>>>> MXD:Web-BTL/Migrations/20241014144238_FirstData.cs
                 table: "Reviews",
                 column: "CustomerId");
 

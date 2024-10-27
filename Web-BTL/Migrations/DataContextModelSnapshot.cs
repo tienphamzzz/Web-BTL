@@ -179,13 +179,10 @@ namespace Web_BTL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"), 1L, 1);
 
-                    b.Property<int?>("CustomerId")
+                    b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<int>("MediaId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MediasMediaId")
                         .HasColumnType("int");
 
                     b.Property<string>("ReviewContent")
@@ -197,14 +194,11 @@ namespace Web_BTL.Migrations
                     b.Property<double?>("ReviewRating")
                         .HasColumnType("float");
 
-                    b.Property<int?>("UserModelCustomerId")
-                        .HasColumnType("int");
-
                     b.HasKey("ReviewId");
 
-                    b.HasIndex("MediasMediaId");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("UserModelCustomerId");
+                    b.HasIndex("MediaId");
 
                     b.ToTable("Reviews");
                 });
@@ -360,13 +354,17 @@ namespace Web_BTL.Migrations
 
             modelBuilder.Entity("Web_BTL.Models.ReviewModel", b =>
                 {
-                    b.HasOne("Web_BTL.Models.Medias.MediaModel", "Medias")
-                        .WithMany("Reviews")
-                        .HasForeignKey("MediasMediaId");
-
                     b.HasOne("Web_BTL.Models.User.Customer.CustomerModel", "UserModel")
                         .WithMany("Reviews")
-                        .HasForeignKey("UserModelCustomerId");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Web_BTL.Models.Medias.MediaModel", "Medias")
+                        .WithMany("Reviews")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Medias");
 
