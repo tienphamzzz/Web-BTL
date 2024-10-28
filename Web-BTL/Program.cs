@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Web_BTL.Repository;
 using Web_BTL.Services.Cookie;
 using Web_BTL.Services.EmailServices;
+using Web_BTL.Services.UploadFile;
+using Xabe.FFmpeg;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +43,8 @@ builder.Services.AddSession(options => {
 builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSetting")); // c?u hình kh?i t?o cho Email phía máy ch?
 builder.Services.AddTransient<SendEmail>(); // s? d?ng d?ch v? g?i tin nh?n
 builder.Services.AddScoped<CookieService>(); // thêm service Cookie
+builder.Services.AddScoped<SaveImageVideo>(); // theem service SaveImageVideo
+FFmpeg.SetExecutablesPath("C:/ffmpeg/bin"); // sử dụng ffmpeg bằng xabe.FFmpeg(có thể thay bằng mediatoolkit) và cấu hình đường dẫn thư mục
 
 var app = builder.Build();
 

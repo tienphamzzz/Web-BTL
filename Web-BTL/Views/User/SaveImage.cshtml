@@ -2,7 +2,7 @@
 @model UserModel
 
 <form asp-action="SaveImage" enctype="multipart/form-data" method="post">
-    <img src="@Url.Content("~/images/users/" + Model.UserImagePath)" alt="default" id="imgload"/>
+    <img src="@Url.Content("~/images/users/" + Model.UserImagePath)@($"?timestamp={DateTime.Now.Ticks}")" alt="default" id="imgload" />
     <input type="file" name="image" placeholder="Add Image" required/>
     <button type="submit" class="btn btn-outline-primary">Save</button>
 </form>

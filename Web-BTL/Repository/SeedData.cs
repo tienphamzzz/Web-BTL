@@ -4,6 +4,7 @@ using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.Medias;
 using Web_BTL.Models.User.Admin;
 using Web_BTL.Models.User.Customer;
+using Web_BTL.Models.Actors;
 
 namespace Web_BTL.Repository
 {
@@ -32,7 +33,7 @@ namespace Web_BTL.Repository
                         LoginPassword = "12345678@Aa",
                         UserEmail = "doanhxmai@gmail.com", 
                         UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "doanh",
+                        UserImagePath = "default.jpg",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         Role = Role.SuperAdmin
@@ -44,7 +45,7 @@ namespace Web_BTL.Repository
                         LoginPassword = "12345678@Aa",
                         UserEmail = "tienpham2kk4@gmail.com",
                         UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "tien",
+                        UserImagePath = "default.jpg",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         Role = Role.Movie_Management
@@ -56,7 +57,7 @@ namespace Web_BTL.Repository
                         LoginPassword = "12345678@Aa",
                         UserEmail = "kienngoc@gmail.com",
                         UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "kien",
+                        UserImagePath = "default.jpg",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         Role = Role.CommentAndReview_Management
@@ -68,7 +69,7 @@ namespace Web_BTL.Repository
                         LoginPassword = "12345678@Aa",
                         UserEmail = "dinhcongvinh09092004@gmail.com",
                         UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "vinh",
+                        UserImagePath = "default.jpg",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         Role = Role.ServicePackage_Management
@@ -98,7 +99,7 @@ namespace Web_BTL.Repository
                         LoginPassword = "12345678@Aa",
                         UserEmail = "viaicamon28@gmail.com",
                         UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "doanh1",
+                        UserImagePath = "default.jpg",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         WatchListId = 1,
@@ -111,7 +112,7 @@ namespace Web_BTL.Repository
                         LoginPassword = "12345678@Aa",
                         UserEmail = "viaicamon2004@gmail.com",
                         UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "doanh2",
+                        UserImagePath = "default.jpg",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         WatchListId = 2,
@@ -124,7 +125,7 @@ namespace Web_BTL.Repository
                         LoginPassword = "12345678@Aa",
                         UserEmail = "oncamviai@gmail.com",
                         UserCreateDate = new DateTime(2024, 8, 12),
-                        UserImagePath = "doanh3",
+                        UserImagePath = "default.jpg",
                         UserState = true,
                         UserDuration = new TimeSpan(0, 0, 0),
                         WatchListId = 3,
@@ -196,6 +197,15 @@ namespace Web_BTL.Repository
                     );
                 _context.SaveChanges();
             }
+            if (!_context.Actors.Any())
+            {
+                _context.Actors.AddRange(
+                    new ActorModel { ActorName = "Megan Fox", AcctorDate = new DateTime(1986, 5, 16) }, //16 tháng 5, 1986 (38 tuổi)
+                    new ActorModel { ActorName = "Shia LaBeouf", AcctorDate = new DateTime(1986, 6, 11) }, // 11 tháng 6, 1986 (38 tuổi)
+                    new ActorModel { ActorName = "Rachael Taylor", AcctorDate = new DateTime(1984, 7, 11) } // 11 tháng 7, 1984 (40 tuổi)
+                    );
+                _context.SaveChanges();
+            }
             //chèn các giá trị cho bang phụ khi chèn xong thì xoá đi
             // media
             var media1 = _context.Medias.FirstOrDefault(m => m.MediaId == 1);
@@ -205,6 +215,10 @@ namespace Web_BTL.Repository
             //var genre1 = _context.Genres.FirstOrDefault(g => g.GenreId == 1);
             //var genre2 = _context.Genres.FirstOrDefault(g => g.GenreId == 2);
             //var genre3 = _context.Genres.FirstOrDefault(g => g.GenreId == 3);
+            //// actor
+            //var actor1 = _context.Actors.FirstOrDefault(a => a.ActorID == 1);
+            //var actor2 = _context.Actors.FirstOrDefault(b => b.ActorID == 2);
+            //var actor3 = _context.Actors.FirstOrDefault(c => c.ActorID == 3);
             //if (media1 != null && media2 != null && media3 != null)
             //{
             //    if (genre1 != null && genre2 != null && genre3 != null)
@@ -215,6 +229,14 @@ namespace Web_BTL.Repository
             //        media2.Genres.Add(genre3);
             //        media3.Genres.Add(genre2);
             //        media3.Genres.Add(genre3);
+            //    }
+            //    if (actor1 != null && actor2 != null && actor3 != null)
+            //    {
+            //        _context.Actor_Medias.AddRange(
+            //            new Actor_MediaModel { MediaId = media2.MediaId, Media = media2, Actor = actor1, ActorId = actor1.ActorID },
+            //            new Actor_MediaModel { MediaId = media2.MediaId, Media = media2, Actor = actor2, ActorId = actor2.ActorID },
+            //            new Actor_MediaModel { MediaId = media2.MediaId, Media = media2, Actor = actor3, ActorId = actor3.ActorID }
+            //            );
             //    }
             //    _context.SaveChanges();
             //}

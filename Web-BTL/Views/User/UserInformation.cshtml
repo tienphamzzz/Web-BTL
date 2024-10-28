@@ -10,7 +10,8 @@
         <!-- User Avatar -->
         <div class="col-md-4 text-center d-flex justify-content-center">
             <div class="user-avatar" id="image">
-                <img id="avatarImg" src="@Url.Content("~/images/users/" + Model.UserImagePath)" alt="User Avatar">
+                @*<img id="avatarImg" src="@Url.Content("~/images/users/" + Model.UserImagePath + "?timestamp=@DateTime.Now.Ticks")" alt="User Avatar">*@
+                <img id="avatarImg" src="@Url.Content("~/images/users/" + Model.UserImagePath)@($"?timestamp={DateTime.Now.Ticks}")" alt="User Avatar">
                 <a class="btn btn-outline-primary" data-action="SaveImage">edit</a>
             </div>
         </div>
@@ -51,7 +52,19 @@
                 @if(Model is AdminModel){
                     var ad = (AdminModel)Model;
                     <span class="user-info-label">Quyền: </span>@ad.Role
-                    <a class="btn btn-primary" id="listMedia" asp-controller="Admin" asp-action="Index">Danh Sách Phim</a>
+                    var tmp = (byte)ad.Role;
+                    if (tmp < 2)
+                    {
+                        <a class="btn btn-primary" id="listMedia" asp-controller="Admin" asp-action="Index">Danh Sách Phim</a>
+                    }
+                    if (tmp == 0 || tmp == 2)
+                    {
+                        <a class="btn btn-outline-primary" id=""></a>
+                    }
+                    if (tmp == 0 || tmp == 3)
+                    {
+                        <a class="btn btn-outline-primary" id=""></a>
+                    }
                 }
             </div>
         </div>
@@ -65,16 +78,12 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script>
         $("a").click(function (e) {
-            
             var id = $(this).attr("id");
             var action = $(this).data("action");
             var url = "/User/";
             var tmp = "div#";
-            if (id === "listMedia") { 
-                return;
-            }else if (id == "LogOut"){
-                return;
-            }
+            if (id === "listMedia") return;
+            else if (id == "LogOut") return;
             e.preventDefault();
             if (action === "SaveImage") {
                 url += "Image";

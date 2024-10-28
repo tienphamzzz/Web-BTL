@@ -22,34 +22,37 @@ namespace Web_BTL.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("ActorModelMediaModel", b =>
+            modelBuilder.Entity("Media_Genre", b =>
                 {
-                    b.Property<int>("ActorsActorID")
+                    b.Property<int>("GenreId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MediasMediaId")
+                    b.Property<int>("MediaId")
                         .HasColumnType("int");
 
-                    b.HasKey("ActorsActorID", "MediasMediaId");
+                    b.HasKey("GenreId", "MediaId");
 
-                    b.HasIndex("MediasMediaId");
+                    b.HasIndex("MediaId");
 
-                    b.ToTable("Media_Actor", (string)null);
+                    b.ToTable("Media_Genre");
                 });
 
-            modelBuilder.Entity("GenreModelMediaModel", b =>
+            modelBuilder.Entity("Web_BTL.Models.Actors.Actor_MediaModel", b =>
                 {
-                    b.Property<int>("GenresGenreId")
+                    b.Property<int>("MediaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("MediasMediaId")
+                    b.Property<int>("ActorId")
                         .HasColumnType("int");
 
-                    b.HasKey("GenresGenreId", "MediasMediaId");
+                    b.Property<bool>("IsMain")
+                        .HasColumnType("bit");
 
-                    b.HasIndex("MediasMediaId");
+                    b.HasKey("MediaId", "ActorId");
 
-                    b.ToTable("Media_Genre", (string)null);
+                    b.HasIndex("ActorId");
+
+                    b.ToTable("Actor_Medias");
                 });
 
             modelBuilder.Entity("Web_BTL.Models.Actors.ActorModel", b =>
@@ -91,6 +94,9 @@ namespace Web_BTL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<TimeSpan?>("Watching")
+                        .HasColumnType("time");
 
                     b.HasKey("WatchListId", "MediaId");
 
@@ -304,34 +310,38 @@ namespace Web_BTL.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("ActorModelMediaModel", b =>
+            modelBuilder.Entity("Media_Genre", b =>
                 {
-                    b.HasOne("Web_BTL.Models.Actors.ActorModel", null)
+                    b.HasOne("Web_BTL.Models.Medias.GenreModel", null)
                         .WithMany()
-                        .HasForeignKey("ActorsActorID")
+                        .HasForeignKey("GenreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Web_BTL.Models.Medias.MediaModel", null)
                         .WithMany()
-                        .HasForeignKey("MediasMediaId")
+                        .HasForeignKey("MediaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GenreModelMediaModel", b =>
+            modelBuilder.Entity("Web_BTL.Models.Actors.Actor_MediaModel", b =>
                 {
-                    b.HasOne("Web_BTL.Models.Medias.GenreModel", null)
-                        .WithMany()
-                        .HasForeignKey("GenresGenreId")
+                    b.HasOne("Web_BTL.Models.Actors.ActorModel", "Actor")
+                        .WithMany("Medias")
+                        .HasForeignKey("ActorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Web_BTL.Models.Medias.MediaModel", null)
-                        .WithMany()
-                        .HasForeignKey("MediasMediaId")
+                    b.HasOne("Web_BTL.Models.Medias.MediaModel", "Media")
+                        .WithMany("Actors")
+                        .HasForeignKey("MediaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Actor");
+
+                    b.Navigation("Media");
                 });
 
             modelBuilder.Entity("Web_BTL.Models.ListMedia.Watch.ListMediaModel", b =>
@@ -377,6 +387,11 @@ namespace Web_BTL.Migrations
                     b.Navigation("WatchList");
                 });
 
+            modelBuilder.Entity("Web_BTL.Models.Actors.ActorModel", b =>
+                {
+                    b.Navigation("Medias");
+                });
+
             modelBuilder.Entity("Web_BTL.Models.ListMedia.Watch.WatchListModel", b =>
                 {
                     b.Navigation("Medias");
@@ -386,6 +401,8 @@ namespace Web_BTL.Migrations
 
             modelBuilder.Entity("Web_BTL.Models.Medias.MediaModel", b =>
                 {
+                    b.Navigation("Actors");
+
                     b.Navigation("Reviews");
 
                     b.Navigation("WatchLists");

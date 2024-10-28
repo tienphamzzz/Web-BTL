@@ -17,6 +17,7 @@
                             <th>Số tuổi</th>
                             <th>Thời lượng</th>
                             <th>Gói</th>
+                            <th>Option</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -27,19 +28,42 @@
                                 <td>@m.MediaQuality</td>
                                 <td>@m.ReleaseDate</td>
                                 <td>@m.MediaAgeRating</td>
-                                <td>@(m.MediaDuration)</td>
+                                <td>@(m.MediaDuration?.ToString("hh\\:mm\\:ss") ?? "00:00:00")</td>
                                 <td>@m.package</td>
+                                <td style="color: orangered; position: relative;">
+                                    <a id="@m.MediaId" asp-action="EditMedia" asp-route-mid="@m.MediaId">Edit</a> |
+                                    <a href="javascript:void(0);" onclick="showConfirmDelete('@m.MediaId')">Delete</a>
+                                    <!--Hiển thị form xoá hay không xoá-->
+                                    <form id="confirm-delete-@m.MediaId" asp-action="DeleteMedia" method="post" style="display:none; position:absolute; background:white; padding:10px; border:1px solid #ddd; box-shadow:0px 0px 10px rgba(0,0,0,0.2);">
+                                        <p>Bạn có chắc chắn muốn xóa phim này?</p>
+                                        <input type="hidden" name="mid" value="@m.MediaId" />
+                                        <button type="submit" name="YesNo" value="true" class="btn btn-success">Có</button>
+                                        <button type="button" onclick="hideConfirmDelete('@m.MediaId')" class="btn btn-danger">Không</button>
+                                    </form>
+                                </td>
                             </tr>
                         }
                     </tbody>
                 </table>
                 <a class="btn btn-outline-primary" asp-action="AddMedia">Add Film</a>
+                <a class="btn btn-primary">Add Genre</a>
+                <a class="btn btn-outline-primary">Add Actor</a>
             </div>
         </div>
     </div>
 </div>
 @section Scripts{
     <script>
+        function showConfirmDelete(mediaId){
+            // Ẩn tất cả các form xác nhận khác
+            document.querySelectorAll('form[id^="confirm-delete-"]').forEach(form => form.style.display = 'none');
 
+            // Hiển thị form xác nhận cho media hiện tại
+            document.getElementById(`confirm-delete-${mediaId}`).style.display = 'block';
+        }
+        function hideConfirmDelete(mediaId) {
+            // Ẩn form xác nhận
+            document.getElementById(`confirm-delete-${mediaId}`).style.display = 'none';
+        }
     </script>
 }

@@ -1,4 +1,6 @@
-﻿namespace Web_BTL.Services.Cookie
+﻿using Org.BouncyCastle.Asn1.Ocsp;
+
+namespace Web_BTL.Services.Cookie
 {
     public class CookieService
     {
@@ -12,6 +14,7 @@
                 HttpOnly = true // chỉ hoạt động phía máy chủ
             };
             Response.Cookies.Append(nameCookie, valueCookie, options);
+            
         }
         public void DeleteCookie(string nameCookie, HttpResponse Response)
         {

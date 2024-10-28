@@ -42,10 +42,10 @@
         </div>
         <!--Thời lượng phim-->
         @*<div style="margin-top: 7px" class="form-group row">
-            <span asp-validation-for="MediaDuration" class="text-danger"></span>
-            <div>
-                <input asp-for="MediaDuration" class="form-control" placeholder="Thời Lượng" />
-            </div>
+        <span asp-validation-for="MediaDuration" class="text-danger"></span>
+        <div>
+                <input asp-for="MediaDuration" type="text" placeholder="HH:mm:ss" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$" class="form-control" title="Nhập theo định dạng HH:mm:ss" />
+        </div>
         </div>*@
         <!--Điền gói-->
         <div style="margin-top: 7px" class="form-group row">
@@ -70,30 +70,29 @@
                         @item.Text <br />
                     </li>
                 }
-                
             </ul>
         </div>
         <!--Điền ảnh phim-->
         <div style="margin-top: 7px" class="form-group row">
-            <input name="Image" type="file"/>
+            <input name="image" type="file" />
         </div>
         <!--Điền Video(phim)-->
         <div style="margin-top: 7px" class="form-group row">
-            <input name="Video" type="file" />
+            <input name="video" type="file" />
         </div>
         <button type="submit" class="btn btn-outline-primary">Submit</button>
     </form>
 </div>
 
-@section Scripts{
+@section Scripts {
     <script>
-        // document.getElementById("addMediaForm").onsubmit = function () {
-        //     var selectedGenres = [];
-        //     var checkboxes = document.querySelectorAll(".genre-checkbox:checked");
-        //     checkboxes.forEach((checkbox) => {
-        //         selectedGenres.push(checkbox.value);
-        //     });
-        //     document.getElementById("selectedGenres").value = selectedGenres.join(',');
-        // };
+        // document.getElementById("addMediaForm").addEventListener("submit", function (e) {
+        //     var timeInput = document.querySelector("input[name = 'MediaDuration']");
+        //     var timePatter = /^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/;
+        //     if (timePatter.test(timeInput.value)){
+        //         alert("Vui lòng nhập lại thời lượng phim theo định dạng");
+        //         e.preventDefault();
+        //     }
+        // });
     </script>
 }

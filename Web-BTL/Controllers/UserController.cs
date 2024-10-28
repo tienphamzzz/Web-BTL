@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Web_BTL.Models.User;
 using Web_BTL.Models.User.Customer;
 using Web_BTL.Repository;
+using Web_BTL.Services.UploadFile;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace Web_BTL.Controllers
@@ -11,20 +12,26 @@ namespace Web_BTL.Controllers
     {
         private readonly DataContext _dataContext;
         private readonly IWebHostEnvironment _environment;
-        public UserController(DataContext dataContext, IWebHostEnvironment environment)
+        private readonly SaveImageVideo _save;
+        public UserController(DataContext dataContext, IWebHostEnvironment environment, SaveImageVideo save)
         {
             _dataContext = dataContext;
             _environment = environment;
+            _save = save;
         }
         [HttpGet]
         public async Task<IActionResult> UserInformation()
         {
             // lấy thông tin người dùng từ s
             string email = HttpContext.Session.GetString("LogIn Session");
+            string role = HttpContext.Session.GetString("Admin");
             if (email != null)
             {
-                var admin = await _dataContext.Admins.FirstOrDefaultAsync(c => c.UserEmail == email);
-                if (admin != null) return View(admin);
+                if (role != null)
+                {
+                    var admin = await _dataContext.Admins.FirstOrDefaultAsync(c => c.UserEmail == email);
+                    if (admin != null) return View(admin);
+                }
                 var customer = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == email);
                 if (customer != null) return View(customer);
                 else
@@ -53,42 +60,19 @@ namespace Web_BTL.Controllers
             {
                 Console.WriteLine("Da lay duoc anh vao post SaveImage");
                 string email = HttpContext.Session.GetString("LogIn Session");
+                string role = HttpContext.Session.GetString("Admin");
                 var admin = await _dataContext.Admins.FirstOrDefaultAsync(a => a.UserEmail == email);
-                if (admin != null) admin.UserImagePath = await SaveImageAsync(admin, image);
+                if (admin != null) admin.UserImagePath = await _save.SaveImageAsync(_environment, "images/users", admin.UserImagePath, admin.UserLogin, image);
                 else
                 {
                     var customer = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == email);
-                    if (customer != null) customer.UserImagePath = await SaveImageAsync(customer, image);
+                    if (customer != null) customer.UserImagePath = await _save.SaveImageAsync(_environment, "images/users", customer.UserImagePath, customer.UserLogin, image);
                 }
                 await _dataContext.SaveChangesAsync();
             }
             else
                 Console.WriteLine("Khong lay duoc anh ve");
             return RedirectToAction(nameof(UserInformation));
-        }
-        private async Task<string> SaveImageAsync(UserModel model, IFormFile image)
-        {
-            // Đường dẫn tới thư mục chứa ảnh trong wwwroot
-            string uploadsFolder = Path.Combine(_environment.WebRootPath, "images/users");
-            // Lấy ảnh cũ từ cơ sở dữ liệu
-            string oldImagePath = Path.Combine(uploadsFolder, model.UserImagePath);
-            // Kiểm tra nếu file ảnh cũ tồn tại thì xóa nó đi
-            if (System.IO.File.Exists(oldImagePath) && model.UserImagePath != "default.jpg")
-                System.IO.File.Delete(oldImagePath);
-            // Lấy phần mở rộng của file (ví dụ .jpg, .png)
-            string fileExtension = Path.GetExtension(image.FileName);
-            // Tạo tên file tùy chỉnh, ở đây đang lấy theo tên đăng nhập
-            string name = model.UserLogin;
-            string fileName = $"{name}{fileExtension}";
-            // Đường dẫn file mới
-            string newFilePath = Path.Combine(uploadsFolder, fileName);
-            // Lưu ảnh mới vào thư mục với tên mới
-            using (var fileStream = new FileStream(newFilePath, FileMode.Create))
-            {
-                await image.CopyToAsync(fileStream);
-            }
-            // Cập nhật đường dẫn ảnh mới vào cơ sở dữ liệu
-            return fileName;
         }
         public async Task<IActionResult> Name()
         {
@@ -147,13 +131,15 @@ namespace Web_BTL.Controllers
             else if (nPassword != cPassword)
                 ModelState.AddModelError("ErrorPassword", "Mật khẩu điền lại không đúng");
         }
+        [HttpGet]
         public IActionResult LogOut()
         {
             string email = HttpContext.Session.GetString("LogIn Session");
+            string role = HttpContext.Session.GetString("Admin");
             if (email != null)
-            {
                 HttpContext.Session.Remove("LogIn Session");
-            }
+            if (role != null)
+                HttpContext.Session.Remove(role);
             return RedirectToAction(nameof(SignIn), "Account");
         }
         public IActionResult Index()

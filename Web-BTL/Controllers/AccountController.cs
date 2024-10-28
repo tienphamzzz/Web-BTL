@@ -54,7 +54,7 @@ namespace Web_BTL.Controllers
                 }
                 Console.WriteLine("Da dang nhap bang tai khoan Admin");
                 HttpContext.Session.SetString("LogIn Session", admin.UserEmail);
-                HttpContext.Session.SetString("User", "Admin");
+                HttpContext.Session.SetString("Admin", admin.Role.ToString());
                 return RedirectToAction(nameof(Index), "Home");
             }
             return View(model);
@@ -103,6 +103,7 @@ namespace Web_BTL.Controllers
                 {
                     _cookieService.SetCookie(emailRecoverPassword, model.LogInName, 60, Response);
                     _cookieService.SetCookie("RecoverPassword", model.Password, 60, Response);
+                    Console.WriteLine("Email duoc luu" + _cookieService.GetCookie(emailRecoverPassword, Request));
                     return RedirectToAction(nameof(SendOtp));
                 }
                 else return View(model);
@@ -115,20 +116,15 @@ namespace Web_BTL.Controllers
             Console.WriteLine("Day la get SendOtp");
             string otpCode = _sendEmail.GenerateOTP();
             string _to = "";
-            //if (_cookieService.GetCookie(emailSignIn, Request) != null)
-            //    _to = _cookieService.GetCookie(emailSignIn, Request);
-            if (_cookieService.GetCookie(emailSignUp, Request) != null)
+            Console.WriteLine("############Day la email de lay lai mat khau: " + _cookieService.GetCookie(emailRecoverPassword, Request));
+            if (_cookieService.GetCookie(emailSignUp, Request) != "")
                 _to = _cookieService.GetCookie(emailSignUp, Request);
-            else if(_cookieService.GetCookie(emailRecoverPassword, Request) != null)
+            else if(_cookieService.GetCookie(emailRecoverPassword, Request) != "")
                 _to = _cookieService.GetCookie(emailRecoverPassword, Request);
-            if (_to != "")
-            {
-                _sendEmail.SendOTPEmail(_to, otpCode);
-                //HttpContext.Session.SetString("otpCode", otpCode); // sử dụng session toàn cục
-                _cookieService.SetCookie(OTP, otpCode, 1, Response); 
-                return View();
-            }
-            return RedirectToAction(nameof(SignIn));
+            if (_to == "") return RedirectToAction(nameof(SignIn));
+            _sendEmail.SendOTPEmail(_to, otpCode);
+            _cookieService.SetCookie(OTP, otpCode, 1, Response);
+            return View();
         }
         [HttpPost]
         public async Task<IActionResult> SendOtp(string Otp)
