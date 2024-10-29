@@ -77,9 +77,7 @@ namespace Web_BTL.Services.UploadFile
             validateUrl(url);
             string filePath = Path.Combine(_environment.WebRootPath, url, name); // lấy đường dẫn từ wwwroot để xoá file
             if (File.Exists(filePath))
-            {
                 File.Delete(filePath);
-            }
         }
         private async Task SaveFileAsync(IFormFile file, string path)
         {

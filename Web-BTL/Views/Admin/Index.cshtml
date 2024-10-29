@@ -14,7 +14,7 @@
                             <th>Tên phim</th>
                             <th>Chất lượng</th>
                             <th>Ngày phát hành</th>
-                            <th>Số tuổi</th>
+                            <th>Tuổi giới hạn</th>
                             <th>Thời lượng</th>
                             <th>Gói</th>
                             <th>Option</th>
@@ -26,7 +26,7 @@
                             <tr style="position: relative">
                                 <td>@m.MediaName</td>
                                 <td>@m.MediaQuality</td>
-                                <td>@m.ReleaseDate</td>
+                                <td>@(m.ReleaseDate?.ToString("MM\\/dd\\/yyyy") ?? "00/00/0000")</td>
                                 <td>@m.MediaAgeRating</td>
                                 <td>@(m.MediaDuration?.ToString("hh\\:mm\\:ss") ?? "00:00:00")</td>
                                 <td>@m.package</td>
@@ -34,7 +34,7 @@
                                     <a id="@m.MediaId" asp-action="EditMedia" asp-route-mid="@m.MediaId">Edit</a> |
                                     <a href="javascript:void(0);" onclick="showConfirmDelete('@m.MediaId')">Delete</a>
                                     <!--Hiển thị form xoá hay không xoá-->
-                                    <form id="confirm-delete-@m.MediaId" asp-action="DeleteMedia" method="post" style="display:none; position:absolute; background:white; padding:10px; border:1px solid #ddd; box-shadow:0px 0px 10px rgba(0,0,0,0.2);">
+                                    <form id="confirm-delete-@m.MediaId" asp-action="DeleteMedia" method="post" class="confirm-delete-form" style="display: none;">
                                         <p>Bạn có chắc chắn muốn xóa phim này?</p>
                                         <input type="hidden" name="mid" value="@m.MediaId" />
                                         <button type="submit" name="YesNo" value="true" class="btn btn-success">Có</button>
@@ -46,8 +46,8 @@
                     </tbody>
                 </table>
                 <a class="btn btn-outline-primary" asp-action="AddMedia">Add Film</a>
-                <a class="btn btn-primary">Add Genre</a>
-                <a class="btn btn-outline-primary">Add Actor</a>
+                <a class="btn btn-primary" asp-action="ListGenre">List Genre</a>
+                <a class="btn btn-outline-primary" asp-action="ListActor">List Actor</a>
             </div>
         </div>
     </div>

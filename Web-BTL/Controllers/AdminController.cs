@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Web_BTL.Models.Actors;
 using Web_BTL.Models.Medias;
 using Web_BTL.Models.User.Customer;
 using Web_BTL.Repository;
@@ -88,6 +89,7 @@ namespace Web_BTL.Controllers
             CreateViewBag();
             return View(media);
         }
+        // tạo các ViewBag cho các action sử dụng (hầu như đều dùng) trong controller Admin
         private void CreateViewBag()
         {
             ViewBag.AllPackage = Enum.GetValues(typeof(ServicePackage)).Cast<ServicePackage>().ToList();
@@ -98,6 +100,7 @@ namespace Web_BTL.Controllers
                 Text = g.Type,
                 Value = g.GenreId.ToString()
             }));
+            
         }
         // gọi đến sửa media
         [HttpGet]
@@ -113,6 +116,12 @@ namespace Web_BTL.Controllers
         [HttpPost]
         public async Task<IActionResult> EditMedia(int mid, [Bind("MediaName,MediaDescription,MediaQuality,ReleaseDate,MediaAgeRating,package")] MediaModel? model, IFormFile? image, IFormFile? video)
         {
+            //var actors = _datacontext.Actors.ToList();
+            //ViewBag.AllActors.AddRange(actors.Select(a => new SelectListItem
+            //{
+            //    Text = a.ActorName,
+            //    Value = a.ActorID.ToString()
+            //}));
             var media = await _datacontext.Medias.FirstOrDefaultAsync(m => m.MediaId == mid);
             if (media == null || model == null) return RedirectToAction(nameof(Index));
             media.MediaName = model.MediaName;
@@ -134,21 +143,122 @@ namespace Web_BTL.Controllers
         }
         // xoá media
         [HttpPost]
-        public async Task<IActionResult> DeleteMedia(int? mid, bool YesNo)
+        public async Task<IActionResult> DeleteMedia(int? mid, bool YesNo = false)
         {
             Console.WriteLine("Day la delete media");
             Console.WriteLine("mid = " + mid);
             if (mid != null && YesNo)
             {
                 var media = await _datacontext.Medias.FirstAsync(m => m.MediaId == mid);
-                _save.DeleteFile(_environment, "images/medias", media.MediaImagePath);
-                _save.DeleteFile(_environment, "videos", media.MediaUrl);
+                _save.DeleteFile(_environment, "images/medias", media.MediaImagePath); // xoá ảnh của media trong wwwroot
+                _save.DeleteFile(_environment, "videos", media.MediaUrl); // xoá media trong wwwroot
                 _datacontext.Medias.Remove(media);
                 await _datacontext.SaveChangesAsync();
                 Console.WriteLine("da xoa thanh cong");
             }
             else Console.WriteLine("Không xoá thành công");
             return RedirectToAction(nameof(Index));
+        }
+        public IActionResult ListGenre()
+        {
+            var genres = _datacontext.Genres.ToList();
+            return View(genres);
+        }
+        [HttpGet]
+        public IActionResult AddGenre()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddGenre(GenreModel genre)
+        {
+            if (genre == null) return View(genre);
+            await _datacontext.Genres.AddAsync(genre);
+            await _datacontext.SaveChangesAsync();
+            return RedirectToAction(nameof(ListGenre));
+        }
+        [HttpPost]
+        public IActionResult EditGenre([FromBody]GenreModel genre)
+        {
+            Console.WriteLine($"Day la EditGenre - {genre.GenreId} - {genre.Type}" );
+            var model = _datacontext.Genres.FirstOrDefault(g => g.GenreId == genre.GenreId);
+            if (model != null)
+            {
+                model.Type = genre.Type;
+                _datacontext.SaveChanges();
+                Console.WriteLine("Da cap nhat thanh cong");
+                return Json(new { success = true });
+            }
+            Console.WriteLine("Da cap nhat that bai");
+            return Json(new { success = false});
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteGenre(int? gid, bool YesNo = false)
+        {
+            if (gid != null && YesNo)
+            {
+                var genre = _datacontext.Genres.FirstOrDefault(g => g.GenreId == gid);
+                _datacontext.Genres.Remove(genre);
+                await _datacontext.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(ListGenre));
+        }
+        public IActionResult ListActor()
+        {
+            var actors = _datacontext.Actors.ToList();
+            return View(actors);
+        }
+        [HttpGet]
+        public IActionResult AddActor()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddActor(ActorModel actor)
+        {
+            if (actor == null) return View(actor);
+            await _datacontext.Actors.AddAsync(actor);
+            await _datacontext.SaveChangesAsync();
+            return RedirectToAction(nameof(ListActor));
+        }
+        [HttpPost]
+        public IActionResult EditActorName([FromBody]ActorModel actor)
+        {
+            var model = _datacontext.Actors.Find(actor.ActorID);
+            if (model != null)
+            {
+                model.ActorName = actor.ActorName;
+                //model.AcctorDate = actor.AcctorDate;
+                _datacontext.SaveChanges();
+                return Json(new {success = true});
+            }
+            return Json(new {success = false});
+        }
+        [HttpPost]
+        public IActionResult EditActorDate([FromBody] ActorModel actor)
+        {
+            //var model = _datacontext.Actors.Find(actor.ActorID);
+            Console.WriteLine($"Day la EditActor - {actor.ActorID}");
+            if (actor.ActorID == null) return Json(new { success = false });
+            var model = _datacontext.Actors.FirstOrDefault(a => a.ActorID == actor.ActorID);
+            if (model != null)
+            {
+                model.AcctorDate = actor.AcctorDate;
+                _datacontext.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteActor(int? aid, bool YesNo = false)
+        {
+            if (aid != null && YesNo)
+            {
+                var actor = await _datacontext.Actors.FirstOrDefaultAsync(a => a.ActorID == aid);
+                _datacontext.Actors.Remove(actor);
+                await _datacontext.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(ListActor));
         }
     }
 }

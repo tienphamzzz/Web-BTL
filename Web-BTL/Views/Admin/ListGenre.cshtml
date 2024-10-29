@@ -1,0 +1,89 @@
+﻿@using Web_BTL.Models.Medias
+@model IEnumerable<GenreModel>
+
+<div class="container-fluid px-4">
+    <div class="card mb-4">
+        <div>
+            <div class="card-header">
+                List Films
+            </div>
+            <div class="card-body">
+                <table id="tb" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tên thể loại</th>
+                            <th>Option</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var g in Model)
+                        {
+                            <tr style="position: relative">
+                                <td id="genre-type-@g.GenreId">@g.Type</td>
+                                <td style="color: orangered; position: relative;">
+                                    @* <a id="@g.GenreId" asp-action="EditGenre" asp-route-mid="@g.GenreId">Edit</a> | *@
+                                    <a href="javascript:void(0);" onclick="editGenre('@g.GenreId', '@g.Type')">Edit</a> |
+                                    <a href="javascript:void(0);" onclick="showConfirmDelete('@g.GenreId')">Delete</a>
+                                    <!--Hiển thị form xoá hay không xoá-->
+                                    <form id="confirm-delete-@g.GenreId" asp-action="DeleteGenre" method="post" class="confirm-delete-form" style="display: none;">
+                                        <p>Bạn có chắc chắn muốn xóa thể loại này này?</p>
+                                        <input type="hidden" name="gid" value="@g.GenreId" />
+                                        <button type="submit" name="YesNo" value="true" class="btn btn-success">Có</button>
+                                        <button type="button" onclick="hideConfirmDelete('@g.GenreId')" class="btn btn-danger">Không</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <a class="btn btn-outline-primary" asp-action="AddGenre">Add Genre</a>
+                <a class="btn btn-primary" asp-action="Index">List Media</a>
+                <a class="btn btn-outline-primary" asp-action="ListActor">List Actor</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function editGenre(genreId, currentType) {
+            const td = document.getElementById(`genre-type-${genreId}`);
+            const saveButton = `<button onclick="saveGenre(${genreId})" class="btn btn-success btn-sm">Save</button>`;
+            td.innerHTML = `<input type="text" id="input-genre-${genreId}" value="${currentType}" /> ${saveButton}`;
+        }
+
+        function saveGenre(genreId) {
+            const input = document.getElementById(`input-genre-${genreId}`);
+            const newType = input.value;
+
+            // Tạo yêu cầu đến server để cập nhật giá trị mới
+            fetch(`/Admin/EditGenre`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ GenreId: genreId, Type: newType })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const td = document.getElementById(`genre-type-${genreId}`);
+                    td.innerHTML = newType; // Cập nhật hiển thị với giá trị mới
+                } else alert("Có lỗi xảy ra khi cập nhật thể loại.");
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function showConfirmDelete(GenreId) {
+            // Ẩn tất cả các form xác nhận khác
+            document.querySelectorAll('form[id^="confirm-delete-"]').forEach(form => form.style.display = 'none');
+
+            // Hiển thị form xác nhận cho media hiện tại
+            document.getElementById(`confirm-delete-${GenreId}`).style.display = 'block';
+        }
+        function hideConfirmDelete(GenreId) {
+            // Ẩn form xác nhận
+            document.getElementById(`confirm-delete-${GenreId}`).style.display = 'none';
+        }
+    </script>
+}
