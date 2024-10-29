@@ -604,3 +604,37 @@ footer .content {
             left: 0;
         }
 }
+
+
+
+
+/* CSS cho thanh tìm kiếm */
+.search-form {
+    /*display: flex;*/
+    align-items: center;
+    margin-left: 0px; 
+}
+
+.search-input {
+    width: 400px; /* Tăng chiều dài của thanh tìm kiếm */
+    padding: 10px 15px; /* Tăng chiều cao và kích thước chữ */
+    font-size: 1rem; /* Tăng kích thước chữ */
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+}
+
+.search-button {
+    padding: 10px 15px; /* Tăng kích thước của nút tìm kiếm */
+    font-size: 1rem; /* Tăng kích thước chữ trong nút */
+    border: 1px solid #ccc;
+    border-left: none;
+    background-color: #fff;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+}
+
+    .search-button i {
+        font-size: 1.25rem; /* Tăng kích thước icon */
+    }
+
+

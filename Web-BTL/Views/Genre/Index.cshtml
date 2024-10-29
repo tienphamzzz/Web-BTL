@@ -10,12 +10,18 @@
 @model IEnumerable<Web_BTL.Models.Medias.MediaModel>
 
 
-<div class="t-body-wrapper">
+
+
+<div class="t-body-wrapper" style=" position: relative;z-index: 2; ">
+  @*   style=" position: relative;z-index: 1; *@
+ 
+
     <div class="t-body">
         <div class="t-header-and-movie-section">
             <div class="t-header-section">
                 <div class="t-header-label">
-                    MỚI CẬP NHẬT
+                    Danh Sách Phim
+
                 </div>
                  @* <div class="t-menu">
                     <a href="@Url.Action("AllMedias","Genre")">Tất cả</a>
@@ -27,13 +33,44 @@
                         }
                 </div>  *@
 
-                <div class="container">
-                    <h2>Danh sách thể loại</h2>
-                    
-                    @await Component.InvokeAsync("Genre")
+                <div class="container" style="width:100%;">
+                    @* <h2>Danh sách thể loại</h2> *@
+                    <div style="background-color: #333; padding: 20px; border-radius: 5px; color: white;">
+                        @await Component.InvokeAsync("Genre")
+                    </div>
 
                     <div id="media-section">
-                        <partial name="Layouts/_MediaPartial"  />
+
+                        <div class="t-movie-section">
+                            @foreach (var item in Model.Take(10))
+                            {
+                                <a class="t-movie" href="#">
+
+                                    <img src="@item.MediaImagePath" alt="@item.MediaName">
+
+                                    <div class="t-movie-content">
+                                        <div class="t-movie-title">@item.MediaName</div>
+                                        <div class="t-movie-info">
+                                            <div>
+                                                <i class="bx bxs-star"></i>
+                                                <span>9.5</span>
+                                            </div>
+                                            <div>
+                                                <i class="bx bxs-time"></i>
+                                                <span>@item.MediaDuration</span>
+                                            </div>
+                                            <div>
+                                                <span>@item.MediaQuality</span>
+                                            </div>
+                                            <div>
+                                                <span>@item.MediaAgeRating</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </a>
+                            }
+                        </div>
                     </div>
                 </div>
 
@@ -48,7 +85,7 @@
             </div> *@
 
             <div>
-                <a href="#" class="t-btn-more">Xem Thêm...</a>
+                <a href="@Url.Action("AllMedias", "Genre")" class="t-btn-more">Xem Thêm...</a>
             </div>
         </div>
 
@@ -133,7 +170,10 @@
             // Gắn sự kiện click vào các nút bên trong .genre-item
             $(document).on("click", ".genre-item button", function () {
                 var genreId = $(this).closest('.genre-item').data("id");
-                console.log("Genre ID: " + genreId); // Kiểm tra giá trị genreId
+                var genreName = $(this).text(); // Lấy tên thể loại
+
+                // Hiển thị tên thể loại đã chọn cạnh nút "Thể loại"
+                $("#selectedGenre").text(">> " + genreName);
 
                 $.ajax({
                     url: '@Url.Action("FilteredMedias", "Genre")',
@@ -155,3 +195,15 @@
 
     </script>
 }
+
+<partial name="Layouts/Footer" />
+<!-- END FOOTER SECTION -->
+<!-- COPYRIGHT SECTION -->
+<div class="copyright">
+    Copyright 2023
+</div>
+
+
+
+
+

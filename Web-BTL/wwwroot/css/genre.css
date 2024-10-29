@@ -11,7 +11,7 @@
 }
 
 .t-body {
-    width: 90%;
+    width: 100%;
     background-color: #181616;
 }
 
@@ -191,3 +191,20 @@
         background-color: #e0e0e0;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng đổ bóng khi hover */
     }
+
+
+
+
+#backgroundVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Để video dưới nội dung */
+}
+.t-body-wrapper {
+    position: relative;
+    z-index: 1; /* Đảm bảo nội dung nằm trên video */
+}

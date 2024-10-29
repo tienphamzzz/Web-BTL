@@ -17,10 +17,13 @@
 
 
 
-            <form method="get" asp-action="AllMedias">
-                <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Search by movie name" />
-                <button type="submit">Search</button>
+            <form method="get" asp-action="AllMedias" asp-controller="Genre" class="search-form">
+                <input type="text" name="searchTerm" value="@ViewBag.SearchTerm" placeholder="Search by movie name" class="search-input" />
+                <button type="submit" class="search-button">
+                    <i class='bx bx-search'></i>
+                </button>
             </form>
+
 
 
 
