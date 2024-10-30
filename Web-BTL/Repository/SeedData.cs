@@ -149,7 +149,7 @@ namespace Web_BTL.Repository
                         MediaQuality = "HD",
                         ReleaseDate = new DateTime(2024, 9, 12),
                         MediaAgeRating = 16,
-                        MediaImagePath = "supergirl",
+                        MediaImagePath = "/images/movies/supergirl.jpg",
                         MediaDuration = new TimeSpan(2, 0, 0),
                         package = 1
                     },
@@ -161,7 +161,7 @@ namespace Web_BTL.Repository
                         MediaQuality = "HD",
                         ReleaseDate = new DateTime(2024, 9, 12),
                         MediaAgeRating = 16,
-                        MediaImagePath = "transformer",
+                        MediaImagePath = "/images/movies/transformer.jpg",
                         MediaDuration = new TimeSpan(2, 0, 0),
                         package = 2
                     },
@@ -173,7 +173,7 @@ namespace Web_BTL.Repository
                         MediaQuality = "HD",
                         ReleaseDate = new DateTime(2024, 9, 12),
                         MediaAgeRating = 16,
-                        MediaImagePath = "demonslayer",
+                        MediaImagePath = "/images/movies/demonslayer.jpg",
                         MediaDuration = new TimeSpan(2, 0, 0),
                         package = 0
                     }
