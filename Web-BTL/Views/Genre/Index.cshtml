@@ -2,8 +2,8 @@
     ViewData["Title"] = "Movies";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Styles{
-    <link href="~/css/genre.css"  rel="stylesheet" />
+@section Styles {
+    <link href="~/css/genre.css" rel="stylesheet" />
     <link href="~/css/grid.css" rel="stylesheet">
     <link href="~/css/app.css" rel="stylesheet">
 }
@@ -20,11 +20,11 @@
                 <div class="t-menu">
                     <a href="@Url.Action("AllMedias","Genre")">Tất cả</a>
                     @foreach (var genre in ViewBag.Genre)
-                        {
+                    {
                         <a href="javascript:void(0)" onclick="filterMovies(@genre.GenreId)">
                             @genre.Type
                         </a>
-                        }
+                    }
                 </div>
             </div>
 
@@ -38,10 +38,10 @@
             </div>
         </div>
 
-         <div class="t-header-and-movie-section">
+        <div class="t-header-and-movie-section">
             <div class="t-header-section">
                 <div class="t-header-label">
-                    PHIM BỘ ZZZ
+                    PHIM BỘ
                 </div>
             </div>
 
@@ -84,7 +84,7 @@
     </div>
 </div>
 
-@section Scripts{
+@section Scripts {
     <script>
         function filterMovies(genreId) {
             $.ajax({
