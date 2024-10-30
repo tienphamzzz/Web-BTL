@@ -77,3 +77,35 @@
     .links a:hover{
         color: #3b5998;
     }
+
+/*    SendOTP*/
+.otp-container{
+    width: 90%;
+    height: 50vh;
+    background-color: #181616;
+    margin: 80px auto 0 auto;
+}
+.e-otp-container{
+    width : 50%;
+    margin: 0 auto;
+}
+.otp {
+    display: flex;
+    gap: 5px; /* Khoảng cách giữa các input */
+    flex-wrap: wrap;
+}
+    .otp input {
+        flex: 1; /* Chia đều chiều rộng cho các input */
+        font-size: 20px;
+        text-align: center;
+        height: 30px;
+        min-width: 0; /* Đảm bảo input không tràn ra ngoài */
+        box-sizing: border-box;
+    }
+.otp-resend{
+    margin-top: 20px;
+}
+.otp-resend a{
+    margin-left: 10px;
+    color: #3b5998;
+}
