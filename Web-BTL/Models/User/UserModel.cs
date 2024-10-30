@@ -5,7 +5,7 @@ namespace Web_BTL.Models.User
 {
     public abstract class UserModel
     {
-        public string? UserName { get; set; }
+        public string? UserName { get; set; } // tene người dùng không có cx đc
         [Required]
         public string? UserLogin { get; set; } // tên tài khoản dùng để login
         [Required]

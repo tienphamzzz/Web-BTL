@@ -25,10 +25,16 @@ namespace Web_BTL.Controllers
             return View(media);
         }
 
-        public IActionResult AllMedias(int? pageindex)
+        public IActionResult AllMedias(int? pageindex, string searchTerm)
         {
             // Khởi tạo IQueryable chứa danh sách MediaModel từ cơ sở dữ liệu
             var medias = db.Medias.AsQueryable();
+
+            // Nếu có từ khóa tìm kiếm, lọc kết quả dựa trên tên phim
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                medias = medias.Where(m => m.MediaName.Contains(searchTerm));
+            }
 
             // Xác định số trang hiện tại
             var page = pageindex ?? 1;
@@ -43,6 +49,7 @@ namespace Web_BTL.Controllers
             // Gán tổng số trang vào ViewBag để hiển thị trong View
             ViewBag.PageNumbers = pageNumbers;
             ViewBag.CurrentPage = page;
+            ViewBag.SearchTerm = searchTerm;
 
             // Lấy các item cho trang hiện tại, sử dụng Skip và Take để phân trang
             var result = medias
@@ -53,6 +60,7 @@ namespace Web_BTL.Controllers
             // Trả về View cùng với danh sách các MediaModel của trang hiện tại
             return View(result);
         }
+
 
         public IActionResult MoviesFilter(int? mid)
         {
@@ -71,6 +79,17 @@ namespace Web_BTL.Controllers
 
             return PartialView("_MediaPartial", result);
         }
+
+
+
+        public IActionResult FilteredMedias(int genreId)
+        {
+            var medias = db.Medias
+                                 .Where(m => m.Genres.Any(g => g.GenreId == genreId))
+                                 .ToList();
+            return PartialView("Layouts/_MediaPartial", medias);
+        }
+
 
     }
 }

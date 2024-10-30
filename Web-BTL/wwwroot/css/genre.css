@@ -11,7 +11,7 @@
 }
 
 .t-body {
-    width: 90%;
+    width: 100%;
     background-color: #181616;
 }
 
@@ -84,6 +84,7 @@
     font-size: 1.5rem;
     position: relative;
     font-weight: 700;
+    margin-bottom: 5px;
 }
 
 .t-movie-info {
@@ -155,3 +156,55 @@
         border-color: #dee2e6;
     }
 
+#media-section {
+    display: block !important;
+}
+
+
+
+.genre-list {
+    list-style-type: none; /* Loại bỏ dấu gạch của li */
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap; /* Cho phép các phần tử xuống dòng khi không đủ chỗ */
+    gap: 10px; /* Khoảng cách giữa các phần tử */
+}
+
+.genre-item {
+    margin: 0;
+}
+
+.genre-button {
+    display: inline-block;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f8f8;
+    text-decoration: none;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s; /* Thêm hiệu ứng chuyển đổi */
+}
+
+    .genre-button:hover {
+        background-color: #e0e0e0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm hiệu ứng đổ bóng khi hover */
+    }
+
+
+
+
+#backgroundVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Để video dưới nội dung */
+}
+.t-body-wrapper {
+    position: relative;
+    z-index: 1; /* Đảm bảo nội dung nằm trên video */
+}

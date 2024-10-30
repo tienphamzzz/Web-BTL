@@ -14,9 +14,16 @@ namespace Web_BTL.Models
         public string? ReviewContent { get; set; } // nội dung
         public double? ReviewRating { get; set; } // sao đánh giá
         public DateTime? ReviewCreateDate { get; set; }
-        public virtual int? CustomerId { get; set; } // khoá ngoại
+
+        // Định nghĩa CustomerId là khóa ngoại
+        public int CustomerId { get; set; } // khoá ngoại
+
+        // Thuộc tính điều hướng
+        [ForeignKey("CustomerId")]
         public virtual CustomerModel? UserModel { get; set; }
-        public virtual int MediaId { get; set; }
+
+        public int MediaId { get; set; }
+        [ForeignKey("MediaId")]
         public virtual MediaModel? Medias { get; set; }
     }
 }
