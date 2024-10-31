@@ -141,43 +141,43 @@ namespace Web_BTL.Repository
             */
             {
                 _context.Medias.AddRange(
-                    new MediaModel
-                    {
-                        MediaName = "Supergirl",
-                        MediaUrl = "supergirl",
-                        MediaDescription = "The film is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "supergirl",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        package = 1
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Transformer",
-                        MediaUrl = "transformer",
-                        MediaDescription = "The film is the best",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "transformer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        package = 2
-                    },
-                    new MediaModel
-                    {
-                        MediaName = "Demon Slayer",
-                        MediaUrl = "demonslayer",
-                        MediaDescription = "The cartoon is very good",
-                        MediaQuality = "HD",
-                        ReleaseDate = new DateTime(2024, 9, 12),
-                        MediaAgeRating = 16,
-                        MediaImagePath = "demonslayer",
-                        MediaDuration = new TimeSpan(2, 0, 0),
-                        package = 0
-                    }
-                    );
+                        new MediaModel
+                        {
+                            MediaName = "Supergirl",
+                            MediaUrl = "supergirl",
+                            MediaDescription = "The film is very good",
+                            MediaQuality = "HD",
+                            ReleaseDate = new DateTime(2024, 9, 12),
+                            MediaAgeRating = 16,
+                            MediaImagePath = "supergirl",
+                            MediaDuration = new TimeSpan(2, 0, 0),
+                            package = 1
+                        },
+                        new MediaModel
+                        {
+                            MediaName = "Transformer",
+                            MediaUrl = "transformer",
+                            MediaDescription = "The film is the best",
+                            MediaQuality = "HD",
+                            ReleaseDate = new DateTime(2024, 9, 12),
+                            MediaAgeRating = 16,
+                            MediaImagePath = "transformer",
+                            MediaDuration = new TimeSpan(2, 0, 0),
+                            package = 2
+                        },
+                        new MediaModel
+                        {
+                            MediaName = "Demon Slayer",
+                            MediaUrl = "demonslayer",
+                            MediaDescription = "The cartoon is very good",
+                            MediaQuality = "HD",
+                            ReleaseDate = new DateTime(2024, 9, 12),
+                            MediaAgeRating = 16,
+                            MediaImagePath = "demonslayer",
+                            MediaDuration = new TimeSpan(2, 0, 0),
+                            package = 0
+                        }
+                        );
                 _context.SaveChanges();
             }
             if (!_context.Reviews.Any())

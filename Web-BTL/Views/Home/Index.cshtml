@@ -3,7 +3,7 @@
 }
 @using Web_BTL.Models.Medias
 
-@model IEnumerable<MediaModel>
+@model IEnumerable<Web_BTL.Models.Medias.MediaModel>
 
 @section Styles {
     <link href="~/css/grid.css" rel="stylesheet">
@@ -36,11 +36,13 @@
 <!-- PRICING SECTION -->
 <partial name="Layouts/FlixPricing/FlixPricing" />
 <!-- END PRICING SECTION -->
-<!-- COPYRIGHT SECTION -->
-<div class="copyright">
-    Copyright 2023
-</div>
-<!-- END COPYRIGHT SECTION -->
-@section Scripts{
-    
+@section Scripts {
+
 }
+<script>
+    $("img").click(function (e) {
+        var id = $(this).attr("id");
+
+        window.location.href = "Movie/Index?movieId=" + id;
+    });
+</script>

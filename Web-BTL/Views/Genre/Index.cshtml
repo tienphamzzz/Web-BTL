@@ -19,10 +19,6 @@
     <div class="t-body">
         <div class="t-header-and-movie-section">
             <div class="t-header-section">
-                <div class="t-header-label">
-                    Danh Sách Phim
-
-                </div>
                 @* <div class="t-menu">
                 <a href="@Url.Action("AllMedias","Genre")">Tất cả</a>
                 @foreach (var genre in ViewBag.Genre)
@@ -38,7 +34,9 @@
                     <div style="background-color: #333; padding: 20px; border-radius: 5px; color: white;">
                         @await Component.InvokeAsync("Genre")
                     </div>
-
+                    <div class="t-header-label">
+                        Danh Sách Phim
+                    </div>
                     <div id="media-section">
 
                         <div class="t-movie-section">
