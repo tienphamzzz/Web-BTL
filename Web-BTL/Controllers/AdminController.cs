@@ -106,6 +106,14 @@ namespace Web_BTL.Controllers
         [HttpGet]
         public IActionResult EditMedia(int? mid)
         {
+            Console.WriteLine("day la get edit media");
+            var actors = _datacontext.Actors.ToList();
+            ViewBag.AllActors = new List<SelectListItem>();
+            ViewBag.AllActors.AddRange(actors.Select(a => new SelectListItem
+            {
+                Text = a.ActorName,
+                Value = a.ActorID.ToString()
+            }));
             if (mid == null)
                 return RedirectToAction(nameof(Index));
             var media = _datacontext.Medias.FirstOrDefault(m => m.MediaId == mid);
@@ -114,22 +122,28 @@ namespace Web_BTL.Controllers
         }
         // lấy dữ liệu media đã sửa về
         [HttpPost]
-        public async Task<IActionResult> EditMedia(int mid, [Bind("MediaName,MediaDescription,MediaQuality,ReleaseDate,MediaAgeRating,package")] MediaModel? model, IFormFile? image, IFormFile? video)
+        public async Task<IActionResult> EditMedia(int mid, MediaModel model, 
+            IFormFile? image, IFormFile? video, List<int> SelectedActorId, List<int> SelectedActorMain)
         {
-            //var actors = _datacontext.Actors.ToList();
-            //ViewBag.AllActors.AddRange(actors.Select(a => new SelectListItem
-            //{
-            //    Text = a.ActorName,
-            //    Value = a.ActorID.ToString()
-            //}));
+            Console.WriteLine("Day la post Edit media");
+            Console.WriteLine("day la id" + mid);
+            Console.WriteLine("day la id cua media" + model.MediaId);
+            if (mid != model.MediaId) return NotFound();
             var media = await _datacontext.Medias.FirstOrDefaultAsync(m => m.MediaId == mid);
             if (media == null || model == null) return RedirectToAction(nameof(Index));
-            media.MediaName = model.MediaName;
-            media.MediaDescription = model.MediaDescription;
-            media.MediaQuality = model.MediaQuality;
-            media.ReleaseDate = model.ReleaseDate;
-            media.MediaAgeRating = model.MediaAgeRating;
-            media.package = model.package;
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _datacontext.Update(media);
+                    await _datacontext.SaveChangesAsync();
+                }catch (DbUpdateConcurrencyException)
+                {
+                    if (!mediaExists(media.MediaId))
+                        return NotFound();
+                    else throw;
+                }
+            }
             if (image != null && image.Length > 0)
                 media.MediaImagePath = await _save.SaveImageAsync(_environment, "images/medias", "", media.MediaName, image);
             if (video != null && video.Length > 0)
@@ -138,8 +152,40 @@ namespace Web_BTL.Controllers
                 media.MediaImagePath = resule.videoName;
                 media.MediaDuration = resule.duration;
             }
+            if (SelectedActorId.Count > 0)
+            {
+                
+                foreach (var id in SelectedActorId)
+                {
+                    await _datacontext.Actor_Medias.AddAsync(new Actor_MediaModel
+                    {
+                        MediaId = mid,
+                        Media = media,
+                        ActorId = id,
+                        Actor = await _datacontext.Actors.FindAsync(id)
+                    });
+                }
+                await _datacontext.SaveChangesAsync();
+                foreach (var main in SelectedActorMain)
+                {
+                    var a = await _datacontext.Actor_Medias.FindAsync(main);
+                    a.IsMain = true;
+                }
+                await _datacontext.SaveChangesAsync();
+            }else Console.WriteLine("Loi o phan add Actor");
             await _datacontext.SaveChangesAsync();
+            ViewBag.AllActors = new List<SelectListItem>();
+            var actors = _datacontext.Actors.ToList();
+            ViewBag.AllActors.AddRange(actors.Select(a => new SelectListItem
+            {
+                Text = a.ActorName,
+                Value = a.ActorID.ToString()
+            }));
             return View(model);
+        }
+        private bool mediaExists(int id)
+        {
+            return (_datacontext.Medias?.Any(e => e.MediaId == id)).GetValueOrDefault();
         }
         // xoá media
         [HttpPost]

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
 using Web_BTL.Models;
 using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.User.Customer;
@@ -14,24 +16,23 @@ namespace Web_BTL.Controllers
         private readonly DataContext _dataContext;
         private readonly SendEmail _sendEmail;
         private readonly CookieService _cookieService;
+        private readonly IMemoryCache _cache;
         private readonly string emailSignIn = "SignIn", emailSignUp = "SignUp", emailRecoverPassword = "RPass", OTP = "OTP";
-        public AccountController(DataContext dataContext, SendEmail sendEmail, CookieService cookieService)
+        public AccountController(DataContext dataContext, SendEmail sendEmail, CookieService cookieService, IMemoryCache cache)
         {
             _dataContext = dataContext;
             _sendEmail = sendEmail;
             _cookieService = cookieService;
+            _cache = cache;
         }
         [HttpGet]
         public IActionResult SignIn() // Get Sign In khi người dùng trỏ đến linh Sign In
         {
-            Console.WriteLine("Day la get SignIn");
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> SignIn(LogInModel model)
         {
-            Console.WriteLine("Day la post SignIn");
-            Console.WriteLine("Ten tai khoan: " + model.LogInName + " - Mat khau: " + model.Password);
             if (ModelState.IsValid)
             {
                 var admin = await _dataContext.Admins.
@@ -42,17 +43,11 @@ namespace Web_BTL.Controllers
                         FirstOrDefaultAsync(c => ((c.UserEmail == model.LogInName || c.UserLogin == model.LogInName) && c.LoginPassword == model.Password) && c.UserState == true);
                     if (customer != null)
                     {
-                        Console.WriteLine("Da dang nhap bang tai khoan Customer");
                         HttpContext.Session.SetString("LogIn Session", customer.UserEmail);
                         return RedirectToAction(nameof(Index), "Home");
                     }
-                    else
-                    {
-                        Console.WriteLine("Dang nhap sai mat khau hoac tai khoan");
-                        return View(model);
-                    }
+                    else return View(model);
                 }
-                Console.WriteLine("Da dang nhap bang tai khoan Admin");
                 HttpContext.Session.SetString("LogIn Session", admin.UserEmail);
                 HttpContext.Session.SetString("Admin", admin.Role.ToString());
                 return RedirectToAction(nameof(Index), "Home");
@@ -62,133 +57,143 @@ namespace Web_BTL.Controllers
         [HttpGet]
         public IActionResult SignUp()
         {
-            Console.WriteLine("Day la get SignUp");
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> SignUp(CustomerModel model)
         {
-            Console.WriteLine("Day la post SignUp");
             if (ModelState.IsValid)
             {
-                if(await _dataContext.Admins.FirstOrDefaultAsync(a => a.UserEmail == model.UserEmail || a.UserLogin == model.UserLogin) != null || 
-                   await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == model.UserEmail || c.UserLogin == model.UserLogin) != null)
+                var admin = await _dataContext.Admins.FirstOrDefaultAsync(a => a.UserEmail == model.UserEmail || a.UserLogin == model.UserLogin);
+                var customer = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == model.UserEmail || c.UserLogin == model.UserLogin);
+                if (customer == null || admin == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Email hoặc tên đăng nhập đã tồn tại");
-                    return View(model);
+                    model.UserImagePath = "default.jpg";
+                    model.UserState = true;
+                    model._ServicePackage = ServicePackage.Basic;
+                    model.UserCreateDate = DateTime.Now;
+                    return SendOtp(model, 1);
                 }
-
-                _cookieService.SetCookie(emailSignUp, model.UserEmail, 60, Response);
-                _cookieService.SetCookie("Password", model.LoginPassword, 60, Response);
-                _cookieService.SetCookie("LogInName", model.UserLogin, 60, Response);
-                return RedirectToAction(nameof(SendOtp));
+                //_cookieService.SetCookie(emailSignUp, model.UserEmail, 5, Response);
+                //_cookieService.SetCookie("Password", model.LoginPassword, 5, Response);
+                //_cookieService.SetCookie("LogInName", model.UserLogin, 5, Response);
+                //return RedirectToAction(nameof(SendOtp));
+                ModelState.AddModelError(string.Empty, "Email hoặc tên đăng nhập đã tồn tại");
+                return View(model);
             }
             return View(model);
         }
         [HttpGet]
         public IActionResult RecoverPassword()
         {
-            Console.WriteLine("Day la get RecoverPassword");
+            Console.WriteLine("day la get Recover Password");
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> RecoverPassword(LogInModel model)
         {
-            Console.WriteLine("Day la post RecoverPassword");
-            
+            Console.WriteLine("day la post Recover Password");
             if (ModelState.IsValid)
             {
-                var customer = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserName == model.LogInName || c.UserEmail == model.LogInName);
-                if (customer != null)
+                var cus = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserLogin == model.LogInName || c.UserEmail == model.LogInName);
+                if (cus != null)
                 {
-                    _cookieService.SetCookie(emailRecoverPassword, model.LogInName, 60, Response);
-                    _cookieService.SetCookie("RecoverPassword", model.Password, 60, Response);
-                    Console.WriteLine("Email duoc luu" + _cookieService.GetCookie(emailRecoverPassword, Request));
-                    return RedirectToAction(nameof(SendOtp));
+                    //_cookieService.SetCookie(emailRecoverPassword, model.LogInName, 60, Response);
+                    //_cookieService.SetCookie("RecoverPassword", model.Password, 60, Response);
+                    //Console.WriteLine("Email duoc luu" + _cookieService.GetCookie(emailRecoverPassword, Request));
+                    cus.LoginPassword = model.Password;
+                    Console.WriteLine("ban dang di dung huong ben trong post Recover Password");
+                    return SendOtp(cus, 2);
                 }
-                else return View(model);
+                else
+                {
+                    Console.WriteLine("Ban dang khong tim thay customer");
+                    return View(model);
+                }
             }
+            Console.WriteLine("Ban da nhap thieu thong tin gi do");
             return View(model);
         }
         [HttpGet]
-        public IActionResult SendOtp()
+        public IActionResult SendOtp(CustomerModel cus, int CheckMethod)
         {
             Console.WriteLine("Day la get SendOtp");
             string otpCode = _sendEmail.GenerateOTP();
-            string _to = "";
-            Console.WriteLine("############Day la email de lay lai mat khau: " + _cookieService.GetCookie(emailRecoverPassword, Request));
-            if (_cookieService.GetCookie(emailSignUp, Request) != "")
-                _to = _cookieService.GetCookie(emailSignUp, Request);
-            else if(_cookieService.GetCookie(emailRecoverPassword, Request) != "")
-                _to = _cookieService.GetCookie(emailRecoverPassword, Request);
-            if (_to == "") return RedirectToAction(nameof(SignIn));
+            string _to = cus.UserEmail;
             _sendEmail.SendOTPEmail(_to, otpCode);
             _cookieService.SetCookie(OTP, otpCode, 1, Response);
-            return View();
+            HttpContext.Session.SetString(OTP, otpCode);
+            HttpContext.Session.SetString("email", cus.UserEmail);
+            HttpContext.Session.SetString("method", CheckMethod.ToString());
+            _cache.Set("customer", cus, TimeSpan.FromMinutes(5));
+            Console.WriteLine($"Day la ma Otp: {otpCode}");
+            return View("SendOtp");
         }
         [HttpPost]
         public async Task<IActionResult> SendOtp(string Otp)
         {
-            Console.WriteLine("Day la post SendOtp");
-            //if(Otp == HttpContext.Session.GetString("otpCode")) // lấy giá trị của session toàn cục
-            if(Otp == Request.Cookies["OTP"])
+            Console.WriteLine("Ma otp ban nhap la: " + Otp);
+            
+            if (_cache.TryGetValue("customer", out CustomerModel customer))
             {
-                Console.WriteLine("Ban da nhap dung ma OTP");
-                //if (Request.Cookies[emailSignIn] != null)
-                //{
-                //    HttpContext.Session.SetString("LogIn Session", _cookieService.GetCookie(emailSignIn, Request));
-                //    //deleteCookie(emailSignIn);
-                //    _cookieService.DeleteCookie(emailSignIn, Response);
-                //    return RedirectToAction(nameof(Index), "Home");
-                //}
-                if(Request.Cookies[emailSignUp] != null)
+                Console.WriteLine("ban da xac nhan la co customer");
+                if (Otp == HttpContext.Session.GetString(OTP))
                 {
-                    var customer = new CustomerModel
+                    Console.WriteLine("Da xac nhan dung otp");
+                    string method = HttpContext.Session.GetString("method");
+                    if (method != null)
                     {
-                        UserName = _cookieService.GetCookie("LogInName", Request),
-                        UserLogin = _cookieService.GetCookie("LogInName", Request),
-                        UserEmail = _cookieService.GetCookie(emailSignUp, Request),
-                        LoginPassword = _cookieService.GetCookie("Password", Request),
-                        UserImagePath = "default.png",
-                        UserState = true,
-                        _ServicePackage = ServicePackage.Basic,
-                        UserCreateDate = DateTime.Now
-                    };
-                    _dataContext.Customers.Add(customer); // thêm customer mới vào database
-                    var watchList = new WatchListModel
-                    {
-                        CustomerId = customer.CustomerId
-                    };
-                    _dataContext.WatchLists.Add(watchList); // thêm watchList mới vào database
-                    await _dataContext.SaveChangesAsync();
-                    customer.WatchListId = watchList.WatchListId;
-                    await _dataContext.SaveChangesAsync();
-                    _cookieService.DeleteCookie(emailSignUp, Response);
+                        if (method == "1")
+                        {
+                            
+                            _dataContext.Customers.Add(customer); // thêm customer mới vào database
+                            await _dataContext.SaveChangesAsync();
+                            var watchList = new WatchListModel
+                            {
+                                CustomerId = customer.CustomerId
+                            };
+                            _dataContext.WatchLists.Add(watchList); // thêm watchList mới vào database
+                            await _dataContext.SaveChangesAsync();
+                            customer.WatchListId = watchList.WatchListId;
+                            await _dataContext.SaveChangesAsync();
+
+                        }
+                        else if (method == "2")
+                        {
+                            var cus = await _dataContext.Customers.FindAsync(customer.CustomerId);
+                            cus.LoginPassword = customer.LoginPassword;
+                            await _dataContext.SaveChangesAsync();
+                        }
+                    }
+                    HttpContext.Session.Clear();
+                    _cache.Remove("customer");
                     return RedirectToAction(nameof(SignIn));
                 }
-                if (Request.Cookies[emailRecoverPassword] != null)
+                else
                 {
-                    string userName = _cookieService.GetCookie(emailRecoverPassword, Request);
-                    var customer = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserName == userName || c.UserEmail == userName);
-                    if(customer != null)
-                        customer.LoginPassword = _cookieService.GetCookie("RecoverPassword", Request);
-                    await _dataContext.SaveChangesAsync();
-                    _cookieService.DeleteCookie("RecoverPassword", Response);
-                    _cookieService.DeleteCookie(emailRecoverPassword, Response);
-                    return RedirectToAction(nameof(SignIn));
+                    ModelState.AddModelError(string.Empty, "OTP không khớp. Vui lòng kiểm tra lại.");
+                    Console.WriteLine("Ban da nhap sai ma otp");
                 }
             }
-            Console.WriteLine("Ban da nhap sai otp");
+            Console.WriteLine("Khong co du lieu cua customer");
             return View();
         }
-        //[HttpPost]        
-        //public async Task<IActionResult> UserInformation([Bind("UserName, LoginPassword")]CustomerModel customer)
-        //{
-        //    string email = HttpContext.Session.GetString("LogIn Session");
-        //    var cus = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == email);
-        //    return View("UserInformation", cus);
-        //}
-        
+        [HttpPost]
+        public IActionResult ResendOtp()
+        {
+            Console.WriteLine("Day la post ResenOtp");
+            if (_cache.TryGetValue("customer", out CustomerModel customer))
+            {
+                string otp = _sendEmail.GenerateOTP();
+                string _to = customer.UserEmail;
+                _sendEmail.SendOTPEmail(_to, otp);
+                HttpContext.Session.SetString(OTP, otp);
+                Console.WriteLine($"Day la ma otp: {otp}");
+                TempData.Keep("customer");
+                return Json(new {success = true, message = "Đã gửi otp thành công"});
+            }
+            return Json(new { success = false, message = "Không thê gửi mã otp, vui lòng thử lại" });
+        }
         public IActionResult Index()
         {
             return View();

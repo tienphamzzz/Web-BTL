@@ -34,9 +34,17 @@
             }
         }
         document.getElementById("reload").onclick = function () {
-            location.reload();  // Tải lại trang
-            window.location.href = '/Account/SendOTP';
-            alert("Mã OTP đã được gửi lại!");
+            // location.reload();  // Tải lại trang
+            // window.location.href = '/Account/SendOTP';
+            // alert("Mã OTP đã được gửi lại!");
+            $.ajax({
+                url: '/Account/ResendOtp',
+                type: 'POST',
+                success: function(response){
+                    if (response.success) alert(response.message);
+                    else alert(response.message);
+                }
+            });
         };
         function combineOTP(){
             var otp = document.getElementById("otp1").value

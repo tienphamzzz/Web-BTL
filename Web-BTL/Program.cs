@@ -32,6 +32,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddMemoryCache();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
     options.Cookie.IsEssential = true;

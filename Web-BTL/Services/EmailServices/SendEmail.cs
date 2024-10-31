@@ -28,18 +28,13 @@ namespace Web_BTL.Services.EmailServices
                     client.Connect(_email.SmtpServer, _email.SmtpPort, MailKit.Security.SecureSocketOptions.StartTls);
                     client.Authenticate(_email.SenderEmail, _email.SenderPassword);
                     client.Send(message);
-                    Console.WriteLine("Da gui thanh cong " + otpCode);
                     check = true;
                 }catch (Exception ex)
                 {
-                    Console.WriteLine("Khong gui duoc");
                     Console.WriteLine(ex.ToString());
                     check = false;
                 }
-                finally
-                {
-                    client.Disconnect(true);
-                }
+                finally { client.Disconnect(true); }
             }
             return check;
         }

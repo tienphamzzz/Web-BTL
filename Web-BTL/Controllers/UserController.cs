@@ -139,7 +139,7 @@ namespace Web_BTL.Controllers
             if (email != null)
                 HttpContext.Session.Remove("LogIn Session");
             if (role != null)
-                HttpContext.Session.Remove(role);
+                HttpContext.Session.Remove("Admin");
             return RedirectToAction(nameof(SignIn), "Account");
         }
         public IActionResult Index()
