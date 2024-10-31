@@ -1,0 +1,69 @@
+@using Web_BTL.Models.Medias
+@model IEnumerable<MediaModel>
+
+<div class="container-fluid px-4">
+    <div class="card mb-4">
+        <div>
+            <div class="card-header">
+                List Films
+            </div>
+            <div class="card-body">
+                <table id="tb" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>Tên phim</th>
+                            <th>Chất lượng</th>
+                            <th>Ngày phát hành</th>
+                            <th>Tuổi giới hạn</th>
+                            <th>Thời lượng</th>
+                            <th>Gói</th>
+                            <th>Option</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var m in Model)
+                        {
+                            <tr style="position: relative">
+                                <td>@m.MediaName</td>
+                                <td>@m.MediaQuality</td>
+                                <td>@(m.ReleaseDate?.ToString("MM\\/dd\\/yyyy") ?? "00/00/0000")</td>
+                                <td>@m.MediaAgeRating</td>
+                                <td>@(m.MediaDuration?.ToString("hh\\:mm\\:ss") ?? "00:00:00")</td>
+                                <td>@m.package</td>
+                                <td style="color: orangered; position: relative;">
+                                    <a id="@m.MediaId" asp-action="EditMedia" asp-route-mid="@m.MediaId">Edit</a> |
+                                    <a href="javascript:void(0);" onclick="showConfirmDelete('@m.MediaId')">Delete</a>
+                                    <!--Hiển thị form xoá hay không xoá-->
+                                    <form id="confirm-delete-@m.MediaId" asp-action="DeleteMedia" method="post" class="confirm-delete-form" style="display: none;">
+                                        <p>Bạn có chắc chắn muốn xóa phim này?</p>
+                                        <input type="hidden" name="mid" value="@m.MediaId" />
+                                        <button type="submit" name="YesNo" value="true" class="btn btn-success">Có</button>
+                                        <button type="button" onclick="hideConfirmDelete('@m.MediaId')" class="btn btn-danger">Không</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <a class="btn btn-outline-primary" asp-action="AddMedia">Add Film</a>
+                <a class="btn btn-primary" asp-action="ListGenre">List Genre</a>
+                <a class="btn btn-outline-primary" asp-action="ListActor">List Actor</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        function showConfirmDelete(mediaId){
+            // Ẩn tất cả các form xác nhận khác
+            document.querySelectorAll('form[id^="confirm-delete-"]').forEach(form => form.style.display = 'none');
+
+            // Hiển thị form xác nhận cho media hiện tại
+            document.getElementById(`confirm-delete-${mediaId}`).style.display = 'block';
+        }
+        function hideConfirmDelete(mediaId) {
+            // Ẩn form xác nhận
+            document.getElementById(`confirm-delete-${mediaId}`).style.display = 'none';
+        }
+    </script>
+}
