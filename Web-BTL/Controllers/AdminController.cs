@@ -123,57 +123,98 @@ namespace Web_BTL.Controllers
         // lấy dữ liệu media đã sửa về
         [HttpPost]
         public async Task<IActionResult> EditMedia(int mid, MediaModel model, 
-            IFormFile? image, IFormFile? video, List<int> SelectedActorId, List<int> SelectedActorMain)
+            IFormFile? image, IFormFile? video, List<int> SelectedGenreId, List<int> SelectedActorId, List<int> SelectedActorMain)
         {
             Console.WriteLine("Day la post Edit media");
-            Console.WriteLine("day la id" + mid);
+            Console.WriteLine("day la id - " + mid);
             Console.WriteLine("day la id cua media" + model.MediaId);
-            if (mid != model.MediaId) return NotFound();
+            if (mid != model.MediaId)
+            {
+                Console.WriteLine("do mid và id khac nhau");
+                return NotFound();
+            }
             var media = await _datacontext.Medias.FirstOrDefaultAsync(m => m.MediaId == mid);
             if (media == null || model == null) return RedirectToAction(nameof(Index));
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _datacontext.Update(media);
+                    //media.MediaDuration = model.MediaDuration;
+                    //media
+                    media.MediaName = model.MediaName;
+                    media.MediaDescription = model.MediaDescription;
+                    media.MediaQuality = model.MediaQuality;
+                    media.ReleaseDate = model.ReleaseDate;
+                    media.MediaAgeRating = model.MediaAgeRating;
+                    media.package = model.package;
                     await _datacontext.SaveChangesAsync();
                 }catch (DbUpdateConcurrencyException)
                 {
+                    Console.WriteLine("==================Khong update duoc database");
                     if (!mediaExists(media.MediaId))
                         return NotFound();
                     else throw;
                 }
-            }
-            if (image != null && image.Length > 0)
-                media.MediaImagePath = await _save.SaveImageAsync(_environment, "images/medias", "", media.MediaName, image);
-            if (video != null && video.Length > 0)
-            {
-                var resule = await _save.SaveVideoAsync(_environment, "videos", "", media.MediaName + media.MediaQuality, video, true);
-                media.MediaImagePath = resule.videoName;
-                media.MediaDuration = resule.duration;
-            }
-            if (SelectedActorId.Count > 0)
-            {
-                
-                foreach (var id in SelectedActorId)
+                if (image != null && image.Length > 0)
+                    media.MediaImagePath = await _save.SaveImageAsync(_environment, "images/medias", "", media.MediaName, image);
+                if (video != null && video.Length > 0)
                 {
-                    await _datacontext.Actor_Medias.AddAsync(new Actor_MediaModel
+                    var resule = await _save.SaveVideoAsync(_environment, "videos", "", media.MediaName + media.MediaQuality, video, true);
+                    media.MediaImagePath = resule.videoName;
+                    media.MediaDuration = resule.duration;
+                }
+                if (SelectedActorId.Count > 0)
+                {
+                    var ra = await _datacontext.Actor_Medias.Where(a => a.MediaId == mid).ToListAsync();
+                    _datacontext.Actor_Medias.RemoveRange(ra);
+                    foreach (var id in SelectedActorId)
                     {
-                        MediaId = mid,
-                        Media = media,
-                        ActorId = id,
-                        Actor = await _datacontext.Actors.FindAsync(id)
-                    });
+                        
+                        var a = await _datacontext.Actor_Medias.FirstOrDefaultAsync(am => am.MediaId == model.MediaId && am.ActorId == id);
+                        if (a == null)
+                        {
+                            await _datacontext.Actor_Medias.AddAsync(new Actor_MediaModel
+                            {
+                                MediaId = mid,
+                                Media = media,
+                                ActorId = id,
+                                Actor = await _datacontext.Actors.FindAsync(id)
+                            });
+                        }
+                    }
+                    await _datacontext.SaveChangesAsync();
+                    foreach (var main in SelectedActorMain)
+                    {
+                        var a = await _datacontext.Actor_Medias.FirstOrDefaultAsync(am => am.MediaId == model.MediaId && am.ActorId == main);
+                        a.IsMain = true;
+                    }
+                    await _datacontext.SaveChangesAsync();
                 }
-                await _datacontext.SaveChangesAsync();
-                foreach (var main in SelectedActorMain)
+                if (SelectedActorId.Count > 0)
                 {
-                    var a = await _datacontext.Actor_Medias.FindAsync(main);
-                    a.IsMain = true;
+                    media.Genres.Clear();
+                    foreach (var item in SelectedGenreId)
+                    {
+                        var g = await _datacontext.Genres.FirstOrDefaultAsync(g => g.GenreId == item);
+                        if (g != null) media.Genres.Add(g);
+                    }
                 }
+                //else
+                //{
+                //    CreateViewBag();
+                //    ViewBag.AllActors = new List<SelectListItem>();
+                //    var listactors = _datacontext.Actors.ToList();
+                //    ViewBag.AllActors.AddRange(listactors.Select(a => new SelectListItem
+                //    {
+                //        Text = a.ActorName,
+                //        Value = a.ActorID.ToString()
+                //    }));
+                //    return View(model);
+                //}
                 await _datacontext.SaveChangesAsync();
-            }else Console.WriteLine("Loi o phan add Actor");
-            await _datacontext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            CreateViewBag();
             ViewBag.AllActors = new List<SelectListItem>();
             var actors = _datacontext.Actors.ToList();
             ViewBag.AllActors.AddRange(actors.Select(a => new SelectListItem

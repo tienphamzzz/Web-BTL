@@ -4,7 +4,7 @@
 
 <div>
     <div asp-validation-summary="All" class="text-danger"></div>
-    <form asp-action="EditMedia" method="post" enctype="multipart/form-data" id="editMediaForm">
+    <form asp-controller="Admin" asp-action="EditMedia" method="post" enctype="multipart/form-data" id="editMediaForm" asp-route-mid="@Model.MediaId">
         <input type="hidden" asp-for="MediaId"/>
         <!--Nhập tên phim-->
         <div style="margin-top: 7px" class="form-group row">

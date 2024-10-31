@@ -47,7 +47,10 @@
                 @if(Model is CustomerModel)
                 {
                     var cus = (CustomerModel)Model;
-                    <span class="user-info-label">Gói sử dụng: </span>@cus._ServicePackage
+                    <span class="user-info-label">Gói sử dụng: </span>@cus._ServicePackage <hr />
+                    <a class="btn btn-primary">Cac phim đã xem</a>
+                    <a class="btn btn-outline-primary">danh sách yêu thích</a>
+                    <a class="btn btn-primary">Danh sách phim</a>
                 }
                 @if(Model is AdminModel){
                     var ad = (AdminModel)Model;
