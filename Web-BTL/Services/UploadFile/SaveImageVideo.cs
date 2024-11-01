@@ -73,6 +73,7 @@ namespace Web_BTL.Services.UploadFile
         {
             validateEnvironment(_environment);
             validateUrl(url);
+            if (name == "default.png") return;
             string filePath = Path.Combine(_environment.WebRootPath, url, name); // lấy đường dẫn từ wwwroot để xoá file
             if (File.Exists(filePath))
                 File.Delete(filePath);
