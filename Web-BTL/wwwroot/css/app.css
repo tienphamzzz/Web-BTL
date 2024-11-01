@@ -640,3 +640,24 @@ footer .content {
     }
 
 
+#favoriteModal {
+    position: fixed; /* Đặt modal ở vị trí cố định */
+    top: 20px; /* Cách từ trên xuống 20px */
+    right: 20px; /* Cách từ bên phải 20px */
+    z-index: 1050; /* Đảm bảo modal nằm trên các phần tử khác */
+}
+
+.modal-content {
+    background-color: #007bff; /* Màu nền xanh dương */
+    color: black; /* Màu chữ trắng */
+    border-radius: 0.5rem; /* Bo tròn góc cho modal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ cho modal */
+}
+
+.modal-header {
+    border-bottom: none; /* Không có viền dưới cho header */
+}
+
+.modal-footer {
+    border-top: none; /* Không có viền trên cho footer */
+}
