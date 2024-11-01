@@ -20,7 +20,7 @@
                 <button type="button" class="m-btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target="#trailerMovie">
                     Trailer
                 </button>
-
+                <div id="modalContainer"></div>
                 <!-- Modal -->
                 <div class="modal fade bd-example-modal-lg" id="trailerMovie" tabindex="-1" role="dialog" aria-labelledby="trailerMovieLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -47,7 +47,7 @@
                     <a href="#">@Model.MediaName</a>
                 </div>
                 <div class="movie-social">
-                    <a href="#"><i class="fa fa-heart" aria-hidden="true"></i> Lưu phim</a>
+                    <a href="javascript:void(0);" onclick="addFavorite(@Model.MediaId)"><i class="fa fa-heart" aria-hidden="true"></i> Lưu phim</a>
                     <a href="#"><i class="fa fa-facebook-official" aria-hidden="true"></i> Chia sẻ</a>
                 </div>
                 <div class="movie-rate">
@@ -167,5 +167,25 @@
             tabContents[index].classList.add('show', 'active');
         });
     });
+    function addFavorite(mediaId) {
+    $.ajax({
+        type: "POST",
+        url: "/Movie/AddFavourite",
+        data: { mid: mediaId },
+        success: function (response) {
+            // Chèn nội dung modal vào một phần tử trên trang, ví dụ #modalContainer
+            $('#modalContainer').html(response); // Chắc chắn rằng bạn có phần tử này trong HTML
 
+            // Hiển thị modal
+            $('#favoriteModal').modal('show');
+
+            // Tự động đóng modal sau 3 giây
+            setTimeout(function () {
+                $('#favoriteModal').modal('hide');
+            }, 3000); // 3000 milliseconds = 3 seconds
+        },
+        error: function () {
+            alert("Không thể thêm vào danh sách yêu thích.");
+        }
+    });
 </script>
