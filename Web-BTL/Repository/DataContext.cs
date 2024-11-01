@@ -24,6 +24,7 @@ namespace Web_BTL.Repository
 
         // Bảng Actor
         public DbSet<ActorModel> Actors { get; set; }
+        public DbSet<Actor_MediaModel> Actor_Medias { get; set; }
 
         // Bảng Watch List và bảng phụ
         public DbSet<WatchListModel> WatchLists { get; set; }
@@ -32,21 +33,34 @@ namespace Web_BTL.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // thiết lập bảng phụ cho Media và Actor
-            modelBuilder.Entity<MediaModel>().
-                HasMany(m => m.Actors).
-                WithMany(a => a.Medias).
-                UsingEntity(j => j.ToTable("Media_Actor"));
+            modelBuilder.Entity<Actor_MediaModel>().
+                HasKey(am => new { am.MediaId, am.ActorId });
+            modelBuilder.Entity<Actor_MediaModel>().
+                HasOne(m => m.Media).WithMany(a => a.Actors).
+                HasForeignKey(m => m.MediaId).
+                OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Actor_MediaModel>().
+                HasOne(a => a.Actor).WithMany(m => m.Medias).
+                HasForeignKey(a => a.ActorId).
+                OnDelete(DeleteBehavior.Cascade);
             // thiết lập bảng phụ cho Media và Genres
             modelBuilder.Entity<MediaModel>().
                 HasMany(m => m.Genres).
                 WithMany(g => g.Medias).
-                UsingEntity(j => j.ToTable("Media_Genre"));
+                UsingEntity<Dictionary<string, object>>(
+                    "Media_Genre",
+                    j => j.HasOne<GenreModel>().WithMany().HasForeignKey("GenreId").OnDelete(DeleteBehavior.Cascade),
+                    j => j.HasOne<MediaModel>().WithMany().HasForeignKey("MediaId").OnDelete(DeleteBehavior.Cascade)
+                );
             modelBuilder.Entity<AdminModel>().
                 Property(a => a.Role).
                 HasConversion<string>();  // Ánh xạ enum thành chuỗi
             modelBuilder.Entity<CustomerModel>().
                 Property(c => c._ServicePackage).
                 HasConversion<string>();  // Ánh xạ enum thành chuỗi
+            modelBuilder.Entity<MediaModel>().
+                Property(m => m.package).
+                HasConversion<string>(); // ánh xạ thành chuỗi
             // cấu hình cho bảng phụ có đủ điều kiện để kết nối với 2 bảng còn lại(Media và WatchList) - tạo 2 khoá cho bảng
             modelBuilder.Entity<ListMediaModel>().
                 HasKey(lm => new { lm.WatchListId, lm.MediaId });

@@ -2,14 +2,12 @@
     <div class="owl-carousel carousel-nav-center" id="hero-carousel">
         <!-- SLIDE ITEM -->
         @foreach (var movie in Model)
+
         {
             if (movie.MediaName == "Black Panther" || movie.MediaName == "John Wick" || movie.MediaName == "GOTG Vol 3")
             {
-                var img = "./images/" + @movie.MediaName + "-banner.png";
                 <div class="hero-slide-item">
-                    <a asp-action="Index" asp-controller="Movie" asp-route-movieId="@movie.MediaId">
-                        <img src="@img" class="movie-image" alt="@movie.MediaName Banner">
-                    </a>
+                    <img src="@movie.MediaImagePath" class="movie-image" alt="@movie.MediaName Banner">
                     <div class="overlay"></div>
                     <div class="hero-slide-item-content">
                         <div class="item-content-wraper">
@@ -36,7 +34,7 @@
                                 @movie.MediaDescription
                             </div>
                             <div class="item-action top-down delay-6">
-                                <a href="#" class="btn btn-hover">
+                                <a class="btn btn-hover" asp-action="Index" asp-controller="Movie" asp-route-movieId="@movie.MediaId">
                                     <i class="bx bxs-right-arrow"></i>
                                     <span>Watch now</span>
                                 </a>
@@ -45,6 +43,7 @@
                     </div>
                 </div>
             }
+
         }
         <!-- END SLIDE ITEM -->
     </div>

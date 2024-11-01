@@ -1,27 +1,37 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@*
+
 @section Styles {
     <link rel="stylesheet" href="~/css/email.css">
+    <link href="~/css/grid.css" rel="stylesheet">
+    <link href="~/css/app.css" rel="stylesheet">
 }
-*@
+
 <div class="container">
     <form method="post" asp-controller="Account" asp-action="SendOTP" enctype="multipart/form-data" onsubmit="combineOTP()">
-        <div class="otp-container">
+        <div class="e-otp-container">
             <h3 style="margin-bottom: 10px">Nhập mã OTP</h3>
-            <input type="text" maxlength="1" class="otp-input" id="otp1" oninput="moveToNext(this, 'otp2')" />
-            <input type="text" maxlength="1" class="otp-input" id="otp2" oninput="moveToNext(this, 'otp3')" />
-            <input type="text" maxlength="1" class="otp-input" id="otp3" oninput="moveToNext(this, 'otp4')" />
-            <input type="text" maxlength="1" class="otp-input" id="otp4" oninput="moveToNext(this, 'otp5')" />
-            <input type="text" maxlength="1" class="otp-input" id="otp5" oninput="moveToNext(this, 'otp6')" />
-            <input type="hidden" name="OTP" id="OTP" />
-            <input type="text" maxlength="1" class="otp-input" id="otp6" />
+            <div class="otp">
+                <input type="text" maxlength="1" class="otp-input" id="otp1" oninput="moveToNext(this, 'otp2')" />
+                <input type="text" maxlength="1" class="otp-input" id="otp2" oninput="moveToNext(this, 'otp3')" />
+                <input type="text" maxlength="1" class="otp-input" id="otp3" oninput="moveToNext(this, 'otp4')" />
+                <input type="text" maxlength="1" class="otp-input" id="otp4" oninput="moveToNext(this, 'otp5')" />
+                <input type="text" maxlength="1" class="otp-input" id="otp5" oninput="moveToNext(this, 'otp6')" />
+                <input type="hidden" name="OTP" id="OTP" />
+                <input type="text" maxlength="1" class="otp-input" id="otp6" />
+            </div>
             <div class="otp-resend">
                 <p>Bạn chưa có mã <a href="#" id="reload">gửi lại OTP</a></p>
             </div>
         </div>
-        <button class="btn" type="submit">Submit</button>
+        <div class="other-way">
+            <button class="e-btn btn btn-hover" type="submit">
+                <span>
+                    Submit
+                </span>
+            </button>
+        </div>
     </form>
 </div>
 @section Scripts {
@@ -34,9 +44,14 @@
             }
         }
         document.getElementById("reload").onclick = function () {
-            location.reload();  // Tải lại trang
-            window.location.href = '/Account/SendOTP';
-            alert("Mã OTP đã được gửi lại!");
+            $.ajax({
+                url: '/Account/ResendOtp',
+                type: 'POST',
+                success: function(response){
+                    if (response.success) alert(response.message);
+                    else alert(response.message);
+                }
+            });
         };
         function combineOTP(){
             var otp = document.getElementById("otp1").value

@@ -5,13 +5,19 @@
 
 @{
     var session = Context.Session;
-    var str = session.GetString("LogIn Session");
+    var user = session.GetString("LogIn Session");
+    var role = session.GetString("Admin");
+    var str = "User";
+    if (role != null)
+    {
+        str = "Admin";
+    }
 }
 
 <div class="nav-wrapper" id="topnav">
     <div class="container" >
         <div class="nav">
-            <a href="#" class="logo">
+            <a asp-controller="Home" asp-action="Index" class="logo">
                 <i class='bx bx-movie-play bx-tada main-color'></i>Fl<span class="main-color">i</span>x
             </a>
 
@@ -29,13 +35,13 @@
 
             <ul class="nav-menu" id="nav-menu">
                 <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                <li><a href="#">Genre</a></li>
+                <li><a asp-controller="Genre" asp-action="Index">Genre</a></li>
                 <li><a href="#">About</a></li>
-                @if (str != null)
+                @if (user != null)
                 {
                     <li>
-                        <a asp-controller="Account" asp-action="UserInformation" class="btn btn-hover">
-                            <span>User</span>
+                        <a asp-controller="User" asp-action="UserInformation" class="btn btn-hover">
+                            <span>@str</span>
                         </a>
                     </li>
                 }

@@ -13,7 +13,7 @@ namespace Web_BTL.Models.User.Customer
         public ServicePackage? _ServicePackage { get; set; }
         public CustomerModel()
         {
-            _ServicePackage = ServicePackage.Bacis;
+            _ServicePackage = ServicePackage.Basic;
             Reviews = new HashSet<ReviewModel>();
         }
         public virtual ICollection<ReviewModel> Reviews { get; set; } // liên kết đến bảng review

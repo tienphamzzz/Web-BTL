@@ -79,6 +79,7 @@ img {
 }
 
 .nav-menu {
+    margin-bottom : 0px;
     list-style-type: none;
     display: flex;
     align-items: center;
@@ -510,6 +511,7 @@ footer .content {
 }
 
 .footer-menu {
+    padding-left: 0px;
     list-style-type: none;
 }
 

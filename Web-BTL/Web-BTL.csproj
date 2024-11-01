@@ -20,9 +20,11 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="MimeKit" Version="4.7.1" />
+    <PackageReference Include="Xabe.FFmpeg" Version="5.2.6" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\users\" />
     <Folder Include="wwwroot\videos\" />
   </ItemGroup>
 
