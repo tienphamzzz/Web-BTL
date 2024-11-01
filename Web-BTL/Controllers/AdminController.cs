@@ -347,5 +347,10 @@ namespace Web_BTL.Controllers
             }
             return RedirectToAction(nameof(ListActor));
         }
+        public IActionResult ListCustomer()
+        {
+            var customers = _datacontext.Customers.ToList();
+            return View(customers);
+        }
     }
 }
