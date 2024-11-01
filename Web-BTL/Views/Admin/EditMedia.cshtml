@@ -73,22 +73,22 @@
         <!-- Overlay và Popup bảng diễn viên -->
         <div id="actorOverlay" class="overlay">
             <div class="popup">
-                <h4>Chọn diễn viên</h4>
+                <h4 style="color: black;">Chọn diễn viên</h4>
                 <table>
                     <thead>
                         <tr>
-                            <th>Tên diễn viên</th>
-                            <th>Main</th>
+                            <th style="color: black;">Tên diễn viên</th>
+                            <th style="color: black;">Main</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var actor in ViewBag.AllActors)
                         {
                             <tr>
-                                <td>
+                                <td style="color: black;">
                                     <input type="checkbox" name="SelectedActorId" value="@actor.Value" /> @actor.Text
                                 </td>
-                                <td>
+                                <td style="color: black;">
                                     <input type="checkbox" name="SelectedActorMain" value="@actor.Value" />
                                 </td>
                             </tr>

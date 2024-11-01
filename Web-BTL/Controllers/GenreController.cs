@@ -22,12 +22,12 @@ namespace Web_BTL.Controllers
 
             if (actorId.HasValue)
             {
-                medias = medias.AsEnumerable().Where(m => m.Actors.Any(a => a.Actor.ActorID == actorId.Value)).AsQueryable();
+                medias = medias.Where(m => m.Actors.Any(a => a.Actor.ActorID == actorId.Value));
             }
 
             if (genreId.HasValue)
             {
-                medias = medias.AsEnumerable().Where(m => m.Genres.Any(g => g.GenreId == genreId.Value)).AsQueryable();
+                medias = medias.Where(m => m.Genres.Any(g => g.GenreId == genreId.Value));
             }
 
             if (!string.IsNullOrEmpty(quality))
@@ -40,17 +40,18 @@ namespace Web_BTL.Controllers
                 switch (duration)
                 {
                     case "short":
-                        medias = medias.Where(m => m.MediaDuration.HasValue && m.MediaDuration.Value.TotalMinutes <= 60);
+                        medias = medias.Where(m => m.MediaDuration.HasValue && m.MediaDuration.Value <= TimeSpan.FromMinutes(60));
                         break;
                     case "medium":
-                        medias = medias.Where(m => m.MediaDuration.HasValue && m.MediaDuration.Value.TotalMinutes > 60 && m.MediaDuration.Value.TotalMinutes <= 120);
+                        medias = medias.Where(m => m.MediaDuration.HasValue && m.MediaDuration.Value > TimeSpan.FromMinutes(60) && m.MediaDuration.Value <= TimeSpan.FromMinutes(120));
                         break;
                     case "long":
-                        medias = medias.Where(m => m.MediaDuration.HasValue && m.MediaDuration.Value.TotalMinutes > 120);
+                        medias = medias.Where(m => m.MediaDuration.HasValue && m.MediaDuration.Value > TimeSpan.FromMinutes(120));
                         break;
                 }
             }
 
+            // Tạo dữ liệu cho DropdownList để hiển thị trong View
             ViewBag.AllActors = db.Actors.Select(a => new SelectListItem
             {
                 Text = a.ActorName,
@@ -67,6 +68,7 @@ namespace Web_BTL.Controllers
 
             return View(medias.ToList());
         }
+
 
 
         public IActionResult AllMedias(int? pageindex, string searchTerm)

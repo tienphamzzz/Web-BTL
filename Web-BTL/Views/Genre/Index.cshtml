@@ -94,8 +94,12 @@
                             @foreach (var item in Model.Take(10))
                             {
                                 <a class="t-movie" href="#">
-
-                                    <img src="@Url.Content("./images/medias/" + @item.MediaImagePath)" alt="@item.MediaName">
+                                    <form asp-action="Index" asp-controller="Movie" method="post">
+                                        <input type="hidden" name="movieId" value="@item.MediaId" />
+                                        <button type="submit" style="border:none; background:none;">
+                                            <img src="@Url.Content("./images/medias/" + @item.MediaImagePath)" alt="@item.MediaName">
+                                        </button>
+                                    </form>
 
                                     <div class="t-movie-content">
                                         <div class="t-movie-title">@item.MediaName</div>
@@ -128,76 +132,13 @@
 
             </div>
 
-            @* <div id="t-movie-section-wrapper">
-            <partial name="Layouts/_MediaPartial" />
-
-            </div> *@
 
             <div>
                 <a href="@Url.Action("AllMedias", "Genre")" class="t-btn-more">Xem Thêm...</a>
             </div>
         </div>
 
-        @* <div class="t-header-and-movie-section">
-        <div class="t-header-section">
-        <div class="t-header-label">
-        PHIM BỘ ZZZ
-        </div>
-        </div>
-
-        <div class="t-movie-section">
-        @foreach (var item in Model)
-        {
-        <a class="t-movie" href="#">
-
-        <img src="@item.MediaImagePath" alt="@item.MediaName">
-
-        <div class="t-movie-content">
-        <div class="t-movie-title">@item.MediaName</div>
-        <div class="t-movie-info">
-        <div>
-        <i class="bx bxs-star"></i>
-        <span>9.5</span>
-        </div>
-        <div>
-        <i class="bx bxs-time"></i>
-        <span>@item.MediaDuration</span>
-        </div>
-        <div>
-        <span>@item.MediaQuality</span>
-        </div>
-        <div>
-        <span>@item.MediaAgeRating</span>
-        </div>
-        </div>
-        </div>
-
-        </a>
-        }
-        </div>
-
-
-        <div>
-        <a href="#" class="t-btn-more">Xem Thêm...</a>
-        </div>
-        </div> *@
-    </div>
-</div>
-
-@* @section Scripts{
-    <script>
-        function filterMovies(genreId) {
-            $.ajax({
-                url: '@Url.Action("MoviesFilter", "Movies")',
-                type: 'GET',
-                data: { mid: genreId },  // Truyền ID thể loại khi người dùng bấm vào liên kết
-                success: function (result) {
-                    $('#t-movie-section-wrapper').html(result);  // Cập nhật danh sách phim
-                }
-            });
-        }
-    </script>
-} *@
+      
 
 
 
@@ -255,10 +196,3 @@
 
     </script>
 }
-
-<partial name="Layouts/Footer" />
-<!-- END FOOTER SECTION -->
-<!-- COPYRIGHT SECTION -->
-<div class="copyright">
-    Copyright 2023
-</div>
