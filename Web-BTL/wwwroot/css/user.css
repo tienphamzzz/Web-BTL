@@ -1,90 +1,43 @@
-﻿.user-info-container {
-    padding: 40px;
-    background-color: var(--box-bg);
-    color: var(--text-color);
-    margin-top: var(--nav-height);
+﻿.user-info-container{
+    margin: 70px auto auto auto !important;
 }
-
 .user-info-header {
-    font-size: 2rem;
-    font-weight: 700;
-    color: var(--main-color);
-    margin-bottom: 20px;
+    padding: 10px 20px;
+    border-left: 4px solid #1f83ed;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.u-container{
+    display: block;
+}
+.user-avartar-detail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 60px;
+}
+.user-avatar {
+    width: 250px;
     text-align: center;
 }
-
-.user-avatar {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 20px;
-    position: relative;
-}
-
     .user-avatar img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        width: 250px;
+        height: 250px;
+        border-radius: 50%;
+        border: 2px solid #1f83ed;
+        overflow: hidden;
     }
-
-    .user-avatar input[type="file"] {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        cursor: pointer;
-    }
-
-.user-details {
-    font-size: 1.2rem;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align all items to the start (left side) */
+.u-btn{
+    display: block;
+    margin: 20px auto;
 }
-
-    .user-details p {
-        margin: 10px 0;
-        width: 100%; /* Ensure each p tag takes full width */
-    }
-
-
-.user-info-label {
-    font-weight: 700;
-    margin-right: 10px;
+.u-add-img{
+    display: block;
 }
-
-.edit-input {
+.user-details-container{
+    margin-left: 50px;
+}
+.log-out {
     width: 100%;
-    margin-top: 10px;
-}
-
-/* Responsive styles */
-@media (max-width: 576px) {
-    .user-avatar {
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .user-details {
-        text-align: center;
-        display: flex;
-        flex-direction: column;
-        align-items: center; /* Center align in mobile view */
-    }
-
-        .user-details p {
-            width: 100%; /* Ensure full width for each p tag */
-            display: flex;
-            justify-content: center; /* Center the content inside each p tag */
-        }
-
-    .user-info-label {
-        margin-right: 10px;
-        font-weight: 700;
-        text-align: left; /* Label should align left */
-    }
+    text-align: end;
 }
