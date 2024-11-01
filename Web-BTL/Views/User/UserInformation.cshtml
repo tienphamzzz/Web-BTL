@@ -64,9 +64,8 @@
                             }
                         </div>
                         <hr />
-                        <a class="btn btn-primary">Các phim đã xem</a>
-                        <a class="btn btn-outline-primary">Danh sách yêu thích</a>
-                        <a class="btn btn-primary">Danh sách phim</a>
+                        <a class="btn btn-primary" asp-controller="Customer" asp-action="Watched" id="watched">Các phim đã xem</a>
+                        <a class="btn btn-outline-primary" asp-controller="Customer" asp-action="Favourite" id="favourite">Danh sách yêu thích</a>
                     }
                     @if (Model is AdminModel)
                     {
@@ -109,8 +108,7 @@
             var action = $(this).data("action");
             var url = "/User/";
             var tmp = "div#";
-            if (id === "listMedia"  || id == "listCustomer" || id == "about" || id == "home" || id == "genre") return;
-            else if (id == "LogOut") return;
+            if (id === "listMedia"  || id == "listCustomer" || id == "about" || id == "home" || id == "genre" || id == "favourite" || id == "watched" || id == "LogOut") return;
             e.preventDefault();
             if (action === "SaveImage") {
                 url += "Image";
