@@ -20,12 +20,7 @@ namespace Web_BTL.Controllers
             _save = save;
         }
         [HttpGet]
-        public IActionResult UserInformation()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> UserInformation([Bind("UserName, LoginPassword")] CustomerModel customer)
+        public async Task<IActionResult> UserInformation()
         {
             // lấy thông tin người dùng từ s
             string email = HttpContext.Session.GetString("LogIn Session");
@@ -40,8 +35,12 @@ namespace Web_BTL.Controllers
                 var customer = await _dataContext.Customers.FirstOrDefaultAsync(c => c.UserEmail == email);
                 if (customer != null) return View(customer);
                 else
+                {
+                    Console.WriteLine("Khong co du lieu nguoi dung");
                     return RedirectToAction(nameof(SignIn), "Account");
+                }
             }
+            Console.WriteLine("Khong co email");
             return RedirectToAction(nameof(SignIn), "Account");
         }
         public async Task<IActionResult> Image()

@@ -7,7 +7,6 @@ using Web_BTL.Repository;
 using Web_BTL.Services.Cookie;
 using Web_BTL.Services.EmailServices;
 using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
 
 namespace Web_BTL.Controllers
 {
@@ -16,7 +15,7 @@ namespace Web_BTL.Controllers
         private readonly DataContext _dataContext;
         private readonly SendEmail _sendEmail;
         private readonly CookieService _cookieService;
-        private readonly OTP = "OTP";
+        private readonly string OTP = "OTP";
         private readonly IMemoryCache _cache;
         public AccountController(DataContext dataContext, SendEmail sendEmail, CookieService cookieService, IMemoryCache cache)
         {
