@@ -12,7 +12,7 @@ using Web_BTL.Repository;
 namespace Web_BTL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20241101002211_them")]
+    [Migration("20241101092955_them")]
     partial class them
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

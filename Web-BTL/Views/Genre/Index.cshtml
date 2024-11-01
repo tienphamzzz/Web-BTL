@@ -37,6 +37,57 @@
                     <div class="t-header-label">
                         Danh Sách Phim
                     </div>
+
+
+
+                    <button id="filterButton" class="btn btn-primary" onclick="toggleFilterForm()">Bộ Lọc</button>
+                    <div id="filterForm" style="display: none; margin-top: 20px;">
+                        <form id="filterForm" method="get" asp-action="Index">
+                            <div class="form-group">
+                                <label for="actor">Diễn Viên</label>
+                                <select id="actor" name="actorId" class="form-control">
+                                    <option value="">Chọn Diễn Viên</option>
+                                    @foreach (var actor in ViewBag.AllActors)
+                                    {
+                                        <option value="@actor.Value">@actor.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="genre">Thể Loại</label>
+                                <select id="genre" name="genreId" class="form-control">
+                                    <option value="">Chọn Thể Loại</option>
+                                    @foreach (var genre in ViewBag.AllGenres)
+                                    {
+                                        <option value="@genre.Value">@genre.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="quality">Chất Lượng</label>
+                                <select id="quality" name="quality" class="form-control">
+                                    <option value="">Chọn Chất Lượng</option>
+                                    @foreach (var quality in ViewBag.AllQualities)
+                                    {
+                                        <option value="@quality">@quality</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="duration">Thời Lượng</label>
+                                <select id="duration" name="duration" class="form-control">
+                                    <option value="">Chọn Thời Lượng</option>
+                                    <option value="short">Ngắn (<= 1 giờ)</option>
+                                    <option value="medium">Trung Bình (1-2 giờ)</option>
+                                    <option value="long">Dài (> 2 giờ)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+                        </form>
+                    </div>
+
+
+
                     <div id="media-section">
 
                         <div class="t-movie-section">
@@ -153,6 +204,17 @@
 
 @section Scripts {
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script>
+        function toggleFilterForm() {
+            var filterForm = document.getElementById("filterForm");
+            if (filterForm.style.display === "none") {
+                filterForm.style.display = "block";
+            } else {
+                filterForm.style.display = "none";
+            }
+        }
+    </script>
+    
     <script>
 
 

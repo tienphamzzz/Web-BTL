@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Web_BTL.Models.Medias;
+using Web_BTL.Models.Actors;
 using Web_BTL.Repository;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
@@ -14,16 +16,58 @@ namespace Web_BTL.Controllers
         {
             db = _db;
         }
-        public IActionResult Index()
+        public IActionResult Index(int? actorId, int? genreId, string quality, string duration)
         {
-            var media = db.Medias.Include(m => m.Genres).ToList();
-            // Lấy danh sách thể loại từ cơ sở dữ liệu
-            var genres = db.Genres.ToList();
+            var medias = db.Medias.AsQueryable();
 
-            // Gán danh sách thể loại vào ViewBag
-            ViewBag.Genre = genres;
-            return View(media);
+            if (actorId.HasValue)
+            {
+                medias = medias.AsEnumerable().Where(m => m.Actors.Any(a => a.Actor.ActorID == actorId.Value)).AsQueryable();
+            }
+
+            if (genreId.HasValue)
+            {
+                medias = medias.AsEnumerable().Where(m => m.Genres.Any(g => g.GenreId == genreId.Value)).AsQueryable();
+            }
+
+            if (!string.IsNullOrEmpty(quality))
+            {
+                medias = medias.Where(m => m.MediaQuality == quality);
+            }
+
+            if (!string.IsNullOrEmpty(duration))
+            {
+                switch (duration)
+                {
+                    case "short":
+                        medias = medias.Where(m => m.MediaDuration.HasValue && m.MediaDuration.Value.TotalMinutes <= 60);
+                        break;
+                    case "medium":
+                        medias = medias.Where(m => m.MediaDuration.HasValue && m.MediaDuration.Value.TotalMinutes > 60 && m.MediaDuration.Value.TotalMinutes <= 120);
+                        break;
+                    case "long":
+                        medias = medias.Where(m => m.MediaDuration.HasValue && m.MediaDuration.Value.TotalMinutes > 120);
+                        break;
+                }
+            }
+
+            ViewBag.AllActors = db.Actors.Select(a => new SelectListItem
+            {
+                Text = a.ActorName,
+                Value = a.ActorID.ToString()
+            }).ToList();
+
+            ViewBag.AllGenres = db.Genres.Select(g => new SelectListItem
+            {
+                Text = g.Type,
+                Value = g.GenreId.ToString()
+            }).ToList();
+
+            ViewBag.AllQualities = db.Medias.Select(m => m.MediaQuality).Distinct().ToList();
+
+            return View( medias.ToList());
         }
+
 
         public IActionResult AllMedias(int? pageindex, string searchTerm)
         {
