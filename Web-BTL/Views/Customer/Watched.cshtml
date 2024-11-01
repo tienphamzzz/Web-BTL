@@ -1,0 +1,55 @@
+﻿@using Web_BTL.Models.Medias
+@model IEnumerable<MediaModel>
+
+<div class="section">
+    <div class="container">
+        <div class="section-header">
+            Phim đã xem
+        </div>
+        <div class="movies-slide  ">
+            <!-- MOVIE ITEM -->
+            @foreach (var movie in Model)
+            {
+                <a href="#" class="movie-item">
+                    <img src="@movie.MediaImagePath" id="@movie.MediaId" alt="@movie.MediaName" />
+                    <div class="movie-item-content">
+                        <div class="movie-item-title">
+                            @movie.MediaName
+                        </div>
+                        <div class="movie-infos">
+                            <div class="movie-info">
+                                <i class="bx bxs-star"></i>
+                                <span>9.5</span>
+                            </div>
+                            <div class="movie-info">
+                                <i class="bx bxs-time"></i>
+                                <span>120 mins</span>
+                            </div>
+                            <div class="movie-info">
+                                <span>HD</span>
+                            </div>
+                            <div class="movie-info">
+                                <span>16+</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+            <!-- END MOVIE ITEM -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <link rel="stylesheet" href="~/js/app.js">
+    <script>
+        $("img").click(function (e) {
+
+            var id = $(this).attr("id");
+
+            window.location.href = "/Movie/Index?movieId=" + id;
+        });
+
+    </script>
+}
