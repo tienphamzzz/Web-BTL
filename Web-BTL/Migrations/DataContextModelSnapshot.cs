@@ -145,6 +145,9 @@ namespace Web_BTL.Migrations
                     b.Property<int?>("MediaAgeRating")
                         .HasColumnType("int");
 
+                    b.Property<string>("MediaBannerPath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MediaDescription")
                         .HasColumnType("nvarchar(max)");
 

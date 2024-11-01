@@ -1,6 +1,8 @@
 ﻿@using Web_BTL.Models.Medias
 @model MediaModel
-
+@section Styles {
+    <link rel="stylesheet" href="~/css/admin.css">
+}
 
 <div>
     <div asp-validation-summary="All" class="text-danger"></div>
@@ -98,10 +100,16 @@
         </div>
         <!--Điền ảnh phim-->
         <div style="margin-top: 7px" class="form-group row">
+            <p>Ảnh :</p>
             <input name="image" type="file" accept="image/*" />
+        </div>
+        <div style="margin-top: 7px" class="form-group row">
+            <p>Banner :</p>
+            <input name="banner" type="file" accept="image/*" />
         </div>
         <!--Điền Video(phim)-->
         <div style="margin-top: 7px" class="form-group row">
+            <p>Video :</p>
             <input name="video" type="file" accept="video/*"/>
         </div>
         <button type="submit" class="btn btn-outline-primary">Submit</button>

@@ -30,7 +30,11 @@
                                 <td>@c.UserEmail</td>
                                 <td>@c.UserImagePath</td>
                                 <td>@c._ServicePackage</td>
-                                <td><a id="@c.CustomerId">@((c.UserState == true) ? "Hoạt động" : "Dừng hoạt động")</a></td>
+                                <td>
+                                    <a id="toggle-@c.CustomerId" href="javascript:void(0)" onclick="toggleUserState(@c.CustomerId)">
+                                        @((c.UserState == true) ? "Hoạt động" : "Dừng hoạt động")
+                                    </a>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -43,6 +47,21 @@
 
 @section Scripts {
     <script>
-        
+        function toggleUserState(customerid) {
+            $.ajax({
+                url: '/Admin/ToggleUserState',
+                type: 'POST',
+                data: { customerId: customerid },
+                success: function (response) {
+                    if (response.success) {
+                        const link = document.getElementById('toggle-' + customerid);
+                        link.textContent = response.newState ? "Hoạt động" : "Dừng hoạt động";
+                    } else alert("Có lỗi xảy ra khi thay đổi trạng thái.");
+                },
+                error: function () {
+                    alert("Có lỗi xảy ra khi gửi yêu cầu.");
+                }
+            });
+        }
     </script>
 }

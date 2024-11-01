@@ -24,6 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\medias\" />
+    <Folder Include="wwwroot\images\banners\" />
     <Folder Include="wwwroot\images\users\" />
     <Folder Include="wwwroot\videos\" />
   </ItemGroup>

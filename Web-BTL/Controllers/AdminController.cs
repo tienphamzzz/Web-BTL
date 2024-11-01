@@ -38,7 +38,7 @@ namespace Web_BTL.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> AddMedia(MediaModel media, IFormFile image, IFormFile video, List<int> SelectedGenreId)
+        public async Task<IActionResult> AddMedia(MediaModel media, IFormFile image, IFormFile banner, IFormFile video, List<int> SelectedGenreId)
         {
             var email = HttpContext.Session.GetString("LogIn Session");
             string role = HttpContext.Session.GetString("Admin");
@@ -51,6 +51,8 @@ namespace Web_BTL.Controllers
                 var admin = await _datacontext.Admins.FirstOrDefaultAsync(a => a.UserEmail == email);
                 if (image != null && image.Length > 0)
                     media.MediaImagePath = await _save.SaveImageAsync(_environment, "images/medias", "", media.MediaName, image);
+                if (banner != null && banner.Length > 0)
+                    media.MediaBannerPath = await _save.SaveImageAsync(_environment, "images/banners", "", media.MediaName + "banner", banner);
                 if (video != null && video.Length > 0)
                 {
                     var resule = await _save.SaveVideoAsync(_environment, "videos", "", media.MediaName + media.MediaQuality, video, true);
@@ -123,7 +125,7 @@ namespace Web_BTL.Controllers
         // lấy dữ liệu media đã sửa về
         [HttpPost]
         public async Task<IActionResult> EditMedia(int mid, MediaModel model, 
-            IFormFile? image, IFormFile? video, List<int> SelectedGenreId, List<int> SelectedActorId, List<int> SelectedActorMain)
+            IFormFile? image, IFormFile? banner, IFormFile? video, List<int> SelectedGenreId, List<int> SelectedActorId, List<int> SelectedActorMain)
         {
             Console.WriteLine("Day la post Edit media");
             Console.WriteLine("day la id - " + mid);
@@ -157,10 +159,12 @@ namespace Web_BTL.Controllers
                 }
                 if (image != null && image.Length > 0)
                     media.MediaImagePath = await _save.SaveImageAsync(_environment, "images/medias", "", media.MediaName, image);
+                if (banner != null && banner.Length > 0)
+                    media.MediaBannerPath = await _save.SaveImageAsync(_environment, "images/banners", "", media.MediaName + "banner", banner);
                 if (video != null && video.Length > 0)
                 {
                     var resule = await _save.SaveVideoAsync(_environment, "videos", "", media.MediaName + media.MediaQuality, video, true);
-                    media.MediaImagePath = resule.videoName;
+                    media.MediaUrl = resule.videoName;
                     media.MediaDuration = resule.duration;
                 }
                 if (SelectedActorId.Count > 0)
@@ -190,9 +194,10 @@ namespace Web_BTL.Controllers
                     }
                     await _datacontext.SaveChangesAsync();
                 }
-                if (SelectedActorId.Count > 0)
+                if (SelectedGenreId.Count > 0)
                 {
-                    media.Genres.Clear();
+                    await _datacontext.Database.ExecuteSqlRawAsync($"DELETE FROM Media_Genre WHERE MediaId = {media.MediaId}");
+                    await _datacontext.SaveChangesAsync();
                     foreach (var item in SelectedGenreId)
                     {
                         var g = await _datacontext.Genres.FirstOrDefaultAsync(g => g.GenreId == item);
@@ -351,6 +356,20 @@ namespace Web_BTL.Controllers
         {
             var customers = _datacontext.Customers.ToList();
             return View(customers);
+        }
+
+        [HttpPost]
+        public IActionResult ToggleUserState(int customerId)
+        {
+            var customer = _datacontext.Customers.Find(customerId);
+            Console.WriteLine("day la ToggleUserState");
+            if (customer != null)
+            {
+                customer.UserState = !customer.UserState;
+                _datacontext.SaveChanges();
+                return Json(new { success = true, newState = customer.UserState });
+            }
+            return Json(new { success = false });
         }
     }
 }

@@ -26,6 +26,7 @@ namespace Web_BTL.Models.Medias
         public DateTime? ReleaseDate { get; set; } // ngày phát hành
         public int? MediaAgeRating { get; set; } // giới hạn số tuổi được xem
         public string? MediaImagePath { get; set; } // ảnh sơ bộ của phim
+        public string? MediaBannerPath { get; set; } // ảnh quảng cáo
         public TimeSpan? MediaDuration { get; set; } // thời lượng
         //public int? package { get; set; } = 0; // 0 là bagic, 1 là medium, 2 là vip
         public ServicePackage package { get; set; } = ServicePackage.Basic;

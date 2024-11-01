@@ -240,7 +240,6 @@ a {
 
     a:hover {
         color: #1F83ED;
-        text-decoration: underline;
     }
 
     a:not([href]):not([tabindex]) {
@@ -11837,6 +11836,7 @@ button:focus {
 }
 
 .comments-list li {
+    display: flex;
     margin-bottom: 15px;
     display: block;
     position: relative;
@@ -12099,7 +12099,6 @@ button:focus {
 
 .cast-container {
     width: 100%;
-    padding-top: 100px;
     background-repeat: no-repeat;
     background-size: 100% 699px;
     position: relative;
@@ -12302,4 +12301,10 @@ button:focus {
 
 .movie-watching__view-count span {
     font-size: 1.2rem;
+}
+.comment-main-level{
+    display: flex;
+}
+.comment-box{
+    margin-left: 20px;
 }

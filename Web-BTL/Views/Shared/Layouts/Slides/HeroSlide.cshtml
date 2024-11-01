@@ -7,7 +7,7 @@
             if (movie.MediaName == "Black Panther" || movie.MediaName == "John Wick" || movie.MediaName == "GOTG Vol 3")
             {
                 <div class="hero-slide-item">
-                    <img src="@movie.MediaImagePath" class="movie-image" alt="@movie.MediaName Banner">
+                    <img src="@Url.Content("./images/banners/" + @movie.MediaBannerPath)" class="movie-image" alt="@movie.MediaName Banner">
                     <div class="overlay"></div>
                     <div class="hero-slide-item-content">
                         <div class="item-content-wraper">

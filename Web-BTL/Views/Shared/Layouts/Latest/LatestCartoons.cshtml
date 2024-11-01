@@ -11,7 +11,7 @@
                     <form asp-action="Index" asp-controller="Movie" method="post">
                         <input type="hidden" name="movieId" value="@movie.MediaId" />
                         <button type="submit" style="border:none; background:none;">
-                            <img src="@Url.Content("~/images/users/" + @movie.MediaImagePath)@($"?timestamp={DateTime.Now.Ticks}")" alt="@movie.MediaName" />
+                            <img src="@Url.Content("./images/medias/" + @movie.MediaImagePath)" alt="@movie.MediaName" />
                         </button>
                     </form>
 
