@@ -34,9 +34,9 @@
 
 
             <ul class="nav-menu" id="nav-menu">
-                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                <li><a asp-controller="Genre" asp-action="Index">Genre</a></li>
-                <li><a href="#">About</a></li>
+                <li><a id="home" asp-controller="Home" asp-action="Index">Home</a></li>
+                <li><a id="genre" asp-controller="Genre" asp-action="Index">Genre</a></li>
+                <li><a id="about" href="#">About</a></li>
                 @if (user != null)
                 {
                     <li>
