@@ -109,7 +109,7 @@
             var action = $(this).data("action");
             var url = "/User/";
             var tmp = "div#";
-            if (id === "listMedia"  || id == "listCustomer") return;
+            if (id === "listMedia"  || id == "listCustomer" || id == "about" || id == "home" || id == "genre") return;
             else if (id == "LogOut") return;
             e.preventDefault();
             if (action === "SaveImage") {
