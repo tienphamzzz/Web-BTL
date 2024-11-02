@@ -11,7 +11,7 @@
             @foreach (var movie in Model)
             {
                 <a href="#" class="movie-item">
-                    <img src="@movie.MediaImagePath" id="@movie.MediaId" alt="@movie.MediaName" />
+                    <img src="@Url.Content("~/images/medias/" + @movie.MediaImagePath)" id="@movie.MediaId" alt="@movie.MediaName" />
                     <div class="movie-item-content">
                         <div class="movie-item-title">
                             @movie.MediaName
