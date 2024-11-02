@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --main-color: #1f83ed;
     --body-bg: #181616;
     --box-bg: #221f1f;
@@ -648,7 +648,7 @@ footer .content {
 }
 
 .modal-content {
-    background-color: #007bff; /* Màu nền xanh dương */
+    background-color: #ffffff; /* Màu nền xanh dương */
     color: black; /* Màu chữ trắng */
     border-radius: 0.5rem; /* Bo tròn góc cho modal */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Thêm bóng đổ cho modal */
