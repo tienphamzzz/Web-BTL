@@ -1,0 +1,34 @@
+﻿@using Web_BTL.Models.User.Customer
+@model IEnumerable<CustomerModel>
+
+<table id="tb" class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Tên người dùng</th>
+            <th>Ngày tạo</th>
+            <th>Tên đăng nhập</th>
+            <th>Địa chỉ email</th>
+            <th>Ảnh</th>
+            <th>Gói</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr style="position: relative">
+                <td>@c.UserName</td>
+                <td>@c.UserCreateDate</td>
+                <td>@c.UserLogin</td>
+                <td>@c.UserEmail</td>
+                <td>@c.UserImagePath</td>
+                <td>@c._ServicePackage</td>
+                <td>
+                    <a id="toggle-@c.CustomerId" href="javascript:void(0)" onclick="toggleUserState(@c.CustomerId)">
+                        @((c.UserState == true) ? "Hoạt động" : "Dừng hoạt động")
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
