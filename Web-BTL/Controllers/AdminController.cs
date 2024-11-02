@@ -371,5 +371,44 @@ namespace Web_BTL.Controllers
             }
             return Json(new { success = false });
         }
+        [HttpGet]
+        public IActionResult LoadMediaList(string type, string id)
+        {
+            if (type == "package")
+            {
+                var e = ServicePackage.Basic;
+                if (id == "Premium") e = ServicePackage.Premium;
+                else if (id == "Vip") e = ServicePackage.Vip;
+                var mediaList = _datacontext.Medias.Where(m => m.package == e).ToList();
+                return PartialView("MediaTable", mediaList);
+            }
+            if (type == "genre")
+            {
+                int gid = int.Parse(id);
+                var mediaList = _datacontext.Medias.Where(m => m.Genres.Any(g => g.GenreId == gid)).ToList();
+                return PartialView("MediaTable", mediaList);
+            }
+            if (type == "all")
+            {
+                var mediaList = _datacontext.Medias.ToList();
+                return PartialView("MediaTable", mediaList);
+            }
+            return NotFound();
+        }
+        [HttpGet]
+        public IActionResult LoadCustomerList(string id)
+        {
+            if (id == null) return NotFound();
+            if (id == "all")
+            {
+                var cus = _datacontext.Customers.ToList();
+                return PartialView("CustomerTable", cus);
+            }
+            var e = ServicePackage.Basic;
+            if (id == "Premium") e = ServicePackage.Premium;
+            else if (id == "Vip") e = ServicePackage.Vip;
+            var customer = _datacontext.Customers.Where(c => c._ServicePackage == e).ToList();
+            return PartialView("CustomerTable", customer);
+        }
     }
 }
