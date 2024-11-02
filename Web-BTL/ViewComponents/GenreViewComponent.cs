@@ -15,9 +15,10 @@ namespace WebBTL.ViewComponents
             _context = context;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(bool isAdmin = false)
         {
             var genres = _context.Genres.ToList();
+            if (isAdmin) return View("AdminGenre", genres);
             return View("Default", genres);
         }
     }
