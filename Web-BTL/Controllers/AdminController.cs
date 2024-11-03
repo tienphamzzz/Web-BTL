@@ -15,7 +15,7 @@ namespace Web_BTL.Controllers
         private readonly DataContext _datacontext; // luồng đọc dữ liệu từ database
         private readonly IWebHostEnvironment _environment; // môi trường web
         private readonly SaveImageVideo _save; // service dùng để lưu ảnh và video
-        public AdminController(DataContext datacontext, IWebHostEnvironment environment, SaveImageVideo save)
+        public AdminController(DataContext datacontext, IWebHostEnvironment environment, SaveImageVideo save) // gán giá trị khởi tạo
         {
             _datacontext = datacontext;
             _environment = environment;
@@ -23,7 +23,7 @@ namespace Web_BTL.Controllers
         }
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("LogIn Session") == null)
+            if (HttpContext.Session.GetString("LogIn Session") == null) // kiểm tra thông tin đăng nhập
                 return RedirectToAction(nameof(SignIn), "Account");
             var medias = _datacontext.Medias.ToList();
             return View(medias);
@@ -31,8 +31,9 @@ namespace Web_BTL.Controllers
         [HttpGet]
         public IActionResult AddMedia()
         {
-            string role = HttpContext.Session.GetString("Admin");
-            if (role == null || role != Models.User.Admin.Role.SuperAdmin.ToString() && role != Models.User.Admin.Role.Movie_Management.ToString()) 
+            string role = HttpContext.Session.GetString("Admin"); // kiểm tra xem có đủ quyền hạn để thực hiện không
+            if (role == null || role != Models.User.Admin.Role.SuperAdmin.ToString() 
+                && role != Models.User.Admin.Role.Movie_Management.ToString()) 
                 return RedirectToAction("UserInformation", "User");
             CreateViewBag();
             return View();
@@ -40,11 +41,6 @@ namespace Web_BTL.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMedia(MediaModel media, IFormFile image, IFormFile banner, IFormFile video, List<int> SelectedGenreId)
         {
-            var email = HttpContext.Session.GetString("LogIn Session");
-            string role = HttpContext.Session.GetString("Admin");
-            if (role != Models.User.Admin.Role.SuperAdmin.ToString() 
-                && role != Models.User.Admin.Role.Movie_Management.ToString())
-                return RedirectToAction("UserInformation", "User");
             if (ModelState.IsValid)
             {
                 if (email == null) return RedirectToAction("SignIn", "Account");
@@ -204,18 +200,6 @@ namespace Web_BTL.Controllers
                         if (g != null) media.Genres.Add(g);
                     }
                 }
-                //else
-                //{
-                //    CreateViewBag();
-                //    ViewBag.AllActors = new List<SelectListItem>();
-                //    var listactors = _datacontext.Actors.ToList();
-                //    ViewBag.AllActors.AddRange(listactors.Select(a => new SelectListItem
-                //    {
-                //        Text = a.ActorName,
-                //        Value = a.ActorID.ToString()
-                //    }));
-                //    return View(model);
-                //}
                 await _datacontext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -361,6 +345,13 @@ namespace Web_BTL.Controllers
         [HttpPost]
         public IActionResult ToggleUserState(int customerId)
         {
+            // kiểm tra đây có phải tài khoản admin không và có đủ quyền chỉnh sửa không
+            var email = HttpContext.Session.GetString("LogIn Session");
+            if (email == null) return NotFound("Không tìm thấy trang");
+            var role = HttpContext.Session.GetString("Admin");
+            if (role != Models.User.Admin.Role.SuperAdmin.ToString()
+                && role != Models.User.Admin.Role.ServicePackage_Management.ToString())
+                return NotFound("Quyền hạn của bạn không đủ");
             var customer = _datacontext.Customers.Find(customerId);
             Console.WriteLine("day la ToggleUserState");
             if (customer != null)
