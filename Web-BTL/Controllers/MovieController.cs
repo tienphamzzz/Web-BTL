@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Web_BTL.Models;
 using Web_BTL.Models.ListMedia.Watch;
 using Web_BTL.Models.Medias;
 using Web_BTL.Repository;
@@ -52,6 +53,10 @@ namespace Web_BTL.Controllers
         {
             var movie = db.Medias.FirstOrDefault(m => m.MediaId == movieId);
             var customer = db.Customers.FirstOrDefault(c => c.UserEmail == HttpContext.Session.GetString("LogIn Session"));
+            var review = db.Reviews.Where(m => m.MediaId == movieId).ToList();
+            var cus = db.Customers.ToList();
+            ViewBag.ListCus = cus;
+            ViewBag.Reviews = review;
             if (customer != null)
             {
                 var listMedia = db.ListMedia
@@ -82,5 +87,31 @@ namespace Web_BTL.Controllers
             db.SaveChanges();
             return PartialView("AddFavourite");
         }
+        [HttpPost]
+        public IActionResult Add_Review(string content, int movieId)
+        {
+            var movie = db.Medias.FirstOrDefault(m => m.MediaId == movieId);
+            ViewBag.id = movieId;
+            var cus = db.Customers.ToList();
+            ViewBag.ListCus = cus;
+            var customer = db.Customers.FirstOrDefault(c => c.UserEmail == HttpContext.Session.GetString("LogIn Session"));
+            if (customer == null)
+            {
+                return PartialView("redirect-login-comment");
+            }
+            var newReview = new ReviewModel
+            {
+                ReviewContent = content,
+                CustomerId = customer.CustomerId,
+                MediaId = movieId
+            };
+            db.Reviews.Add(newReview);
+            db.SaveChanges();
+            var review = db.Reviews.Where(m => m.MediaId == movieId).ToList();
+            
+            
+            return PartialView("comment",review);
+        }
     }
+        
 }
