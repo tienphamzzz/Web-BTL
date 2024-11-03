@@ -1,0 +1,89 @@
+@model IEnumerable<Web_BTL.Models.ReviewModel>
+    <h3>Thêm bình luận </h3>
+<div id="comment-form">
+    <textarea id="comment-text" name="comment" placeholder="Nhập bình luận của bạn về phim tại đây..." required></textarea>
+    <a id="comment1" onclick="cm(@ViewBag.id)" style="width: 100px; border-radius: 10px;margin-top:15px;background-color:brown">
+        Gửi Bình Luận
+    </a>
+</div>
+    <ul id="comments-list" class="comments-list">
+    <h3>Bình luận về phim</h3>
+
+        <li>
+            @foreach (var review in Model)
+            {
+                <div class="comment-main-level">
+                    <!-- Avatar -->
+                    <div class="comment-avatar"><img src="images/common/default-avatar.png" alt=""></div>
+                    <!-- Comment Container -->
+                    <div class="comment-box">
+                        <div class="comment-head">
+                            <h6 class="comment-name"><a href="#">
+                                @foreach(var ten in @ViewBag.ListCus)
+                                {
+                                    if(@ten.CustomerId== review.CustomerId)
+                                    {
+                                        @ten.UserName;
+                                    }
+                                }
+                            </a></h6>
+
+                        </div>
+                        <div class="comment-content">
+                            @review.ReviewContent
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </li>
+    </ul>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- Đảm bảo bạn đã bao gồm jQuery -->
+
+<script>
+    function cm(mediaId) {
+
+        var reviewContent = $('#comment-text').val(); // Lấy giá trị từ textarea
+
+
+        if (!reviewContent) {
+            alert("Vui lòng nhập bình luận.");
+            return; // Ngừng nếu không có nội dung bình luận
+        }
+
+
+
+        // Kiểm tra session (điều này có thể không hoạt động đúng nếu dùng trong JS phía client)
+
+
+
+        // Gọi hàm Ajax
+        $.ajax({
+            type: "POST",
+            url: "@Url.Action("Add_Review", "Movie")",
+            data: { content: reviewContent, movieId: mediaId },
+            success: function (response) {
+                if (response.includes("redirect-login-comment")) {
+                    $('#comment-text').val("");
+                    $('#comments-container').html(response);
+                } else {
+                    // Cập nhật nội dung của comments-container
+                    $('#popup').html(response); // Chắc chắn rằng bạn có phần tử này trong HTML
+
+                    // Hiển thị modal
+                    $('#favoriteModal').modal('show');
+
+                    // Tự động đóng modal sau 3 giây
+                    setTimeout(function () {
+                        $('#favoriteModal').modal('hide');
+                    }, 2000); // 3000 milliseconds = 3 seconds
+                }
+            },
+            error: function () {
+                alert("Có lỗi xảy ra khi gửi bình luận.");
+            }
+        });
+    }
+
+
+</script>
