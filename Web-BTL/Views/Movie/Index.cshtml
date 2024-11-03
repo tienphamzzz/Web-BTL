@@ -1,9 +1,10 @@
-﻿@using Web_BTL.Models.Medias
+@using Web_BTL.Models.Medias
 @model MediaModel
 
 @{
     ViewData["Title"] = "@Model.MediaName";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
 }
 @section Styles {
     <link rel="stylesheet" href="css/main.css">
@@ -20,7 +21,7 @@
                 <button type="button" class="m-btn btn-secondary btn-lg btn-block" data-toggle="modal" data-target="#trailerMovie">
                     Trailer
                 </button>
-                <div id="modalContainer"></div>
+                <div id="popup"></div>
                 <!-- Modal -->
                 <div class="modal fade bd-example-modal-lg" id="trailerMovie" tabindex="-1" role="dialog" aria-labelledby="trailerMovieLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
@@ -60,7 +61,7 @@
                     </div>
                     <div class="movie-rate__rate-star">
                         <p>Đánh giá phim: </p>
-                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"> </i>
                         <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
@@ -89,7 +90,7 @@
                             <p>@Model.MediaDescription</p>
                         </div>
                         <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
-
+                            
                         </div>
 
                         <div class="tab-pane fade" id="cast" role="tabpanel" aria-labelledby="cast-tab">
@@ -174,7 +175,7 @@
         data: { mid: mediaId },
         success: function (response) {
             // Chèn nội dung modal vào một phần tử trên trang, ví dụ #modalContainer
-            $('#modalContainer').html(response); // Chắc chắn rằng bạn có phần tử này trong HTML
+            $('#popup').html(response); // Chắc chắn rằng bạn có phần tử này trong HTML
 
             // Hiển thị modal
             $('#favoriteModal').modal('show');
@@ -182,7 +183,7 @@
             // Tự động đóng modal sau 3 giây
             setTimeout(function () {
                 $('#favoriteModal').modal('hide');
-            }, 3000); // 3000 milliseconds = 3 seconds
+            },2000); // 3000 milliseconds = 3 seconds
         },
         error: function () {
             alert("Không thể thêm vào danh sách yêu thích.");

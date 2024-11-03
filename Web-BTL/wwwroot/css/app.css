@@ -640,6 +640,7 @@ footer .content {
     }
 
 
+
 #favoriteModal {
     position: fixed; /* Đặt modal ở vị trí cố định */
     top: 20px; /* Cách từ trên xuống 20px */
@@ -660,4 +661,24 @@ footer .content {
 
 .modal-footer {
     border-top: none; /* Không có viền trên cho footer */
+}
+#comment-form{
+    display:inline-grid;
+    margin-bottom:25px;
+}
+#comment-text {
+    width: 720px;
+    border-radius:10px;
+}
+#submit-comment {
+    background-color: brown;
+    border-radius: 10px;
+    width: 100px;
+    margin-top:15px;
+}
+.comment-main-level{
+    padding-bottom:20px;
+}
+#comment-container{
+    margin-left:130px;
 }
