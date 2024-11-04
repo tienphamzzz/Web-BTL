@@ -401,6 +401,8 @@ namespace Web_BTL.Controllers
         }
         private bool checkRole(bool SuperAdmin = false, bool Movie_Management = false, bool CommentAndReview_Management = false, bool ServicePackage_Management = false)
         {
+            string email = HttpContext.Session.GetString("LogIn Session");
+            if (email == null) return false;
             string role = HttpContext.Session.GetString("Admin");
             if (SuperAdmin && role == Models.User.Admin.Role.SuperAdmin.ToString()) return true;
             if (Movie_Management && role == Models.User.Admin.Role.Movie_Management.ToString()) return true;
