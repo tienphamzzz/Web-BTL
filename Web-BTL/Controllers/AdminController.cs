@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Web_BTL.Models.Actors;
@@ -6,7 +6,6 @@ using Web_BTL.Models.Medias;
 using Web_BTL.Models.User.Customer;
 using Web_BTL.Repository;
 using Web_BTL.Services.UploadFile;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Web_BTL.Controllers
 {
@@ -23,18 +22,13 @@ namespace Web_BTL.Controllers
         }
         public IActionResult Index()
         {
-            if (HttpContext.Session.GetString("LogIn Session") == null) // kiểm tra thông tin đăng nhập
-                return RedirectToAction(nameof(SignIn), "Account");
             var medias = _datacontext.Medias.ToList();
             return View(medias);
         }
         [HttpGet]
         public IActionResult AddMedia()
         {
-            string role = HttpContext.Session.GetString("Admin"); // kiểm tra xem có đủ quyền hạn để thực hiện không
-            if (role == null || role != Models.User.Admin.Role.SuperAdmin.ToString() 
-                && role != Models.User.Admin.Role.Movie_Management.ToString()) 
-                return RedirectToAction("UserInformation", "User");
+            if (!checkRole(true, true)) return NotFound("Bạn không đủ quyền hạn");
             CreateViewBag();
             return View();
         }
@@ -85,31 +79,12 @@ namespace Web_BTL.Controllers
             CreateViewBag();
             return View(media);
         }
-        // tạo các ViewBag cho các action sử dụng (hầu như đều dùng) trong controller Admin
-        private void CreateViewBag()
-        {
-            ViewBag.AllPackage = Enum.GetValues(typeof(ServicePackage)).Cast<ServicePackage>().ToList();
-            ViewBag.AllGenres = new List<SelectListItem>();
-            var genres = _datacontext.Genres.ToList();
-            ViewBag.AllGenres.AddRange(genres.Select(g => new SelectListItem // tạo list item để lựa chon genre cho media
-            {
-                Text = g.Type,
-                Value = g.GenreId.ToString()
-            }));
-            
-        }
+        
         // gọi đến sửa media
         [HttpGet]
         public IActionResult EditMedia(int? mid)
         {
-            Console.WriteLine("day la get edit media");
-            var actors = _datacontext.Actors.ToList();
-            ViewBag.AllActors = new List<SelectListItem>();
-            ViewBag.AllActors.AddRange(actors.Select(a => new SelectListItem
-            {
-                Text = a.ActorName,
-                Value = a.ActorID.ToString()
-            }));
+            if (!checkRole(true, true)) return NotFound("Bạn không đủ quyền hạn");
             if (mid == null)
                 return RedirectToAction(nameof(Index));
             var media = _datacontext.Medias.FirstOrDefault(m => m.MediaId == mid);
@@ -121,36 +96,18 @@ namespace Web_BTL.Controllers
         public async Task<IActionResult> EditMedia(int mid, MediaModel model, 
             IFormFile? image, IFormFile? banner, IFormFile? video, List<int> SelectedGenreId, List<int> SelectedActorId, List<int> SelectedActorMain)
         {
-            Console.WriteLine("Day la post Edit media");
-            Console.WriteLine("day la id - " + mid);
-            Console.WriteLine("day la id cua media" + model.MediaId);
-            if (mid != model.MediaId)
-            {
-                Console.WriteLine("do mid và id khac nhau");
-                return NotFound();
-            }
+            if (mid != model.MediaId) return NotFound();
             var media = await _datacontext.Medias.FirstOrDefaultAsync(m => m.MediaId == mid);
             if (media == null || model == null) return RedirectToAction(nameof(Index));
             if (ModelState.IsValid)
             {
-                try
-                {
-                    //media.MediaDuration = model.MediaDuration;
-                    //media
-                    media.MediaName = model.MediaName;
-                    media.MediaDescription = model.MediaDescription;
-                    media.MediaQuality = model.MediaQuality;
-                    media.ReleaseDate = model.ReleaseDate;
-                    media.MediaAgeRating = model.MediaAgeRating;
-                    media.package = model.package;
-                    await _datacontext.SaveChangesAsync();
-                }catch (DbUpdateConcurrencyException)
-                {
-                    Console.WriteLine("==================Khong update duoc database");
-                    if (!mediaExists(media.MediaId))
-                        return NotFound();
-                    else throw;
-                }
+                media.MediaName = model.MediaName;
+                media.MediaDescription = model.MediaDescription;
+                media.MediaQuality = model.MediaQuality;
+                media.ReleaseDate = model.ReleaseDate;
+                media.MediaAgeRating = model.MediaAgeRating;
+                media.package = model.package;
+                await _datacontext.SaveChangesAsync();
                 if (image != null && image.Length > 0)
                     media.MediaImagePath = await _save.SaveImageAsync(_environment, "images/medias", "", media.MediaName, image);
                 if (banner != null && banner.Length > 0)
@@ -167,7 +124,6 @@ namespace Web_BTL.Controllers
                     _datacontext.Actor_Medias.RemoveRange(ra);
                     foreach (var id in SelectedActorId)
                     {
-                        
                         var a = await _datacontext.Actor_Medias.FirstOrDefaultAsync(am => am.MediaId == model.MediaId && am.ActorId == id);
                         if (a == null)
                         {
@@ -202,25 +158,16 @@ namespace Web_BTL.Controllers
                 return RedirectToAction(nameof(Index));
             }
             CreateViewBag();
-            ViewBag.AllActors = new List<SelectListItem>();
-            var actors = _datacontext.Actors.ToList();
-            ViewBag.AllActors.AddRange(actors.Select(a => new SelectListItem
-            {
-                Text = a.ActorName,
-                Value = a.ActorID.ToString()
-            }));
             return View(model);
         }
         private bool mediaExists(int id)
         {
             return (_datacontext.Medias?.Any(e => e.MediaId == id)).GetValueOrDefault();
         }
-        // xoá media
         [HttpPost]
         public async Task<IActionResult> DeleteMedia(int? mid, bool YesNo = false)
         {
-            Console.WriteLine("Day la delete media");
-            Console.WriteLine("mid = " + mid);
+            if (!checkRole(true, true)) return NotFound("Bạn không đủ quyền hạn");
             if (mid != null && YesNo)
             {
                 var media = await _datacontext.Medias.FirstAsync(m => m.MediaId == mid);
@@ -228,9 +175,7 @@ namespace Web_BTL.Controllers
                 _save.DeleteFile(_environment, "videos", media.MediaUrl); // xoá media trong wwwroot
                 _datacontext.Medias.Remove(media);
                 await _datacontext.SaveChangesAsync();
-                Console.WriteLine("da xoa thanh cong");
             }
-            else Console.WriteLine("Không xoá thành công");
             return RedirectToAction(nameof(Index));
         }
         public IActionResult ListGenre()
@@ -241,6 +186,7 @@ namespace Web_BTL.Controllers
         [HttpGet]
         public IActionResult AddGenre()
         {
+            if (!checkRole(true, true)) return NotFound("Bạn không đủ quyền hạn");
             return View();
         }
         [HttpPost]
@@ -254,21 +200,20 @@ namespace Web_BTL.Controllers
         [HttpPost]
         public IActionResult EditGenre([FromBody]GenreModel genre)
         {
-            Console.WriteLine($"Day la EditGenre - {genre.GenreId} - {genre.Type}" );
+            if (!checkRole(true, true)) return Json(new { success = false });
             var model = _datacontext.Genres.FirstOrDefault(g => g.GenreId == genre.GenreId);
             if (model != null)
             {
                 model.Type = genre.Type;
                 _datacontext.SaveChanges();
-                Console.WriteLine("Da cap nhat thanh cong");
                 return Json(new { success = true });
             }
-            Console.WriteLine("Da cap nhat that bai");
             return Json(new { success = false});
         }
         [HttpPost]
         public async Task<IActionResult> DeleteGenre(int? gid, bool YesNo = false)
         {
+            if (!checkRole(true, true)) return NotFound("Bạn không đủ quyền hạn");
             if (gid != null && YesNo)
             {
                 var genre = _datacontext.Genres.FirstOrDefault(g => g.GenreId == gid);
@@ -285,6 +230,7 @@ namespace Web_BTL.Controllers
         [HttpGet]
         public IActionResult AddActor()
         {
+            if (!checkRole(true, true)) return NotFound("Bạn không đủ quyền hạn");
             return View();
         }
         [HttpPost]
@@ -298,11 +244,11 @@ namespace Web_BTL.Controllers
         [HttpPost]
         public IActionResult EditActorName([FromBody]ActorModel actor)
         {
+            if (!checkRole(true, true)) return Json(new { success = false });
             var model = _datacontext.Actors.Find(actor.ActorID);
             if (model != null)
             {
                 model.ActorName = actor.ActorName;
-                //model.AcctorDate = actor.AcctorDate;
                 _datacontext.SaveChanges();
                 return Json(new {success = true});
             }
@@ -311,7 +257,7 @@ namespace Web_BTL.Controllers
         [HttpPost]
         public IActionResult EditActorDate([FromBody] ActorModel actor)
         {
-            //var model = _datacontext.Actors.Find(actor.ActorID);
+            if (!checkRole(true, true)) return Json(new { success = false });
             Console.WriteLine($"Day la EditActor - {actor.ActorID}");
             if (actor.ActorID == null) return Json(new { success = false });
             var model = _datacontext.Actors.FirstOrDefault(a => a.ActorID == actor.ActorID);
@@ -326,6 +272,7 @@ namespace Web_BTL.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteActor(int? aid, bool YesNo = false)
         {
+            if (!checkRole(true, true)) return NotFound("Bạn không đủ quyền hạn");
             if (aid != null && YesNo)
             {
                 var actor = await _datacontext.Actors.FirstOrDefaultAsync(a => a.ActorID == aid);
@@ -339,17 +286,11 @@ namespace Web_BTL.Controllers
             var customers = _datacontext.Customers.ToList();
             return View(customers);
         }
-
         [HttpPost]
         public IActionResult ToggleUserState(int customerId)
         {
             // kiểm tra đây có phải tài khoản admin không và có đủ quyền chỉnh sửa không
-            var email = HttpContext.Session.GetString("LogIn Session");
-            if (email == null) return NotFound("Không tìm thấy trang");
-            var role = HttpContext.Session.GetString("Admin");
-            if (role != Models.User.Admin.Role.SuperAdmin.ToString()
-                && role != Models.User.Admin.Role.ServicePackage_Management.ToString())
-                return NotFound("Quyền hạn của bạn không đủ");
+            if (!checkRole(true, false, false, true)) Json(new { success = false });
             var customer = _datacontext.Customers.Find(customerId);
             Console.WriteLine("day la ToggleUserState");
             if (customer != null)
@@ -387,6 +328,7 @@ namespace Web_BTL.Controllers
         [HttpGet]
         public IActionResult LoadCustomerList(string id)
         {
+
             if (id == null) return NotFound();
             if (id == "all")
             {
@@ -399,6 +341,25 @@ namespace Web_BTL.Controllers
             var customer = _datacontext.Customers.Where(c => c._ServicePackage == e).ToList();
             return PartialView("CustomerTable", customer);
         }
+        // tạo các ViewBag cho các action sử dụng (hầu như đều dùng) trong controller Admin
+        private void CreateViewBag()
+        {
+            ViewBag.AllPackage = Enum.GetValues(typeof(ServicePackage)).Cast<ServicePackage>().ToList();
+            ViewBag.AllGenres = new List<SelectListItem>();
+            var genres = _datacontext.Genres.ToList();
+            ViewBag.AllGenres.AddRange(genres.Select(g => new SelectListItem // tạo list item để lựa chon genre cho media
+            {
+                Text = g.Type,
+                Value = g.GenreId.ToString()
+            }));
+            var actors = _datacontext.Actors.ToList();
+            ViewBag.AllActors = new List<SelectListItem>();
+            ViewBag.AllActors.AddRange(actors.Select(a => new SelectListItem
+            {
+                Text = a.ActorName,
+                Value = a.ActorID.ToString()
+            }));
+        }
         private bool checkRole(bool SuperAdmin = false, bool Movie_Management = false, bool CommentAndReview_Management = false, bool ServicePackage_Management = false)
         {
             string email = HttpContext.Session.GetString("LogIn Session");
@@ -410,5 +371,6 @@ namespace Web_BTL.Controllers
             if (ServicePackage_Management && role == Models.User.Admin.Role.ServicePackage_Management.ToString()) return true;
             return false;
         }
+        
     }
 }
