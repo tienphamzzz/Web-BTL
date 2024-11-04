@@ -399,5 +399,14 @@ namespace Web_BTL.Controllers
             var customer = _datacontext.Customers.Where(c => c._ServicePackage == e).ToList();
             return PartialView("CustomerTable", customer);
         }
+        private bool checkRole(bool SuperAdmin = false, bool Movie_Management = false, bool CommentAndReview_Management = false, bool ServicePackage_Management = false)
+        {
+            string role = HttpContext.Session.GetString("Admin");
+            if (SuperAdmin && role == Models.User.Admin.Role.SuperAdmin.ToString()) return true;
+            if (Movie_Management && role == Models.User.Admin.Role.Movie_Management.ToString()) return true;
+            if (CommentAndReview_Management && role == Models.User.Admin.Role.CommentAndReview_Management.ToString()) return true;
+            if (ServicePackage_Management && role == Models.User.Admin.Role.ServicePackage_Management.ToString()) return true;
+            return false;
+        }
     }
 }
