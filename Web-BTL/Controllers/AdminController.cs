@@ -43,8 +43,6 @@ namespace Web_BTL.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (email == null) return RedirectToAction("SignIn", "Account");
-                var admin = await _datacontext.Admins.FirstOrDefaultAsync(a => a.UserEmail == email);
                 if (image != null && image.Length > 0)
                     media.MediaImagePath = await _save.SaveImageAsync(_environment, "images/medias", "", media.MediaName, image);
                 if (banner != null && banner.Length > 0)
