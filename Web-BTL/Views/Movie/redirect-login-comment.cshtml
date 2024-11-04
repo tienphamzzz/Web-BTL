@@ -1,4 +1,9 @@
-
+@{
+    var str = "Vui lòng đăng nhập để bình luận !";
+    var session = Context.Session;
+    var role = session.GetString("Admin");
+    if (role != null) str = "Vui lòng sử dụng tài khoản khách thay vì sử dụng tài khoản admin !";
+}
 <div id="modalContainer">
 <div class="modal fade" id="favoriteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -10,7 +15,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p>Vui lòng đăng nhập để bình luận !</p>
+                <p>@str</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
