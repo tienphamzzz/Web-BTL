@@ -16,15 +16,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options => {
     options.Cookie.IsEssential = true;
-    options.IdleTimeout = TimeSpan.FromMinutes(60);
+    options.IdleTimeout = TimeSpan.FromDays(7); // quá 7 ngày không sử dụng sẽ tự động xoá session
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 
-builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSetting")); // c?u h�nh kh?i t?o cho Email ph�a m�y ch?
-builder.Services.AddTransient<SendEmail>(); // s? d?ng d?ch v? g?i tin nh?n
-builder.Services.AddScoped<SaveImageVideo>();
-builder.Services.AddScoped<CookieService>(); // th�m service Cookie
+builder.Services.Configure<EmailSetting>(builder.Configuration.GetSection("EmailSetting")); // c?u hình kh?i t?o cho Email phía máy ch?
+builder.Services.AddTransient<SendEmail>(); // sử dụng dịch vụ gửi tin nhắn
+builder.Services.AddScoped<SaveImageVideo>(); // sử dụng dịch vụ lưu file(image và video)
+builder.Services.AddScoped<CookieService>(); // thêm service Cookie 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -46,5 +46,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 var context = app.Services.CreateScope().ServiceProvider.GetRequiredService<DataContext>();
-SeedData.SeedingData(context);
+// SeedData.SeedingData(context); đã không còn cần thiết
 app.Run();
