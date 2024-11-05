@@ -1,6 +1,13 @@
 @using Web_BTL.Models.Medias
 @model IEnumerable<MediaModel>
 
+@{
+    var session = Context.Session;
+    var str = session.GetString("Admin");
+    if (str == null) str = "false";
+    else if (str != "SuperAdmin" && str != "Movie_Management") str = "false";
+}
+
 <div class="container-fluid px-4">
     <div class="card mb-4">
         <div>
@@ -23,7 +30,10 @@
                             <th>Tuổi giới hạn</th>
                             <th>Thời lượng</th>
                             <th>Gói</th>
-                            <th>Option</th>
+                            @if (str != "false")
+                            {
+                                <th>Option</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -36,17 +46,20 @@
                                 <td>@m.MediaAgeRating</td>
                                 <td>@(m.MediaDuration?.ToString("hh\\:mm\\:ss") ?? "00:00:00")</td>
                                 <td>@m.package</td>
-                                <td style="color: orangered; position: relative;">
-                                    <a id="@m.MediaId" asp-action="EditMedia" asp-route-mid="@m.MediaId">Edit</a> |
-                                    <a href="javascript:void(0);" onclick="showConfirmDelete('@m.MediaId')">Delete</a>
-                                    <!--Hiển thị form xoá hay không xoá-->
-                                    <form id="confirm-delete-@m.MediaId" asp-action="DeleteMedia" method="post" class="confirm-delete-form" style="display: none;">
-                                        <p>Bạn có chắc chắn muốn xóa phim này?</p>
-                                        <input type="hidden" name="mid" value="@m.MediaId" />
-                                        <button type="submit" name="YesNo" value="true" class="btn btn-success">Có</button>
-                                        <button type="button" onclick="hideConfirmDelete('@m.MediaId')" class="btn btn-danger">Không</button>
-                                    </form>
-                                </td>
+                                @if (str != "false")
+                                {
+                                    <td style="color: orangered; position: relative;">
+                                        <a id="@m.MediaId" asp-action="EditMedia" asp-route-mid="@m.MediaId">Edit</a> |
+                                        <a href="javascript:void(0);" onclick="showConfirmDelete('@m.MediaId')">Delete</a>
+                                        <!--Hiển thị form xoá hay không xoá-->
+                                        <form id="confirm-delete-@m.MediaId" asp-action="DeleteMedia" method="post" class="confirm-delete-form" style="display: none;">
+                                            <p>Bạn có chắc chắn muốn xóa phim này?</p>
+                                            <input type="hidden" name="mid" value="@m.MediaId" />
+                                            <button type="submit" name="YesNo" value="true" class="btn btn-success">Có</button>
+                                            <button type="button" onclick="hideConfirmDelete('@m.MediaId')" class="btn btn-danger">Không</button>
+                                        </form>
+                                    </td>
+                                }
                             </tr>
                         }
                     </tbody>
